@@ -3,6 +3,7 @@ dotenv.config({ path: __dirname + "/.env" });
 
 import express, { Express } from "express";
 import { ApolloServer, gql } from "apollo-server-express";
+import helmet from "helmet";
 
 const typeDefs = gql`
   type Query {
@@ -17,6 +18,8 @@ const resolvers = {
 };
 
 const startApolloServer = async (app: Express) => {
+  app.use(helmet());
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
