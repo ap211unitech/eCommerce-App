@@ -3,10 +3,15 @@ import { gql } from "apollo-server-express";
 export const userTypes = gql`
   type User {
     name: String!
-    age: Int!
+    email: String!
+    password: String!
   }
 
   type Query {
-    getAllUsers: User!
+    getAllUsers: [User!]!
+  }
+
+  type Mutation {
+    signUp(name: String!, email: String!, password: String!): User!
   }
 `;
