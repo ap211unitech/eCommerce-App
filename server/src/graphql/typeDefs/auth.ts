@@ -5,8 +5,10 @@ export const userTypes = gql`
     _id: ID!
     name: String!
     email: String!
-    password: String!
     mobile: String!
+    token: String!
+    createdAt: String!
+    updatedAt: String!
   }
 
   type Query {

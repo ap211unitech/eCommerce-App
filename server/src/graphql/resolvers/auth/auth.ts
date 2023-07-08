@@ -1,5 +1,5 @@
 import { SignUpPayload } from "../../../types/User";
-import { signUp } from "../../../controllers/user";
+import { signUp } from "../../../controllers/authController";
 
 export const userResolvers = {
   Query: {
