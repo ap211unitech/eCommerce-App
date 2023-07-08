@@ -36,25 +36,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv = __importStar(require("dotenv"));
-dotenv.config({ path: __dirname + "/.env" });
 const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
 const helmet_1 = __importDefault(require("helmet"));
-const typeDefs = (0, apollo_server_express_1.gql) `
-  type Query {
-    hello: String
-  }
-`;
-const resolvers = {
-    Query: {
-        hello: () => "Hello world!",
-    },
-};
+const graphql_1 = require("./graphql");
+const connect_1 = require("./utils/connect");
+dotenv.config({ path: __dirname + "/../.env" });
 const startApolloServer = (app) => __awaiter(void 0, void 0, void 0, function* () {
     app.use((0, helmet_1.default)());
+    (0, connect_1.dbConnect)();
     const server = new apollo_server_express_1.ApolloServer({
-        typeDefs,
-        resolvers,
+        typeDefs: graphql_1.typeDefs,
+        resolvers: graphql_1.resolvers,
     });
     yield server.start();
     server.applyMiddleware({ app });

@@ -1,4 +1,5 @@
-import { SignUpPayload } from "./types";
+import { SignUpPayload } from "../../../types/User";
+import { signUp } from "../../../controllers/user";
 
 export const userResolvers = {
   Query: {
@@ -13,8 +14,8 @@ export const userResolvers = {
     },
   },
   Mutation: {
-    signUp: (_: any, payload: SignUpPayload) => {
-      return payload;
+    signUp: async (_: any, payload: SignUpPayload) => {
+      return await signUp(payload);
     },
   },
 };

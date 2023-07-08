@@ -1,10 +1,12 @@
 import * as dotenv from "dotenv";
-dotenv.config({ path: __dirname + "/../.env" });
-
 import express, { Express } from "express";
 import { ApolloServer, ExpressContext } from "apollo-server-express";
-import { typeDefs, resolvers } from "./graphql";
 import helmet from "helmet";
+
+import { typeDefs, resolvers } from "./graphql";
+import { dbConnect } from "./utils/connect";
+
+dotenv.config({ path: __dirname + "/../.env" });
 
 const startApolloServer = async (
   app: Express
@@ -13,6 +15,8 @@ const startApolloServer = async (
   app: express.Express;
 }> => {
   app.use(helmet());
+
+  dbConnect();
 
   const server: ApolloServer<ExpressContext> = new ApolloServer({
     typeDefs,
