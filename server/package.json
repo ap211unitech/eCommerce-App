@@ -6,7 +6,8 @@
   "author": "Arjun Porwal",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "build":"yarn tsc"
   },
   "dependencies": {
     "apollo-server-express": "^3.12.0",
