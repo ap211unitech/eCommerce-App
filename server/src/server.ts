@@ -1,21 +1,10 @@
 import * as dotenv from "dotenv";
-dotenv.config({ path: __dirname + "/.env" });
+dotenv.config({ path: __dirname + "/../.env" });
 
 import express, { Express } from "express";
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
+import { typeDefs, resolvers } from "./graphql";
 import helmet from "helmet";
-
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => "Hello world!",
-  },
-};
 
 const startApolloServer = async (app: Express) => {
   app.use(helmet());
