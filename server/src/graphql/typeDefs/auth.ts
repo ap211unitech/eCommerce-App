@@ -11,6 +11,10 @@ export const userTypes = gql`
     updatedAt: String!
   }
 
+  type ForgotPassword {
+    message: String!
+  }
+
   type Query {
     getAllUsers: User
   }
@@ -24,5 +28,7 @@ export const userTypes = gql`
     ): User!
 
     signIn(email: String!, password: String!, mobile: String!): User!
+
+    forgotPassword(email: String!, mobile: String!): ForgotPassword!
   }
 `;

@@ -7,3 +7,8 @@ export const INVALID_CREDENTIALS = {
   message: "Invalid Credentials",
   code: "INVALID_CREDENTIALS",
 };
+
+export const NO_SUCH_USER_EXISTS = {
+  message: "No such user exists",
+  code: "NO_SUCH_USER_EXISTS",
+};

@@ -10,3 +10,8 @@ export type SignInPayload = {
   mobile?: string;
   email?: string;
 };
+
+export type ForgotPasswordPayload = {
+  email: string;
+  mobile: string;
+};

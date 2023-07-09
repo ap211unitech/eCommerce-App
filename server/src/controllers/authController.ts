@@ -3,11 +3,27 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-import { SignInPayload, SignUpPayload } from "../types/Auth";
-import { validateSignUpInput } from "../validators/index";
-import { INVALID_CREDENTIALS, USER_ALREADY_EXISTS } from "../constants/error";
+import {
+  ForgotPasswordPayload,
+  SignInPayload,
+  SignUpPayload,
+} from "../types/Auth";
+import {
+  isValidEmail,
+  isValidMobile,
+  validateSignUpInput,
+} from "../validators/index";
+import {
+  INVALID_CREDENTIALS,
+  NO_SUCH_USER_EXISTS,
+  USER_ALREADY_EXISTS,
+} from "../constants/error";
+import { APOLLO_ERROR, VALIDATION_ERROR } from "../constants/errorTypes";
 import { errorHandler } from "../utils/errorHandler";
+import { generateOTP } from "../utils/generateOTP";
+
 import User from "../models/User";
+import OtpSchema from "../models/Otp";
 
 dotenv.config({ path: __dirname + "/../../.env" });
 
@@ -20,19 +36,18 @@ export const signUp = async (payload: SignUpPayload) => {
 
   const error = validateSignUpInput(payload);
   if (error) {
-    return errorHandler({ message: error, type: "ValidationError" });
+    return errorHandler({ message: error, type: VALIDATION_ERROR });
   }
 
   // Check if user already exists
   const userExists = await User.findOne({ $or: [{ email }, { mobile }] });
 
   if (userExists) {
-    return errorHandler({ ...USER_ALREADY_EXISTS, type: "ApolloError" });
+    return errorHandler({ ...USER_ALREADY_EXISTS, type: APOLLO_ERROR });
   }
 
   // Hash Password
-  const salt = await bcryptjs.genSalt(10);
-  const hashedPassword = await bcryptjs.hash(password, salt);
+  const hashedPassword = await hashData(password);
 
   const newUser = new User({ ...payload, password: hashedPassword });
   await newUser.save();
@@ -61,13 +76,13 @@ export const signIn = async (payload: SignInPayload) => {
   // Check if user exists
   const user = await User.findOne({ $or: [{ email }, { mobile }] });
   if (!user) {
-    return errorHandler({ ...INVALID_CREDENTIALS, type: "ApolloError" });
+    return errorHandler({ ...INVALID_CREDENTIALS, type: APOLLO_ERROR });
   }
 
   // Verify Password
   const isMatch: boolean = await bcryptjs.compare(password, user.password);
   if (!isMatch) {
-    return errorHandler({ ...INVALID_CREDENTIALS, type: "ApolloError" });
+    return errorHandler({ ...INVALID_CREDENTIALS, type: APOLLO_ERROR });
   }
 
   // Generate token
@@ -86,8 +101,81 @@ export const signIn = async (payload: SignInPayload) => {
   };
 };
 
+// @Desc    Forgot Password (Sending OTP to email/mobile)
+// @Access  Public
+export const forgotPassword = async (payload: ForgotPasswordPayload) => {
+  const { email, mobile } = payload;
+
+  // Check If valid email
+  if (isValidEmail(email)) {
+    // Check if any user exists for that email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+    }
+
+    // Clear Old records
+    await OtpSchema.deleteMany({ userId: user._id });
+
+    // Generate OTP
+    const newOTP = generateOTP();
+
+    // Hash OTP
+    const hashedOTP = await hashData(newOTP);
+
+    // Save in OTP Schema
+    await OtpSchema.create({
+      userId: user._id,
+      otp: hashedOTP,
+      expiresAt: Date.now() + 600000,
+    });
+
+    //TODO: Send Email
+
+    return { message: "OTP Sent Successfully to your email address" };
+  }
+
+  // Check If valid mobile number
+  if (isValidMobile(mobile)) {
+    // Check if any user exists for that mobile
+    const user = await User.findOne({ mobile });
+    if (!user) {
+      return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+    }
+
+    // Clear Old records
+    await OtpSchema.deleteMany({ userId: user._id });
+
+    // Generate OTP
+    const newOTP = generateOTP();
+
+    // Hash OTP
+    const hashedOTP = await hashData(newOTP);
+
+    // Save in OTP Schema
+    await OtpSchema.create({
+      userId: user._id,
+      otp: hashedOTP,
+      expiresAt: Date.now() + 600000,
+    });
+
+    //TODO: Send Message to Mobile
+
+    return { message: "OTP Sent Successfully to your mobile" };
+  }
+
+  return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+};
+
 // Generate Token
 const generateToken = (id: mongoose.Types.ObjectId) => {
   const payload = { id };
   return jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "1d" });
+};
+
+// Hash Data
+const hashData = async (payload: string) => {
+  const salt = await bcryptjs.genSalt(10);
+  const hashedData = await bcryptjs.hash(payload, salt);
+  return hashedData;
 };

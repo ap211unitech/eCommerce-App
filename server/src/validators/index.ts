@@ -11,12 +11,8 @@ export const validateSignUpInput = ({
   }
   if (!email || email.trim() === "") {
     return "Please add all fields";
-  } else {
-    const regEx =
-      /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
-    if (!email.match(regEx)) {
-      return "Invalid email address";
-    }
+  } else if (!isValidEmail(email)) {
+    return "Invalid email address";
   }
   if (!password || password === "") {
     return "Please add all fields";
@@ -24,9 +20,19 @@ export const validateSignUpInput = ({
     return "Password must be length of greater than 6";
   }
 
-  const regex = /^(\d{3})[- ]?(\d{3})[- ]?(\d{4})$/;
-  if (!regex.test(mobile)) {
+  if (!isValidMobile(mobile)) {
     return "Invalid mobile number";
   }
   return null;
+};
+
+export const isValidEmail = (email: string) => {
+  const regEx =
+    /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
+  return email.match(regEx);
+};
+
+export const isValidMobile = (mobile: string) => {
+  const regex = /^(\d{3})[- ]?(\d{3})[- ]?(\d{4})$/;
+  return regex.test(mobile);
 };

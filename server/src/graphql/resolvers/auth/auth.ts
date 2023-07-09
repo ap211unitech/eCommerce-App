@@ -1,5 +1,13 @@
-import { SignInPayload, SignUpPayload } from "../../../types/Auth";
-import { signUp, signIn } from "../../../controllers/authController";
+import {
+  ForgotPasswordPayload,
+  SignInPayload,
+  SignUpPayload,
+} from "../../../types/Auth";
+import {
+  signUp,
+  signIn,
+  forgotPassword,
+} from "../../../controllers/authController";
 
 export const userResolvers = {
   Query: {},
@@ -9,6 +17,9 @@ export const userResolvers = {
     },
     signIn: async (_: any, payload: SignInPayload) => {
       return await signIn(payload);
+    },
+    forgotPassword: async (_: any, payload: ForgotPasswordPayload) => {
+      return await forgotPassword(payload);
     },
   },
 };

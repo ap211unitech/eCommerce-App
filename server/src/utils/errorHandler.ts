@@ -4,6 +4,12 @@ import {
   AuthenticationError,
 } from "apollo-server-express";
 
+import {
+  APOLLO_ERROR,
+  VALIDATION_ERROR,
+  AUTHENTICATION_ERROR,
+} from "../constants/errorTypes";
+
 type Payload = {
   message: string;
   code?: string;
@@ -14,13 +20,13 @@ export const errorHandler = (payload: Payload) => {
   const { message, code, type } = payload;
 
   switch (type) {
-    case "ApolloError": {
+    case APOLLO_ERROR: {
       throw new ApolloError(message, code);
     }
-    case "ValidationError": {
+    case VALIDATION_ERROR: {
       throw new ValidationError(message);
     }
-    case "AuthenticationError": {
+    case AUTHENTICATION_ERROR: {
       throw new AuthenticationError(message);
     }
     default:
