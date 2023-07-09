@@ -108,59 +108,13 @@ export const forgotPassword = async (payload: ForgotPasswordPayload) => {
 
   // Check If valid email
   if (isValidEmail(email)) {
-    // Check if any user exists for that email
-    const user = await User.findOne({ email });
-    if (!user) {
-      return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
-    }
-
-    // Clear Old records
-    await OtpSchema.deleteMany({ userId: user._id });
-
-    // Generate OTP
-    const newOTP = generateOTP();
-
-    // Hash OTP
-    const hashedOTP = await hashData(newOTP);
-
-    // Save in OTP Schema
-    await OtpSchema.create({
-      userId: user._id,
-      otp: hashedOTP,
-      expiresAt: Date.now() + 600000,
-    });
-
-    //TODO: Send Email
-
+    await sendOTP({ type: "email", payload });
     return { message: "OTP Sent Successfully to your email address" };
   }
 
   // Check If valid mobile number
   if (isValidMobile(mobile)) {
-    // Check if any user exists for that mobile
-    const user = await User.findOne({ mobile });
-    if (!user) {
-      return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
-    }
-
-    // Clear Old records
-    await OtpSchema.deleteMany({ userId: user._id });
-
-    // Generate OTP
-    const newOTP = generateOTP();
-
-    // Hash OTP
-    const hashedOTP = await hashData(newOTP);
-
-    // Save in OTP Schema
-    await OtpSchema.create({
-      userId: user._id,
-      otp: hashedOTP,
-      expiresAt: Date.now() + 600000,
-    });
-
-    //TODO: Send Message to Mobile
-
+    await sendOTP({ type: "mobile", payload });
     return { message: "OTP Sent Successfully to your mobile" };
   }
 
@@ -178,4 +132,43 @@ const hashData = async (payload: string) => {
   const salt = await bcryptjs.genSalt(10);
   const hashedData = await bcryptjs.hash(payload, salt);
   return hashedData;
+};
+
+// OTP Sending Process
+const sendOTP = async ({
+  type,
+  payload,
+}: {
+  type: "email" | "mobile";
+  payload: ForgotPasswordPayload;
+}) => {
+  const { email, mobile } = payload;
+
+  // Check if any user exists for that email/mobile
+  const user =
+    type === "email"
+      ? await User.findOne({ email })
+      : await User.findOne({ mobile });
+
+  if (!user) {
+    return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+  }
+
+  // Clear Old records
+  await OtpSchema.deleteMany({ userId: user._id });
+
+  // Generate OTP
+  const newOTP = generateOTP();
+
+  // Hash OTP
+  const hashedOTP = await hashData(newOTP);
+
+  // Save in OTP Schema
+  await OtpSchema.create({
+    userId: user._id,
+    otp: hashedOTP,
+    expiresAt: Date.now() + 600000, // 10 min
+  });
+
+  //TODO: Send Email/Send SMS
 };
