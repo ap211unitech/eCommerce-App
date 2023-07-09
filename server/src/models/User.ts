@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     email: {
       type: String,
-      required: [true, "Email can not be empty"],
       trim: true,
     },
     password: {

@@ -1,4 +1,4 @@
-import { SignUpPayload } from "../types/User";
+import { SignUpPayload } from "../types/Auth";
 
 export const validateSignUpInput = ({
   email,
@@ -15,7 +15,7 @@ export const validateSignUpInput = ({
     const regEx =
       /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
     if (!email.match(regEx)) {
-      return "Email must be a valid email address";
+      return "Invalid email address";
     }
   }
   if (!password || password === "") {

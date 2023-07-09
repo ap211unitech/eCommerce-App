@@ -22,5 +22,7 @@ export const userTypes = gql`
       name: String!
       mobile: String!
     ): User!
+
+    signIn(email: String!, password: String!, mobile: String!): User!
   }
 `;

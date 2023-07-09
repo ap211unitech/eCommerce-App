@@ -1,21 +1,14 @@
-import { SignUpPayload } from "../../../types/User";
-import { signUp } from "../../../controllers/authController";
+import { SignInPayload, SignUpPayload } from "../../../types/Auth";
+import { signUp, signIn } from "../../../controllers/authController";
 
 export const userResolvers = {
-  Query: {
-    getAllUsers: () => {
-      return [
-        {
-          name: "Arjun",
-          email: "abcd",
-          password: "aaaa",
-        },
-      ];
-    },
-  },
+  Query: {},
   Mutation: {
     signUp: async (_: any, payload: SignUpPayload) => {
       return await signUp(payload);
+    },
+    signIn: async (_: any, payload: SignInPayload) => {
+      return await signIn(payload);
     },
   },
 };
