@@ -25,6 +25,8 @@ import { generateOTP } from "../utils/generateOTP";
 import User from "../models/User";
 import OtpSchema from "../models/Otp";
 
+import { forgotPasswordEmail } from "../utils/mail";
+
 dotenv.config({ path: __dirname + "/../../.env" });
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "jwtsecret";
@@ -171,4 +173,7 @@ const sendOTP = async ({
   });
 
   //TODO: Send Email/Send SMS
+  if (type === "email") {
+    await forgotPasswordEmail({ to: user.email, otp: newOTP });
+  }
 };
