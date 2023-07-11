@@ -12,3 +12,13 @@ export const NO_SUCH_USER_EXISTS = {
   message: "No such user exists",
   code: "NO_SUCH_USER_EXISTS",
 };
+
+export const NO_OTP_FOUND = {
+  message: "No OTP Found. Try to send it again.",
+  code: "NO_OTP_FOUND",
+};
+
+export const OTP_EXPIRED = {
+  message: "OTP Expired. Try to send it again.",
+  code: "OTP_EXPIRED",
+};

@@ -15,6 +15,10 @@ export const userTypes = gql`
     message: String!
   }
 
+  type ResetPassword {
+    message: String!
+  }
+
   type Query {
     getAllUsers: User
   }
@@ -30,5 +34,12 @@ export const userTypes = gql`
     signIn(email: String!, password: String!, mobile: String!): User!
 
     forgotPassword(email: String!, mobile: String!): ForgotPassword!
+
+    resetPassword(
+      email: String!
+      mobile: String!
+      otp: String!
+      newPassword: String!
+    ): ResetPassword!
   }
 `;

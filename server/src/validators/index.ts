@@ -36,3 +36,12 @@ export const isValidMobile = (mobile: string) => {
   const regex = /^(\d{3})[- ]?(\d{3})[- ]?(\d{4})$/;
   return regex.test(mobile);
 };
+
+export const validatePassword = (password: any) => {
+  if (!password || password === "") {
+    return "Password can not be empty";
+  } else if (password.length < 6) {
+    return "Password must be length of greater than 6";
+  }
+  return null;
+};

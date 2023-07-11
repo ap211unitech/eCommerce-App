@@ -5,17 +5,21 @@ import dotenv from "dotenv";
 
 import {
   ForgotPasswordPayload,
+  ResetPasswordPayload,
   SignInPayload,
   SignUpPayload,
 } from "../types/Auth";
 import {
   isValidEmail,
   isValidMobile,
+  validatePassword,
   validateSignUpInput,
 } from "../validators/index";
 import {
   INVALID_CREDENTIALS,
+  NO_OTP_FOUND,
   NO_SUCH_USER_EXISTS,
+  OTP_EXPIRED,
   USER_ALREADY_EXISTS,
 } from "../constants/error";
 import { APOLLO_ERROR, VALIDATION_ERROR } from "../constants/errorTypes";
@@ -123,6 +127,26 @@ export const forgotPassword = async (payload: ForgotPasswordPayload) => {
   return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
 };
 
+// @Desc    Reset Password (OTP and newPassword as input)
+// @Access  Public
+export const resetPassword = async (payload: ResetPasswordPayload) => {
+  const { email, mobile } = payload;
+
+  // Check If valid email
+  if (isValidEmail(email)) {
+    await verifyOTP({ type: "email", payload });
+    return { message: "Password reset successfully" };
+  }
+
+  // Check If valid mobile number
+  if (isValidMobile(mobile)) {
+    await verifyOTP({ type: "mobile", payload });
+    return { message: "Password reset successfully" };
+  }
+
+  return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+};
+
 // Generate Token
 const generateToken = (id: mongoose.Types.ObjectId) => {
   const payload = { id };
@@ -176,4 +200,52 @@ const sendOTP = async ({
   if (type === "email") {
     await forgotPasswordEmail({ to: user.email, otp: newOTP });
   }
+};
+
+// Verify OTP and Change Password
+const verifyOTP = async ({
+  type,
+  payload,
+}: {
+  type: "email" | "mobile";
+  payload: ResetPasswordPayload;
+}) => {
+  const { email, mobile, otp, newPassword } = payload;
+
+  // Find User
+  const user =
+    type === "email"
+      ? await User.findOne({ email })
+      : await User.findOne({ mobile });
+
+  if (!user) {
+    return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+  }
+
+  // Find OTP
+  const findOTP = await OtpSchema.findOne({ userId: user._id });
+
+  // Check if OTP exists for that userID
+  if (!findOTP) {
+    return errorHandler({ ...NO_OTP_FOUND, type: APOLLO_ERROR });
+  }
+
+  // Check if OTP is not expired
+  if (findOTP.expiresAt.getTime() < Date.now()) {
+    // Delete OTP if expired
+    await OtpSchema.deleteMany({ userId: user._id });
+    return errorHandler({ ...OTP_EXPIRED, type: APOLLO_ERROR });
+  }
+
+  // Validate Password
+  const error = validatePassword(newPassword);
+  if (error) {
+    return errorHandler({ message: error, type: VALIDATION_ERROR });
+  }
+
+  // Hash Password
+  const hashedPassword = await hashData(newPassword);
+
+  user.password = hashedPassword;
+  await user.save();
 };
