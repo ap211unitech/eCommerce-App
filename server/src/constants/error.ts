@@ -22,3 +22,8 @@ export const OTP_EXPIRED = {
   message: "OTP Expired. Try to send it again.",
   code: "OTP_EXPIRED",
 };
+
+export const INCORRECT_OTP = {
+  message: "Incorrect OTP",
+  code: "INCORRECT_OTP",
+};

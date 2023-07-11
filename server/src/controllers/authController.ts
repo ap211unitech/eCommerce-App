@@ -16,6 +16,7 @@ import {
   validateSignUpInput,
 } from "../validators/index";
 import {
+  INCORRECT_OTP,
   INVALID_CREDENTIALS,
   NO_OTP_FOUND,
   NO_SUCH_USER_EXISTS,
@@ -235,6 +236,13 @@ const verifyOTP = async ({
     // Delete OTP if expired
     await OtpSchema.deleteMany({ userId: user._id });
     return errorHandler({ ...OTP_EXPIRED, type: APOLLO_ERROR });
+  }
+
+  // Check if OTP matched
+  const matchOTP: boolean = await bcryptjs.compare(otp, findOTP.otp);
+
+  if (!matchOTP) {
+    return errorHandler({ ...INCORRECT_OTP, type: APOLLO_ERROR });
   }
 
   // Validate Password
