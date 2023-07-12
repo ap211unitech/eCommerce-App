@@ -148,6 +148,8 @@ export const resetPassword = async (payload: ResetPasswordPayload) => {
   return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
 };
 
+/********************************** Helper Functions **********************************/
+
 // Generate Token
 const generateToken = (id: mongoose.Types.ObjectId) => {
   const payload = { id };
