@@ -1,6 +1,8 @@
 import bcryptjs from "bcryptjs";
 
 import {
+  AuthID,
+  ConvertToVendorPayload,
   ForgotPasswordPayload,
   ResetPasswordPayload,
   SignInPayload,
@@ -22,6 +24,7 @@ import { errorHandler } from "../../utils/errorHandler";
 import { generateToken, hashData, sendOTP, verifyOTP } from "./helpers";
 
 import User from "../../models/User";
+import { vendorRequestEmail } from "../../utils/mail";
 
 // @Desc    Register New user through form data
 // @Access  Public
@@ -156,5 +159,33 @@ export const getUserDetail = async (userId: string) => {
     createdAt: user.createdAt,
     // @ts-ignore
     updatedAt: user.updatedAt,
+  };
+};
+
+// @Desc    Convert a normal user to vendor
+// @Access  Private
+export const convertToVendor = async (
+  payload: ConvertToVendorPayload & AuthID
+) => {
+  const { userId } = payload;
+  const user = await User.findById(userId).select("-password");
+
+  if (!user) {
+    return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+  }
+
+  // Check if already vendor
+  if (user.role === "vendor") {
+    return errorHandler({
+      message: "You are already a vendor",
+      type: APOLLO_ERROR,
+    });
+  }
+
+  // Send Email to admin for request
+  await vendorRequestEmail({ title: payload.title, body: payload.body });
+
+  return {
+    message: "Your request is sent to admin. Please wait for admin approval.",
   };
 };

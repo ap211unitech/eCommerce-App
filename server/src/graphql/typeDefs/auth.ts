@@ -47,6 +47,6 @@ export const userTypes = gql`
       newPassword: String!
     ): ResetPassword!
 
-    convertToVendor(title: String!, message: String!): ConvertToVendor!
+    convertToVendor(title: String!, body: String!): ConvertToVendor!
   }
 `;

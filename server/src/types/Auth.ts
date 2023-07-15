@@ -21,3 +21,12 @@ export type ResetPasswordPayload = {
   otp: string;
   newPassword: string;
 };
+
+export type ConvertToVendorPayload = {
+  title: string;
+  body: string;
+};
+
+export type AuthID = {
+  userId: string;
+};

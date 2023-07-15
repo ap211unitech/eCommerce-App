@@ -1,4 +1,5 @@
 import {
+  ConvertToVendorPayload,
   ForgotPasswordPayload,
   ResetPasswordPayload,
   SignInPayload,
@@ -10,6 +11,7 @@ import {
   forgotPassword,
   resetPassword,
   getUserDetail,
+  convertToVendor,
 } from "../../controllers/auth/authController";
 
 import { isAuthenticated } from "../../middlewares/authMiddleware";
@@ -34,8 +36,13 @@ export const userResolvers = {
     resetPassword: async (_: any, payload: ResetPasswordPayload) => {
       return await resetPassword(payload);
     },
-    convertToVendor: async (_: any, payload: any, { req }: any) => {
-      return { message: "Request sent" };
+    convertToVendor: async (
+      _: any,
+      payload: ConvertToVendorPayload,
+      { req }: any
+    ) => {
+      await isAuthenticated(req);
+      return await convertToVendor({ ...payload, userId: req.user.id });
     },
   },
 };
