@@ -5,6 +5,7 @@ interface IUser {
   email: string;
   password: string;
   mobile: string;
+  role: "user" | "vendor" | "admin";
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -26,6 +27,12 @@ const userSchema = new mongoose.Schema<IUser>(
       type: String,
       required: [true, "Mobile number can not be empty"],
       trim: true,
+    },
+    role: {
+      type: String,
+      enum: ["user", "vendor", "admin"],
+      required: true,
+      default: "user",
     },
   },
   { timestamps: true }

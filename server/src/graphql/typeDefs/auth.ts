@@ -6,6 +6,7 @@ export const userTypes = gql`
     name: String!
     email: String!
     mobile: String!
+    role: String!
     token: String!
     createdAt: String!
     updatedAt: String!
@@ -31,7 +32,7 @@ export const userTypes = gql`
       mobile: String!
     ): User!
 
-    signIn(email: String!, password: String!, mobile: String!): User!
+    signIn(identity: String!, password: String!): User!
 
     forgotPassword(email: String!, mobile: String!): ForgotPassword!
 

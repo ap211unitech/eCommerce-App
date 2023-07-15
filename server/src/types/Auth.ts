@@ -7,8 +7,7 @@ export type SignUpPayload = {
 
 export type SignInPayload = {
   password: string;
-  mobile?: string;
-  email?: string;
+  identity: string;
 };
 
 export type ForgotPasswordPayload = {

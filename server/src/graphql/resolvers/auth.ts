@@ -3,13 +3,13 @@ import {
   ResetPasswordPayload,
   SignInPayload,
   SignUpPayload,
-} from "../../../types/Auth";
+} from "../../types/Auth";
 import {
   signUp,
   signIn,
   forgotPassword,
   resetPassword,
-} from "../../../controllers/authController";
+} from "../../controllers/auth/authController";
 
 export const userResolvers = {
   Query: {},
