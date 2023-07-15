@@ -1,5 +1,4 @@
 import bcryptjs from "bcryptjs";
-import dotenv from "dotenv";
 
 import {
   ForgotPasswordPayload,
@@ -23,8 +22,6 @@ import { errorHandler } from "../../utils/errorHandler";
 import { generateToken, hashData, sendOTP, verifyOTP } from "./helpers";
 
 import User from "../../models/User";
-
-dotenv.config({ path: __dirname + "/../../.env" });
 
 // @Desc    Register New user through form data
 // @Access  Public
@@ -140,4 +137,24 @@ export const resetPassword = async (payload: ResetPasswordPayload) => {
   }
 
   return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+};
+
+// @Desc    Get loggedin user profile
+// @Access  Private
+export const getUserDetail = async (userId: string) => {
+  const user = await User.findById(userId).select("-password");
+  if (!user) {
+    return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+  }
+  return {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    mobile: user.mobile,
+    role: user.role,
+    // @ts-ignore
+    createdAt: user.createdAt,
+    // @ts-ignore
+    updatedAt: user.updatedAt,
+  };
 };

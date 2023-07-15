@@ -19,6 +19,11 @@ const startApolloServer = async (
   dbConnect();
 
   const server: ApolloServer<ExpressContext> = new ApolloServer({
+    context: ({ req }) => {
+      return {
+        req,
+      };
+    },
     typeDefs,
     resolvers,
   });

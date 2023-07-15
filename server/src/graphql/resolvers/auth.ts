@@ -9,10 +9,18 @@ import {
   signIn,
   forgotPassword,
   resetPassword,
+  getUserDetail,
 } from "../../controllers/auth/authController";
 
+import { isAuthenticated } from "../../middlewares/authMiddleware";
+
 export const userResolvers = {
-  Query: {},
+  Query: {
+    getUserDetail: async (_: any, payload: any, { req }: any) => {
+      await isAuthenticated(req);
+      return await getUserDetail(req.user.id);
+    },
+  },
   Mutation: {
     signUp: async (_: any, payload: SignUpPayload) => {
       return await signUp(payload);
@@ -25,6 +33,9 @@ export const userResolvers = {
     },
     resetPassword: async (_: any, payload: ResetPasswordPayload) => {
       return await resetPassword(payload);
+    },
+    convertToVendor: async (_: any, payload: any, { req }: any) => {
+      return { message: "Request sent" };
     },
   },
 };

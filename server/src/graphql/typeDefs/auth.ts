@@ -7,7 +7,7 @@ export const userTypes = gql`
     email: String!
     mobile: String!
     role: String!
-    token: String!
+    token: String
     createdAt: String!
     updatedAt: String!
   }
@@ -20,8 +20,12 @@ export const userTypes = gql`
     message: String!
   }
 
+  type ConvertToVendor {
+    message: String!
+  }
+
   type Query {
-    getAllUsers: User
+    getUserDetail: User!
   }
 
   type Mutation {
@@ -42,5 +46,7 @@ export const userTypes = gql`
       otp: String!
       newPassword: String!
     ): ResetPassword!
+
+    convertToVendor(title: String!, message: String!): ConvertToVendor!
   }
 `;
