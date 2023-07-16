@@ -1,4 +1,5 @@
 import {
+  DeleteUserAddressPayload,
   EditUserAddressPayload,
   UserAddressPayload,
 } from "../../types/Address";
@@ -6,6 +7,7 @@ import { isAuthenticated } from "../../middlewares/authMiddleware";
 
 import {
   addAddress,
+  deleteAddress,
   editAddress,
   getAddress,
 } from "../../controllers/address/addressController";
@@ -29,6 +31,14 @@ export const addressResolvers = {
     ) => {
       await isAuthenticated(req);
       return await editAddress({ ...payload, userId: req.user.id });
+    },
+    deleteAddress: async (
+      _: any,
+      payload: DeleteUserAddressPayload,
+      { req }: any
+    ) => {
+      await isAuthenticated(req);
+      return await deleteAddress({ ...payload, userId: req.user.id });
     },
   },
 };

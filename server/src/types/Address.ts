@@ -11,3 +11,5 @@ export type UserAddressPayload = {
 };
 
 export type EditUserAddressPayload = UserAddressPayload & { addressId: string };
+
+export type DeleteUserAddressPayload = { addressId: string };

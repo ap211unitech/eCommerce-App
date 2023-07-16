@@ -1,4 +1,5 @@
 import {
+  DeleteUserAddressPayload,
   EditUserAddressPayload,
   UserAddressPayload,
 } from "../../types/Address";
@@ -110,4 +111,26 @@ export const editAddress = async (payload: EditUserAddressPayload & AuthID) => {
       { new: true }
     );
   }
+};
+
+// @Desc    Delete address for a user given addressId
+// @Access  Private
+export const deleteAddress = async (
+  payload: DeleteUserAddressPayload & AuthID
+) => {
+  const { addressId, userId } = payload;
+
+  // Find address for that addressId
+  const findAddress = await Address.findById(addressId);
+  if (!findAddress) {
+    return errorHandler({ ...NO_SUCH_ADDRESS_EXISTS, type: APOLLO_ERROR });
+  }
+
+  // Check if address belongs to loggedin user
+  if (findAddress.userId.toString() !== userId.toString()) {
+    return errorHandler({ ...UNAUTHORIZED_REQUEST, type: APOLLO_ERROR });
+  }
+
+  await Address.findByIdAndDelete(addressId);
+  return { message: "Address deleted" };
 };

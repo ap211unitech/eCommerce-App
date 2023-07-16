@@ -15,6 +15,10 @@ export const addressTypes = gql`
     isDefault: Boolean!
   }
 
+  type DeleteAddressType {
+    message: String!
+  }
+
   type Query {
     getAddress: [UserAddress!]
   }
@@ -44,5 +48,7 @@ export const addressTypes = gql`
       type: String!
       isDefault: Boolean
     ): UserAddress!
+
+    deleteAddress(addressId: String!): DeleteAddressType!
   }
 `;
