@@ -1,3 +1,6 @@
-import { userResolvers } from "./auth";
+import { merge } from "lodash";
 
-export const resolvers = { ...userResolvers };
+import { userResolvers } from "./auth";
+import { addressResolvers } from "./address";
+
+export const resolvers = merge(userResolvers, addressResolvers);
