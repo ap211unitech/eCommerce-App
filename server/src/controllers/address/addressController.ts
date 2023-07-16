@@ -14,6 +14,13 @@ import {
 
 import Address from "../../models/Address";
 
+// @Desc    Get list of addresses for loggedin user
+// @Access  Private
+export const getAddress = async ({ userId }: AuthID) => {
+  const addresses = await Address.find({ userId });
+  return addresses;
+};
+
 // @Desc    Add address through form data
 // @Access  Private
 export const addAddress = async (payload: UserAddressPayload & AuthID) => {

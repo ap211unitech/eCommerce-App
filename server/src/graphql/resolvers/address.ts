@@ -7,12 +7,14 @@ import { isAuthenticated } from "../../middlewares/authMiddleware";
 import {
   addAddress,
   editAddress,
+  getAddress,
 } from "../../controllers/address/addressController";
 
 export const addressResolvers = {
   Query: {
-    getAddress: () => {
-      return "Here is your address";
+    getAddress: async (_: any, __: any, { req }: any) => {
+      await isAuthenticated(req);
+      return getAddress({ userId: req.user.id });
     },
   },
   Mutation: {

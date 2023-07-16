@@ -16,7 +16,7 @@ export const addressTypes = gql`
   }
 
   type Query {
-    getAddress: String!
+    getAddress: [UserAddress!]
   }
 
   type Mutation {
