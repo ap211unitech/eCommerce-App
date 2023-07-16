@@ -33,6 +33,7 @@ export const addressTypes = gql`
     ): UserAddress!
 
     editAddress(
+      addressId: String!
       userName: String!
       mobile: String!
       pincode: String!

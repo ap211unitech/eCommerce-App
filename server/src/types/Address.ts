@@ -9,3 +9,5 @@ export type UserAddressPayload = {
   type: "home" | "office";
   isDefault: boolean;
 };
+
+export type EditUserAddressPayload = UserAddressPayload & { addressId: string };

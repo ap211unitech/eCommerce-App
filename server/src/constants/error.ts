@@ -27,3 +27,13 @@ export const INCORRECT_OTP = {
   message: "Incorrect OTP",
   code: "INCORRECT_OTP",
 };
+
+export const NO_SUCH_ADDRESS_EXISTS = {
+  message: "No such address exists",
+  code: "NO_SUCH_ADDRESS_EXISTS",
+};
+
+export const UNAUTHORIZED_REQUEST = {
+  message: "You are not authorized for this request",
+  code: "UNAUTHORIZED_REQUEST",
+};
