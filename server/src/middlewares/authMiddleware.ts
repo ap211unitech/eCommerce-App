@@ -1,7 +1,6 @@
 import * as dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
-import User from "../models/User";
 import { errorHandler } from "../utils/errorHandler";
 import { AUTHENTICATION_ERROR } from "../constants/errorTypes";
 

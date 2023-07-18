@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IUser {
+interface IUser extends mongoose.Document {
   name: string;
   email: string;
   password: string;

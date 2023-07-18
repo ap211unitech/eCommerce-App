@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IOtp {
+interface IOtp extends mongoose.Document {
   userId: mongoose.Schema.Types.ObjectId;
   otp: string;
   expiresAt: Date;

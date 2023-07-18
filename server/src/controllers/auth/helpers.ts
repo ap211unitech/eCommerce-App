@@ -27,7 +27,7 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "jwtsecret";
 /********************************** Helper Functions **********************************/
 
 // Generate Token
-export const generateToken = (id: mongoose.Types.ObjectId) => {
+export const generateToken = (id: mongoose.Schema.Types.ObjectId) => {
   const payload = { id };
   return jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "1d" });
 };

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IUserAddressSchema {
+interface IUserAddressSchema extends mongoose.Document {
   userId: mongoose.Schema.Types.ObjectId;
   userName: string;
   mobile: string;
