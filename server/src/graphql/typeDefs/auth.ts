@@ -38,11 +38,10 @@ export const userTypes = gql`
 
     signIn(identity: String!, password: String!): User!
 
-    forgotPassword(email: String!, mobile: String!): ForgotPassword!
+    forgotPassword(identity: String!): ForgotPassword!
 
     resetPassword(
-      email: String!
-      mobile: String!
+      identity: String!
       otp: String!
       newPassword: String!
     ): ResetPassword!

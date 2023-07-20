@@ -47,13 +47,13 @@ export const sendOTP = async ({
   type: "email" | "mobile";
   payload: ForgotPasswordPayload;
 }) => {
-  const { email, mobile } = payload;
+  const { identity } = payload;
 
   // Check if any user exists for that email/mobile
   const user =
     type === "email"
-      ? await User.findOne({ email })
-      : await User.findOne({ mobile });
+      ? await User.findOne({ email: identity })
+      : await User.findOne({ mobile: identity });
 
   if (!user) {
     return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
@@ -90,13 +90,13 @@ export const verifyOTP = async ({
   type: "email" | "mobile";
   payload: ResetPasswordPayload;
 }) => {
-  const { email, mobile, otp, newPassword } = payload;
+  const { identity, otp, newPassword } = payload;
 
   // Find User
   const user =
     type === "email"
-      ? await User.findOne({ email })
-      : await User.findOne({ mobile });
+      ? await User.findOne({ email: identity })
+      : await User.findOne({ mobile: identity });
 
   if (!user) {
     return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });

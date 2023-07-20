@@ -105,16 +105,16 @@ export const signIn = async (payload: SignInPayload) => {
 // @Desc    Forgot Password (Sending OTP to email/mobile)
 // @Access  Public
 export const forgotPassword = async (payload: ForgotPasswordPayload) => {
-  const { email, mobile } = payload;
+  const { identity } = payload;
 
   // Check If valid email
-  if (isValidEmail(email)) {
+  if (isValidEmail(identity)) {
     await sendOTP({ type: "email", payload });
     return { message: "OTP Sent Successfully to your email address" };
   }
 
   // Check If valid mobile number
-  if (isValidMobile(mobile)) {
+  if (isValidMobile(identity)) {
     await sendOTP({ type: "mobile", payload });
     return { message: "OTP Sent Successfully to your mobile" };
   }
@@ -125,16 +125,16 @@ export const forgotPassword = async (payload: ForgotPasswordPayload) => {
 // @Desc    Reset Password (OTP and newPassword as input)
 // @Access  Public
 export const resetPassword = async (payload: ResetPasswordPayload) => {
-  const { email, mobile } = payload;
+  const { identity } = payload;
 
   // Check If valid email
-  if (isValidEmail(email)) {
+  if (isValidEmail(identity)) {
     await verifyOTP({ type: "email", payload });
     return { message: "Password reset successfully" };
   }
 
   // Check If valid mobile number
-  if (isValidMobile(mobile)) {
+  if (isValidMobile(identity)) {
     await verifyOTP({ type: "mobile", payload });
     return { message: "Password reset successfully" };
   }

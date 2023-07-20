@@ -11,13 +11,11 @@ export type SignInPayload = {
 };
 
 export type ForgotPasswordPayload = {
-  email: string;
-  mobile: string;
+  identity: string;
 };
 
 export type ResetPasswordPayload = {
-  email: string;
-  mobile: string;
+  identity: string;
   otp: string;
   newPassword: string;
 };
