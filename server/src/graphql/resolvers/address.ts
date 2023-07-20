@@ -3,14 +3,14 @@ import {
   EditUserAddressPayload,
   UserAddressPayload,
 } from "../../types/Address";
-import { isAuthenticated } from "../../middlewares/authMiddleware";
-
 import {
   addAddress,
   deleteAddress,
   editAddress,
   getAddress,
 } from "../../controllers/address/addressController";
+
+import { isAuthenticated } from "../../middlewares/authMiddleware";
 
 export const addressResolvers = {
   Query: {
