@@ -1,3 +1,5 @@
+import mongoose, { ObjectId } from "mongoose";
+
 export const isValidFilters = (payload: string) => {
   try {
     if (payload.trim().length) {
@@ -8,4 +10,59 @@ export const isValidFilters = (payload: string) => {
   } catch (err) {
     return false;
   }
+};
+
+type Category = {
+  categoryId: mongoose.Schema.Types.ObjectId;
+  name: string;
+  parentId: ObjectId;
+  createdBy: mongoose.Schema.Types.ObjectId;
+  updatedBy: mongoose.Schema.Types.ObjectId;
+  // @ts-ignore
+  createdAt: date;
+  // @ts-ignore
+  updatedAt: date;
+};
+
+type ReturnItems = {
+  categoryId: mongoose.Schema.Types.ObjectId;
+  name: string;
+  children: ReturnItems[];
+  createdBy: mongoose.Schema.Types.ObjectId;
+  updatedBy: mongoose.Schema.Types.ObjectId;
+  // @ts-ignore
+  createdAt: date;
+  // @ts-ignore
+  updatedAt: date;
+};
+
+// Converts plain list of categories to nested categories using parentId
+export const createNestedCategories = (
+  categories: Category[],
+  parentId: string | null = null
+): ReturnItems[] => {
+  const categoryList = [];
+  let category;
+  if (parentId === null || parentId?.toString().trim().length === 0) {
+    category = categories.filter(
+      (c) =>
+        c.parentId === undefined || c.parentId?.toString().trim().length === 0 // If parentId == ""
+    );
+  } else {
+    category = categories.filter((c) => c.parentId.toString() === parentId);
+  }
+
+  for (const c of category) {
+    categoryList.push({
+      categoryId: c.categoryId,
+      name: c.name,
+      children: createNestedCategories(categories, c.categoryId.toString()),
+      createdBy: c.createdBy,
+      updatedBy: c.updatedBy,
+      createdAt: c.createdAt,
+      updatedAt: c.updatedAt,
+    });
+  }
+
+  return categoryList;
 };

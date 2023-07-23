@@ -17,7 +17,31 @@ import { errorHandler } from "../../utils/errorHandler";
 
 import Category from "../../models/Category";
 import Filters from "../../models/Filters";
-import { isValidFilters } from "./helpers";
+import { createNestedCategories, isValidFilters } from "./helpers";
+
+// @Desc    Get all categories and it's filters
+// @Access  Public
+export const getCategory = async () => {
+  const categories = await Category.find();
+
+  const allCategories = categories.map((category) => {
+    return {
+      categoryId: category._id,
+      name: category.name,
+      parentId: category.parentId,
+      createdBy: category.createdBy,
+      updatedBy: category.updatedBy,
+      // @ts-ignore
+      createdAt: category.createdAt,
+      // @ts-ignore
+      updatedAt: category.updatedAt,
+    };
+  });
+
+  // Note - As per my research, Apollo Server/GraphQL doesn't support recurive return types.
+  // So, We will pass our result as string and parse it in client side 😅
+  return JSON.stringify(createNestedCategories(allCategories));
+};
 
 // @Desc    Create a new category and it's filters
 // @Access  Private (Any admin can create)

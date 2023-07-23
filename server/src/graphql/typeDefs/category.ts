@@ -11,6 +11,10 @@ export const categoryTypes = gql`
     updatedAt: String!
   }
 
+  type Query {
+    getCategory: String!
+  }
+
   type Mutation {
     createCategory(name: String!, parentId: String, filters: String): Category!
 

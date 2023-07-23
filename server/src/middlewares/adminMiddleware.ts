@@ -20,7 +20,10 @@ export const isAdmin = async (req: any) => {
       const decoded: any = jwt.verify(token, JWT_SECRET_KEY);
 
       const findUser = await User.findById(decoded.id);
-      if (findUser?.role === "admin") req.user = decoded;
+      if (findUser?.role === "admin") {
+        req.user = decoded;
+        return;
+      }
 
       return errorHandler({
         message: "You don't have access for this request",

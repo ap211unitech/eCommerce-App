@@ -5,12 +5,18 @@ import {
 import {
   createCategory,
   editCategory,
+  getCategory,
 } from "../../controllers/category/categoryController";
 
 import { isAuthenticated } from "../../middlewares/authMiddleware";
 import { isAdmin } from "../../middlewares/adminMiddleware";
 
 export const categoryResolvers = {
+  Query: {
+    getCategory: () => {
+      return getCategory();
+    },
+  },
   Mutation: {
     createCategory: async (
       _: any,
