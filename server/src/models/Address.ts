@@ -17,7 +17,7 @@ const userAddressSchema = new mongoose.Schema<IUserAddressSchema>({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "users",
+    ref: "user",
   },
   userName: {
     type: String,

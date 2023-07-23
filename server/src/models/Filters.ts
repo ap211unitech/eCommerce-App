@@ -10,7 +10,7 @@ const filterSchema = new mongoose.Schema<IFilter>(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "categories",
+      ref: "category",
     },
     filters: {},
   },

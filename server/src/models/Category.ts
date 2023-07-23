@@ -23,16 +23,16 @@ const categorySchema = new mongoose.Schema<ICategory>(
     },
     parentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "categories",
+      ref: "category",
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "user",
       required: true,
     },
     updatedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "user",
       required: true,
     },
   },

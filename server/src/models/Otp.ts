@@ -11,7 +11,7 @@ const otpSchema = new mongoose.Schema<IOtp>(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "users",
+      ref: "user",
     },
     otp: {
       type: String,

@@ -37,3 +37,13 @@ export const UNAUTHORIZED_REQUEST = {
   message: "You are not authorized for this request",
   code: "UNAUTHORIZED_REQUEST",
 };
+
+export const CATEGORY_ALREADY_EXISTS = {
+  message: "Category already exists",
+  code: "CATEGORY_ALREADY_EXISTS",
+};
+
+export const INVALID_PARENT_CATEGORY = {
+  message: "Invalid Parent Category",
+  code: "INVALID_PARENT_CATEGORY",
+};
