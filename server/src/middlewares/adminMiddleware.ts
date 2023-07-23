@@ -27,6 +27,7 @@ export const isAdmin = async (req: any) => {
         type: AUTHENTICATION_ERROR,
       });
     } catch (err: any) {
+      console.log(err);
       return errorHandler({
         message: err.message || "Not Authorized",
         type: AUTHENTICATION_ERROR,
