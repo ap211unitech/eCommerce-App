@@ -19,6 +19,6 @@ export const categoryTypes = gql`
       name: String!
       parentId: String
       filters: String
-    ): String!
+    ): Category!
   }
 `;

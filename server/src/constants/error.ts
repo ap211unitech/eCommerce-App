@@ -47,3 +47,13 @@ export const INVALID_PARENT_CATEGORY = {
   message: "Invalid Parent Category",
   code: "INVALID_PARENT_CATEGORY",
 };
+
+export const NO_SUCH_CATEGORY_EXISTS = {
+  message: "No such category exists",
+  code: "NO_SUCH_CATEGORY_EXISTS",
+};
+
+export const INVALID_FILTERS = {
+  message: "Invalid filters",
+  code: "INVALID_FILTERS",
+};

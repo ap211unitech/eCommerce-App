@@ -1,4 +1,7 @@
-import { CreateCategoryPayload } from "../../types/Category";
+import {
+  CreateCategoryPayload,
+  EditCategoryPayload,
+} from "../../types/Category";
 import {
   createCategory,
   editCategory,
@@ -16,7 +19,11 @@ export const categoryResolvers = {
       await isAuthenticated(req);
       return createCategory({ ...payload, userId: req.user.id });
     },
-    editCategory: async (_: any, payload: any, { req }: any) => {
+    editCategory: async (
+      _: any,
+      payload: EditCategoryPayload,
+      { req }: any
+    ) => {
       await isAuthenticated(req);
       return editCategory({ ...payload, userId: req.user.id });
     },

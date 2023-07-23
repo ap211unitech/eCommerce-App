@@ -3,3 +3,7 @@ export type CreateCategoryPayload = {
   parentId?: string;
   filters: string;
 };
+
+export type EditCategoryPayload = {
+  categoryId: string;
+} & CreateCategoryPayload;

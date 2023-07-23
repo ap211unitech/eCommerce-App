@@ -22,8 +22,7 @@ const categorySchema = new mongoose.Schema<ICategory>(
       unique: true,
     },
     parentId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "category",
+      type: String,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
