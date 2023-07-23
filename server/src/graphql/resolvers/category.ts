@@ -1,5 +1,8 @@
 import { CreateCategoryPayload } from "../../types/Category";
-import { createCategory } from "../../controllers/category/categoryController";
+import {
+  createCategory,
+  editCategory,
+} from "../../controllers/category/categoryController";
 
 import { isAuthenticated } from "../../middlewares/authMiddleware";
 
@@ -12,6 +15,10 @@ export const categoryResolvers = {
     ) => {
       await isAuthenticated(req);
       return createCategory({ ...payload, userId: req.user.id });
+    },
+    editCategory: async (_: any, payload: any, { req }: any) => {
+      await isAuthenticated(req);
+      return editCategory({ ...payload, userId: req.user.id });
     },
   },
 };

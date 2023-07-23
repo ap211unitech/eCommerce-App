@@ -18,7 +18,7 @@ import Address from "../../models/Address";
 // @Desc    Get list of addresses for loggedin user
 // @Access  Private
 export const getAddress = async ({ userId }: AuthID) => {
-  const addresses = await Address.find({ userId });
+  const addresses = await Address.find({ user: userId });
   return addresses;
 };
 
@@ -37,7 +37,7 @@ export const addAddress = async (payload: UserAddressPayload & AuthID) => {
   }
 
   // Find existing addresses
-  const addresses = await Address.find({ userId });
+  const addresses = await Address.find({ user: userId });
 
   if (addresses.length > 0) {
     if (isDefault) {
@@ -47,18 +47,22 @@ export const addAddress = async (payload: UserAddressPayload & AuthID) => {
         await address.save();
       });
       // Make current address as default address
-      const newAddress = new Address({ ...payload, isDefault: true });
+      const newAddress = new Address({
+        ...payload,
+        user: userId,
+        isDefault: true,
+      });
       await newAddress.save();
       return newAddress;
     } else {
       // Add address to schema
-      const newAddress = new Address(payload);
+      const newAddress = new Address({ ...payload, user: userId });
       await newAddress.save();
       return newAddress;
     }
   }
   // Make current address as default address
-  const newAddress = new Address({ ...payload, isDefault: true });
+  const newAddress = new Address({ ...payload, user: userId, isDefault: true });
   await newAddress.save();
   return newAddress;
 };
@@ -84,12 +88,12 @@ export const editAddress = async (payload: EditUserAddressPayload & AuthID) => {
   }
 
   // Check if address belongs to loggedin user
-  if (findAddress.userId.toString() !== userId.toString()) {
+  if (findAddress.user.toString() !== userId.toString()) {
     return errorHandler({ ...UNAUTHORIZED_REQUEST, type: APOLLO_ERROR });
   }
 
   if (isDefault) {
-    const addresses = await Address.find({ userId });
+    const addresses = await Address.find({ user: userId });
 
     // Turn each address isDefault key to false
     addresses.forEach(async (address) => {
@@ -127,7 +131,7 @@ export const deleteAddress = async (
   }
 
   // Check if address belongs to loggedin user
-  if (findAddress.userId.toString() !== userId.toString()) {
+  if (findAddress.user.toString() !== userId.toString()) {
     return errorHandler({ ...UNAUTHORIZED_REQUEST, type: APOLLO_ERROR });
   }
 

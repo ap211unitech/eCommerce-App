@@ -3,7 +3,7 @@ import { gql } from "apollo-server-express";
 export const addressTypes = gql`
   type UserAddress {
     _id: ID!
-    userId: String!
+    user: String!
     userName: String!
     mobile: String!
     pincode: String!

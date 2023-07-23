@@ -73,3 +73,9 @@ export const createCategory = async (
     updatedAt: newCategory.updatedAt,
   };
 };
+
+// @Desc    Edit a category by getting categoryId and it's corresponding filters
+// @Access  Private
+export const editCategory = async (payload: any) => {
+  return "Category updated";
+};

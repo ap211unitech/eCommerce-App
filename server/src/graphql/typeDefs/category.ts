@@ -13,5 +13,12 @@ export const categoryTypes = gql`
 
   type Mutation {
     createCategory(name: String!, parentId: String, filters: String): Category!
+
+    editCategory(
+      categoryId: String!
+      name: String!
+      parentId: String
+      filters: String
+    ): String!
   }
 `;
