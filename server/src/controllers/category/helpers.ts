@@ -1,5 +1,6 @@
 import mongoose, { ObjectId } from "mongoose";
 
+// Check if filters are valid JSON
 export const isValidFilters = (payload: string) => {
   try {
     if (payload.trim().length) {
@@ -18,10 +19,8 @@ type Category = {
   parentId: ObjectId;
   createdBy: mongoose.Schema.Types.ObjectId;
   updatedBy: mongoose.Schema.Types.ObjectId;
-  // @ts-ignore
-  createdAt: date;
-  // @ts-ignore
-  updatedAt: date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 type ReturnItems = {
@@ -30,10 +29,8 @@ type ReturnItems = {
   children: ReturnItems[];
   createdBy: mongoose.Schema.Types.ObjectId;
   updatedBy: mongoose.Schema.Types.ObjectId;
-  // @ts-ignore
-  createdAt: date;
-  // @ts-ignore
-  updatedAt: date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 // Converts plain list of categories to nested categories using parentId
