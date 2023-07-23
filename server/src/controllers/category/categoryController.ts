@@ -11,6 +11,7 @@ import { slugify } from "../../utils/slugify";
 import { errorHandler } from "../../utils/errorHandler";
 
 import Category from "../../models/Category";
+import Filters from "../../models/Filters";
 
 // @Desc    Create a new category and it's filters
 // @Access  Private
@@ -23,9 +24,6 @@ export const createCategory = async (
     userId,
     filters: stringifiedFilters,
   } = payload;
-
-  // Parse Filters
-  const filters = JSON.parse(stringifiedFilters);
 
   // Create Slug
   const slug = slugify([categoryName]);
@@ -45,15 +43,23 @@ export const createCategory = async (
   }
 
   // Create category
-  const newCategory = await new Category({
+  const newCategory = new Category({
     name: categoryName,
     slug,
     parentId,
     createdBy: userId,
     updatedBy: userId,
-  }).populate("createdBy updatedBy");
+  });
 
   await newCategory.save();
+
+  /****************  Create filters ****************/
+
+  // Parse Filters
+  const filters = JSON.parse(stringifiedFilters);
+
+  const newFilters = new Filters({ category: newCategory._id, filters });
+  await newFilters.save();
 
   return {
     categoryId: newCategory._id,
