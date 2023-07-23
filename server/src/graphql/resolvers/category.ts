@@ -8,6 +8,7 @@ import {
 } from "../../controllers/category/categoryController";
 
 import { isAuthenticated } from "../../middlewares/authMiddleware";
+import { isAdmin } from "../../middlewares/adminMiddleware";
 
 export const categoryResolvers = {
   Mutation: {
@@ -17,6 +18,8 @@ export const categoryResolvers = {
       { req }: any
     ) => {
       await isAuthenticated(req);
+      await isAdmin(req);
+
       return createCategory({ ...payload, userId: req.user.id });
     },
     editCategory: async (
@@ -25,6 +28,8 @@ export const categoryResolvers = {
       { req }: any
     ) => {
       await isAuthenticated(req);
+      await isAdmin(req);
+
       return editCategory({ ...payload, userId: req.user.id });
     },
   },
