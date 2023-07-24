@@ -7,11 +7,6 @@ interface IFilter extends mongoose.Document {
 
 const filterSchema = new mongoose.Schema<IFilter>(
   {
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "category",
-    },
     filters: {},
   },
   { timestamps: true }

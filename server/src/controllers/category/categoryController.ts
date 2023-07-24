@@ -22,13 +22,14 @@ import { createNestedCategories, isValidFilters } from "./helpers";
 // @Desc    Get all categories and it's filters
 // @Access  Public
 export const getCategory = async () => {
-  const categories = await Category.find();
+  const categories = await Category.find().populate("filter");
 
   const allCategories = categories.map((category) => {
     return {
       categoryId: category._id,
       name: category.name,
       parentId: category.parentId,
+      filter: JSON.stringify(category?.filter),
       createdBy: category.createdBy,
       updatedBy: category.updatedBy,
       // @ts-ignore
@@ -37,6 +38,8 @@ export const getCategory = async () => {
       updatedAt: category.updatedAt,
     };
   });
+
+  console.log(allCategories)
 
   // Note - As per my research, Apollo Server/GraphQL doesn't support recurive return types.
   // So, We will pass our result as string and parse it in client side 😅
@@ -52,7 +55,7 @@ export const createCategory = async (
     name: categoryName,
     parentId,
     userId,
-    filters: stringifiedFilters,
+    filters: stringifiedFilters = "{}",
   } = payload;
 
   // Validate Filters
@@ -77,25 +80,26 @@ export const createCategory = async (
     }
   }
 
-  // Create category
-  const newCategory = new Category({
-    name: categoryName,
-    slug,
-    createdBy: userId,
-    updatedBy: userId,
-    parentId,
-  });
-
-  await newCategory.save();
-
   /****************  Create filters ****************/
 
   // Parse Filters
   const filters = JSON.parse(stringifiedFilters);
 
   // Create new filters
-  const newFilters = new Filters({ category: newCategory._id, filters });
+  const newFilters = new Filters({ filters });
   await newFilters.save();
+
+  // Create category
+  const newCategory = await new Category({
+    name: categoryName,
+    slug,
+    createdBy: userId,
+    updatedBy: userId,
+    parentId,
+    filter: newFilters._id,
+  }).populate("filter");
+
+  await newCategory.save();
 
   return {
     categoryId: newCategory._id,
@@ -103,6 +107,8 @@ export const createCategory = async (
     parentId: newCategory.parentId,
     createdBy: newCategory.createdBy,
     updatedBy: newCategory.updatedBy,
+    // @ts-ignore
+    filter: JSON.stringify(newCategory.filter),
     // @ts-ignore
     createdAt: newCategory.createdAt,
     // @ts-ignore
@@ -118,7 +124,7 @@ export const editCategory = async (payload: EditCategoryPayload & AuthID) => {
     name: categoryName,
     parentId,
     userId,
-    filters: stringifiedFilters,
+    filters: stringifiedFilters = "{}",
   } = payload;
 
   // Validate Filters
@@ -146,11 +152,11 @@ export const editCategory = async (payload: EditCategoryPayload & AuthID) => {
   // Create Slug
   const slug = slugify([categoryName]);
 
-  const category = await Category.findByIdAndUpdate(
-    categoryId,
-    { $set: { name: categoryName, slug, updatedBy: userId, parentId } },
-    { new: true }
-  );
+  // Check if category exists already
+  const categoryExists = await Category.findOne({ slug });
+  if (categoryExists && categoryExists._id.toString() !== categoryId) {
+    return errorHandler({ ...CATEGORY_ALREADY_EXISTS, type: APOLLO_ERROR });
+  }
 
   /****************  Edit filters ****************/
 
@@ -159,16 +165,21 @@ export const editCategory = async (payload: EditCategoryPayload & AuthID) => {
 
   await Filters.findOneAndUpdate(
     {
-      category: categoryId,
+      _id: findCategory.filter,
     },
     {
       $set: {
-        category: categoryId,
         filters,
       },
     },
     { new: true }
   );
+
+  const category = await Category.findByIdAndUpdate(
+    categoryId,
+    { $set: { name: categoryName, slug, updatedBy: userId, parentId } },
+    { new: true }
+  ).populate("filter");
 
   return {
     categoryId: category?._id,
@@ -176,6 +187,8 @@ export const editCategory = async (payload: EditCategoryPayload & AuthID) => {
     parentId: category?.parentId,
     createdBy: category?.createdBy,
     updatedBy: category?.updatedBy,
+    // @ts-ignore
+    filter: JSON.stringify(category?.filter),
     // @ts-ignore
     createdAt: category?.createdAt,
     // @ts-ignore

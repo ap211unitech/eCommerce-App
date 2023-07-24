@@ -5,6 +5,7 @@ export const categoryTypes = gql`
     categoryId: String!
     name: String!
     parentId: String
+    filter: String!
     createdBy: String!
     updatedBy: String!
     createdAt: String!

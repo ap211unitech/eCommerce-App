@@ -17,6 +17,7 @@ type Category = {
   categoryId: mongoose.Schema.Types.ObjectId;
   name: string;
   parentId: ObjectId;
+  filter: string;
   createdBy: mongoose.Schema.Types.ObjectId;
   updatedBy: mongoose.Schema.Types.ObjectId;
   createdAt: string;
@@ -26,6 +27,7 @@ type Category = {
 type ReturnItems = {
   categoryId: mongoose.Schema.Types.ObjectId;
   name: string;
+  filter: string;
   children: ReturnItems[];
   createdBy: mongoose.Schema.Types.ObjectId;
   updatedBy: mongoose.Schema.Types.ObjectId;
@@ -46,13 +48,14 @@ export const createNestedCategories = (
         c.parentId === undefined || c.parentId?.toString().trim().length === 0 // If parentId == ""
     );
   } else {
-    category = categories.filter((c) => c.parentId.toString() === parentId);
+    category = categories.filter((c) => c.parentId?.toString() === parentId);
   }
 
   for (const c of category) {
     categoryList.push({
       categoryId: c.categoryId,
       name: c.name,
+      filter: c.filter,
       children: createNestedCategories(categories, c.categoryId.toString()),
       createdBy: c.createdBy,
       updatedBy: c.updatedBy,

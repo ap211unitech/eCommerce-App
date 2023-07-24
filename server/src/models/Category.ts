@@ -4,6 +4,7 @@ interface ICategory extends mongoose.Document {
   name: string;
   slug: string;
   parentId: mongoose.Schema.Types.ObjectId;
+  filter: mongoose.Schema.Types.ObjectId;
   createdBy: mongoose.Schema.Types.ObjectId;
   updatedBy: mongoose.Schema.Types.ObjectId;
 }
@@ -23,6 +24,10 @@ const categorySchema = new mongoose.Schema<ICategory>(
     },
     parentId: {
       type: String,
+    },
+    filter: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "filter",
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
