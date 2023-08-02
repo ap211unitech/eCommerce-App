@@ -45,6 +45,7 @@
     "import/order": [
       "error",
       {
+        "endOfLine": "auto",
         "newlines-between": "always"
       }
     ],

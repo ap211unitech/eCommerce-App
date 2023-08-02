@@ -39,8 +39,6 @@ export const getCategory = async () => {
     };
   });
 
-  console.log(allCategories)
-
   // Note - As per my research, Apollo Server/GraphQL doesn't support recurive return types.
   // So, We will pass our result as string and parse it in client side 😅
   return JSON.stringify(createNestedCategories(allCategories));
