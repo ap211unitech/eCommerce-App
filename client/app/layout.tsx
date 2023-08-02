@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "eCommerce App for better performance with better tech stack",
 };
 
+import NavigationBar from "@/components/organisms/Navigation";
+
 export default function RootLayout({
   children,
 }: {
@@ -20,6 +22,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NavigationBar />
           {children}
         </ThemeProvider>
       </body>
