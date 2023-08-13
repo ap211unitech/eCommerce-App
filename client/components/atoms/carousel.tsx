@@ -1,14 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import {
-  ChevronLeftCircle,
-  ChevronRightCircle,
-  Dot,
-  Circle,
-} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
+import Image from "next/image";
 
-function App() {
+const delay = 2500;
+
+function Carousel() {
   const slides = [
     {
       url: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2620&q=80",
@@ -46,12 +44,33 @@ function App() {
     setCurrentIndex(slideIndex);
   };
 
+  const timeoutRef = useRef(null);
+
+  function resetTimeout() {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  }
+
+  useEffect(() => {
+    resetTimeout();
+    // @ts-ignore
+    timeoutRef.current = setTimeout(() => nextSlide(), delay);
+
+    return () => {
+      resetTimeout();
+    };
+  }, [currentIndex]);
+
   return (
     <div className="max-w-full h-[580px] w-full m-auto relative group">
-      <div
-        style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-        className="w-full h-full bg-center bg-cover duration-500"
-      ></div>
+      <Image
+        className={`w-full h-full duration-500`}
+        src={`${slides[currentIndex].url}`}
+        alt="Featured products image"
+        fill
+        priority
+      />
       {/* Left Arrow */}
       <div className="absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
         <ChevronLeftCircle onClick={prevSlide} size={40} />
@@ -68,9 +87,9 @@ function App() {
             className="text-2xl cursor-pointer relative"
           >
             <div
-              className={`bg-${
-                currentIndex === slideIndex ? "white" : "null"
-              } z-[999999] relative bottom-[500%] w-3 h-3 border-2 border-white rounded-full mx-4`}
+              className={`${
+                currentIndex == slideIndex ? "bg-white" : ""
+              } z-[999999] relative top-[500px] w-3 h-3 border-2 border-white rounded-full mx-4`}
             />
           </div>
         ))}
@@ -79,4 +98,4 @@ function App() {
   );
 }
 
-export default App;
+export default Carousel;
