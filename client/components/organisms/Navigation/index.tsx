@@ -9,9 +9,12 @@ const Navigation = () => {
   return (
     <div className="flex flex-row justify-between items-center border-b-[1px] border-gray-300">
       <div className="flex flex-row justify-between items-center">
-        <h1 className="text-pink px-6 py-4 font-semibold text-xl cursor-pointer">
-          <Link href={"/"}>Quickmart</Link>
-        </h1>
+        <Link href={"/"}>
+          {" "}
+          <h1 className="text-pink px-6 py-4 font-semibold text-xl cursor-pointer">
+            Quickmart
+          </h1>
+        </Link>
         <div className="flex flex-row justify-between items-center gap-4 px-2">
           {categories.map((c) => (
             <p className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-700 cursor-pointer">
@@ -21,12 +24,12 @@ const Navigation = () => {
         </div>
       </div>
       <div className="flex flex-row justify-between items-center px-8 gap-6">
-        <Button variant={"outline"}>
-          <Link href={"/login"}>Login</Link>
-        </Button>
-        <Button variant={"secondary"}>
-          <Link href={"/register"}>Register</Link>
-        </Button>
+        <Link href={"/login"}>
+          <Button variant={"outline"}>Login</Button>
+        </Link>
+        <Link href={"/register"}>
+          <Button variant={"secondary"}>Register</Button>
+        </Link>
         <Button className="flex items-center gap-1">
           <ShoppingCartIcon />
           Cart
