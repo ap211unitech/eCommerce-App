@@ -7,7 +7,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "eCommerce App || Create with NextJS and GraphQL 😜",
+  title: "eCommerce App || Created with NextJS and GraphQL 😜",
   description: "eCommerce App for better performance with better tech stack",
 };
 
