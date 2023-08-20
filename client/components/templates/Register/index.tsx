@@ -1,10 +1,11 @@
 import { Users } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+
+import RegisterForm from "./form";
 
 import Separator from "@/components/atoms/separator";
-import RegisterForm from "./form";
-import { Button } from "@/components/atoms/button";
-import Image from "next/image";
+import GoogleAuthentication from "@/components/atoms/googleAuth";
 
 const Register = () => {
   return (
@@ -32,7 +33,7 @@ const Register = () => {
         </div>
         {/* Seprator */}
         <Separator>or continue with</Separator>
-        <Button className="w-full flex justify-center items-center">
+        <GoogleAuthentication>
           <Image
             src="https://img.freepik.com/free-icon/search_318-265146.jpg?q=10&h=200"
             alt="Google icon"
@@ -40,7 +41,7 @@ const Register = () => {
             height="20"
           />
           <span className="ml-2">Sign Up with Google</span>{" "}
-        </Button>
+        </GoogleAuthentication>
       </div>
     </div>
   );
