@@ -42,11 +42,10 @@
   ],
   "rules": {
     "import/first": "error",
-    "import/order": [
+    "prettier/prettier": [
       "error",
       {
-        "newlines-between": "always",
-        "endOfLine": "auto"
+        "endOfLine": "auto" // This will respect the line endings in your files
       }
     ],
     "no-use-before-define": "off",
@@ -60,6 +59,7 @@
     "space-before-function-paren": "off",
     "camelcase": "warn",
     "@typescript-eslint/ban-type": "off",
-    "@typescript-eslint/no-empty-function": "off"
+    "@typescript-eslint/no-empty-function": "off",
+    "react/no-unknown-property": "off"
   }
 }
