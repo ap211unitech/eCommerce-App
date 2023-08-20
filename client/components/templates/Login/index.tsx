@@ -1,33 +1,33 @@
-import { Users } from "lucide-react";
+import { LogIn } from "lucide-react";
 import Link from "next/link";
 
 import Separator from "@/components/atoms/separator";
-import RegisterForm from "./form";
+import LoginForm from "./form";
 import { Button } from "@/components/atoms/button";
 import Image from "next/image";
 
-const Register = () => {
+const Login = () => {
   return (
     <div className="flex flex-col items-center justify-center m-4 pb-10 pt-2">
       {/* Header */}
       <div className="flex items-center gap-3 font-bold text-2xl">
-        <Users size={40} strokeWidth={2.5} />
-        Register
+        <LogIn strokeWidth="3" size={40} />
+        Sign In
       </div>
       {/* Secondary header */}
       <h3 className="mt-6 text-slate-400 font-semibold text-xl tracking-wide">
-        Please create an account and get youself the best products from here
+        Login and get youself the best products from here
       </h3>
       {/* Form */}
       <div className="w-[40%]">
-        <RegisterForm />
+        <LoginForm />
         <div className="mt-4">
-          Already have an account ?{" "}
+          Don&apos;t have an account ?{" "}
           <Link
             className="text-pink hover:underline underline-offset-2"
-            href={"/login"}
+            href={"/register"}
           >
-            Sign In
+            Sign Up
           </Link>
         </div>
         {/* Seprator */}
@@ -39,11 +39,11 @@ const Register = () => {
             width="20"
             height="20"
           />
-          <span className="ml-2">Sign Up with Google</span>{" "}
+          <span className="ml-2">Sign In with Google</span>{" "}
         </Button>
       </div>
     </div>
   );
 };
 
-export default Register;
+export default Login;

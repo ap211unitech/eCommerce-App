@@ -5,7 +5,7 @@ const LandingTemplate = dynamic(
   () => import("@/components/templates/Landing"),
   {
     loading: () => (
-      <p>
+      <p className="text-center">
         <Loader2 className="animate-spin mx-auto mt-6 mb-3" />
         Loading Landing page...
       </p>

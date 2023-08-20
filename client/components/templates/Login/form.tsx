@@ -16,36 +16,20 @@ import { Input } from "@/components/atoms/input";
 import { useForm } from "react-hook-form";
 import { Loader2 } from "lucide-react";
 
-const formSchema = z
-  .object({
-    name: z.string().min(2, {
-      message: "Name must be at least 2 characters.",
-    }),
-    email: z.string().trim().email(),
-    password: z
-      .string()
-      .trim()
-      .min(6, { message: "Password must be at least 6 charcters long" }),
-    confirmPassword: z.string(),
-  })
-  .refine(
-    (data) => {
-      return data.password === data.confirmPassword;
-    },
-    {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
-    }
-  );
+const formSchema = z.object({
+  identity: z.string().email(),
+  password: z
+    .string()
+    .trim()
+    .min(6, { message: "Password must be at least 6 charcters long" }),
+});
 
-function RegisterForm() {
+function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      identity: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
@@ -61,20 +45,7 @@ function RegisterForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
         <FormField
           control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="John Doe" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
+          name="identity"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
@@ -98,26 +69,13 @@ function RegisterForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input placeholder="johndoe123" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button type="submit" className="gap-2">
           <Loader2 className="animate-spin mx-auto" size={20} />
-          Create account
+          Sign In
         </Button>
       </form>
     </Form>
   );
 }
 
-export default RegisterForm;
+export default LoginForm;
