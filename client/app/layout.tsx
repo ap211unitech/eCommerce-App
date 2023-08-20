@@ -4,14 +4,14 @@ import { Inter } from "next/font/google";
 
 import "./globals.css";
 
+import NavigationBar from "@/components/organisms/Navigation";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "eCommerce App || Created with NextJS and GraphQL 😜",
   description: "eCommerce App for better performance with better tech stack",
 };
-
-import NavigationBar from "@/components/organisms/Navigation";
 
 export default function RootLayout({
   children,
