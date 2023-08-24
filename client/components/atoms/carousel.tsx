@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import Image from "next/image";
 
@@ -34,11 +34,11 @@ function Carousel() {
     setCurrentIndex(newIndex);
   };
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     const isLastSlide = currentIndex === slides.length - 1;
     const newIndex = isLastSlide ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
-  };
+  }, [currentIndex, slides.length]);
 
   const goToSlide = (slideIndex: number) => {
     setCurrentIndex(slideIndex);
@@ -54,13 +54,14 @@ function Carousel() {
 
   useEffect(() => {
     resetTimeout();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     timeoutRef.current = setTimeout(() => nextSlide(), delay);
 
     return () => {
       resetTimeout();
     };
-  }, [currentIndex]);
+  }, [currentIndex, nextSlide]);
 
   return (
     <div className="max-w-full h-[580px] w-full m-auto relative group">
@@ -88,8 +89,8 @@ function Carousel() {
           >
             <div
               className={`${
-                currentIndex == slideIndex ? "bg-white" : ""
-              } z-[999999] relative top-[500px] w-3 h-3 border-2 border-white rounded-full mx-4`}
+                currentIndex === slideIndex ? "bg-white" : ""
+              } z-[999999] relative top-[500px] w-3 h-3 border-2 border-white rounded-full mx-2`}
             />
           </div>
         ))}
