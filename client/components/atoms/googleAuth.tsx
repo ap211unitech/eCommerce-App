@@ -1,33 +1,49 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import { GOOGLE_CLIENT_ID } from "@/config/defaults";
 import { Button } from "@/components/atoms/button";
 import Head from "next/head";
-import { gapi } from "gapi-script";
 
 type Props = {
   children: ReactNode;
 };
 
 const GoogleAuthentication = ({ children }: Props) => {
+  const [gapi, setGapi] = useState<any>(null);
+  const [isLoadingGapi, setIsLoadingGapi] = useState(false);
+
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://apis.google.com/js/platform.js";
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      gapi.load("auth2", () => {
-        gapi.auth2.init({
-          client_id: GOOGLE_CLIENT_ID,
-        });
-      });
+    const onLoad = async () => {
+      const loadedGapi = (await import("gapi-script")).gapi;
+      setGapi(loadedGapi);
+      setIsLoadingGapi(false);
     };
-    document.head.appendChild(script);
+    setIsLoadingGapi(true);
+    onLoad();
   }, []);
 
+  useEffect(() => {
+    if (gapi) {
+      const script = document.createElement("script");
+      script.src = "https://apis.google.com/js/platform.js";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        gapi.load("auth2", () => {
+          gapi.auth2.init({
+            client_id: GOOGLE_CLIENT_ID,
+          });
+        });
+      };
+      document.head.appendChild(script);
+    }
+  }, [gapi]);
+
   const handleSignIn = () => {
+    if (!gapi) return;
+
     const auth2 = gapi.auth2.getAuthInstance();
     auth2
       .signIn()
@@ -49,7 +65,7 @@ const GoogleAuthentication = ({ children }: Props) => {
         className="w-full flex justify-center items-center"
         onClick={handleSignIn}
       >
-        {children}
+        {isLoadingGapi ? <p>Loading...</p> : children}
       </Button>
     </>
   );
