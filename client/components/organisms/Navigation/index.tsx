@@ -33,8 +33,11 @@ const Navigation = () => {
         <Link href={"/register"}>
           <Button variant={"secondary"}>Register</Button>
         </Link>
-        <Button className="flex items-center gap-1">
+        <Button className="flex items-center gap-1 relative">
           <ShoppingCartIcon />
+          <p className="absolute right-[-7px] top-[-7px] text-white bg-pink rounded-full w-4 h-4 flex justify-center items-center p-3">
+            5
+          </p>
           Cart
         </Button>
         <ThemeDropDown />

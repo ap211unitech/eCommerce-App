@@ -3,8 +3,8 @@ import Link from "next/link";
 
 import Separator from "@/components/atoms/separator";
 import LoginForm from "./form";
-import { Button } from "@/components/atoms/button";
 import Image from "next/image";
+import GoogleAuthentication from "@/components/atoms/googleAuth";
 
 const Login = () => {
   return (
@@ -32,7 +32,7 @@ const Login = () => {
         </div>
         {/* Seprator */}
         <Separator>or continue with</Separator>
-        <Button className="w-full flex justify-center items-center">
+        <GoogleAuthentication>
           <Image
             src="https://img.freepik.com/free-icon/search_318-265146.jpg?q=10&h=200"
             alt="Google icon"
@@ -40,7 +40,7 @@ const Login = () => {
             height="20"
           />
           <span className="ml-2">Sign In with Google</span>{" "}
-        </Button>
+        </GoogleAuthentication>
       </div>
     </div>
   );
