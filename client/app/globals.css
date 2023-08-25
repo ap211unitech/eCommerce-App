@@ -79,3 +79,22 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+html {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: var(--secondary-foreground);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(107, 107, 107);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(135, 134, 134);
+}

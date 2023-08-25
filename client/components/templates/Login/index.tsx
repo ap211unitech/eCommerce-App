@@ -19,7 +19,7 @@ const Login = () => {
         Login and get youself the best products from here
       </h3>
       {/* Form */}
-      <div className="w-[40%]">
+      <div className="w-[90%] md:w-[50%] xl:w-[40%]">
         <LoginForm />
         <div className="mt-4">
           Don&apos;t have an account ?{" "}

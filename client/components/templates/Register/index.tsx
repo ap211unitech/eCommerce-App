@@ -20,7 +20,7 @@ const Register = () => {
         Please create an account and get youself the best products from here
       </h3>
       {/* Form */}
-      <div className="w-[40%]">
+      <div className="w-[90%] md:w-[50%] xl:w-[40%]">
         <RegisterForm />
         <div className="mt-4">
           Already have an account ?{" "}
