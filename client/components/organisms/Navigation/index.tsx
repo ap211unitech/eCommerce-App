@@ -4,21 +4,21 @@ import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
 const Navigation = () => {
-  const categories = ["Men", "Women", "More", "Items"];
+  const categories = ["Men", "Women", "Kids", "Beauty", "More", "Items"];
 
   return (
-    <div className="flex flex-row justify-between items-center border-b-[1px] border-gray-300">
+    <div className="flex flex-row justify-between items-center border-b-[2px] dark:border-gray-300 border-gray-800">
       <div className="flex flex-row justify-between items-center">
         <Link href={"/"}>
           {" "}
-          <h1 className="text-pink px-6 py-4 font-semibold text-xl cursor-pointer">
+          <h1 className="text-pink px-6 py-4 font-semibold text-2xl cursor-pointer">
             Quickmart
           </h1>
         </Link>
-        <div className="flex flex-row justify-between items-center gap-4 px-2">
+        <div className="flex flex-row justify-between items-center gap-6 px-2">
           {categories.map((c) => (
             <p
-              className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-700 cursor-pointer"
+              className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-700 cursor-pointer uppercase font-semibold text-sm"
               key={Math.random() * 100}
             >
               {c}
