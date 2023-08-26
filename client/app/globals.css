@@ -87,14 +87,26 @@ html {
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
-  background: var(--secondary-foreground);
+  background: rgb(100, 100, 100);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(107, 107, 107);
+  background: rgb(181, 180, 180);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: rgb(135, 134, 134);
+}
+
+.dark ::-webkit-scrollbar {
+  background: rgb(176, 175, 175);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgb(107, 107, 107);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
   background: rgb(135, 134, 134);
 }
