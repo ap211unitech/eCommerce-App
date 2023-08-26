@@ -36,7 +36,7 @@ type Props = {
 
 export function ActualToolTip({ children, content }: Props) {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={0}>
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent>

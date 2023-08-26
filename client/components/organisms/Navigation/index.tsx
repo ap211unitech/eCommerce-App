@@ -5,6 +5,7 @@ import { ActualToolTip as Tooltip } from "@/components/atoms/tooltip";
 import { Button } from "@/components/atoms/button";
 import ThemeDropDown from "@/components/molecules/Theme";
 import SearchBar from "@/components/molecules/SearchBar";
+import MainLogo from "@/components/molecules/MainLogo";
 
 const Navigation = () => {
   const categories = ["Men", "Women", "Kids", "Beauty", "More", "Items"];
@@ -13,10 +14,7 @@ const Navigation = () => {
     <div className="flex flex-row justify-between items-center border-b-[3px] border-pink">
       <div className="flex flex-row justify-between items-center">
         <Link href={"/"}>
-          {" "}
-          <h1 className="text-pink px-6 py-4 font-semibold text-2xl cursor-pointer">
-            Quickmart
-          </h1>
+          <MainLogo />
         </Link>
         <div className="flex flex-row justify-between items-center gap-6 px-2">
           {categories.map((c) => (
