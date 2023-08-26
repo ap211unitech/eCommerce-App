@@ -1,6 +1,7 @@
-import { ShoppingCartIcon } from "lucide-react";
+import { Github, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
+import { ActualToolTip as Tooltip } from "@/components/atoms/tooltip";
 import { Button } from "@/components/atoms/button";
 import ThemeDropDown from "@/components/molecules/Theme";
 import SearchBar from "@/components/molecules/SearchBar";
@@ -44,6 +45,16 @@ const Navigation = () => {
           Cart
         </Button>
         <ThemeDropDown />
+        <Tooltip content="Github repository">
+          <Link
+            href={"https://github.com/ap211unitech/eCommerce-App"}
+            target="_blank"
+          >
+            <Button className="px-3">
+              <Github />
+            </Button>
+          </Link>
+        </Tooltip>
       </div>
     </div>
   );
