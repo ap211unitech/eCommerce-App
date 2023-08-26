@@ -4,15 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "img.freepik.com",
-      },
-      {
-        protocol: "https",
-        hostname: "fastly.picsum.photos",
+        hostname: "**",
       },
     ],
   },
