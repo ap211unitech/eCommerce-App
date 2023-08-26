@@ -1,5 +1,5 @@
 import Carousel from "@/components/atoms/carousel";
-import ProductCard from "@/components/organisms/ProductCard";
+import ProductCard from "@/components/molecules/ProductCard";
 
 const Landing = () => {
   return (

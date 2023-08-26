@@ -7,7 +7,7 @@ const Navigation = () => {
   const categories = ["Men", "Women", "Kids", "Beauty", "More", "Items"];
 
   return (
-    <div className="flex flex-row justify-between items-center border-b-[2px] dark:border-gray-300 border-gray-800">
+    <div className="flex flex-row justify-between items-center border-b-[3px] border-pink">
       <div className="flex flex-row justify-between items-center">
         <Link href={"/"}>
           {" "}
