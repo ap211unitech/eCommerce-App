@@ -1,7 +1,9 @@
-import { Button } from "@/components/atoms/button";
-import ThemeDropDown from "@/components/molecules/Theme";
 import { ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
+
+import { Button } from "@/components/atoms/button";
+import ThemeDropDown from "@/components/molecules/Theme";
+import SearchBar from "@/components/molecules/SearchBar";
 
 const Navigation = () => {
   const categories = ["Men", "Women", "Kids", "Beauty", "More", "Items"];
@@ -26,7 +28,8 @@ const Navigation = () => {
           ))}
         </div>
       </div>
-      <div className="flex flex-row justify-between items-center px-8 gap-6">
+      <div className="flex flex-row justify-between items-center px-8 gap-4">
+        <SearchBar />
         <Link href={"/login"}>
           <Button variant={"outline"}>Login</Button>
         </Link>
