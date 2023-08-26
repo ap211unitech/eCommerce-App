@@ -1,6 +1,7 @@
-import { Button } from "@/components/atoms/button";
-import Image from "next/image";
 import { Heart } from "lucide-react";
+import Image from "next/image";
+
+import { Button } from "@/components/atoms/button";
 
 const ProductCard = () => {
   return (

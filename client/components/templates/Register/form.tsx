@@ -1,6 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/atoms/button";
@@ -13,8 +15,6 @@ import {
   FormMessage,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
-import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
 
 const formSchema = z
   .object({

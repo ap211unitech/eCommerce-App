@@ -10,7 +10,8 @@ import Footer from "@/components/organisms/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "eCommerce App || Created with NextJS and GraphQL 😜",
+  title:
+    "Quickmart || A better eCommerce App in terms of performance and UI/UX || Created with NextJS, GraphQL and amazing Tailwind CSS😜",
   description: "eCommerce App for better performance with better tech stack",
 };
 

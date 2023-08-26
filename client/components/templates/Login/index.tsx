@@ -1,10 +1,11 @@
 import { LogIn } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
-import Separator from "@/components/atoms/separator";
-import LoginForm from "./form";
-import Image from "next/image";
 import GoogleAuthentication from "@/components/atoms/googleAuth";
+import Separator from "@/components/atoms/separator";
+
+import LoginForm from "./form";
 
 const Login = () => {
   return (

@@ -48,6 +48,8 @@
         "endOfLine": "auto" // This will respect the line endings in your files
       }
     ],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "react-hooks/rules-of-hooks": "error",

@@ -1,10 +1,10 @@
 "use client";
 
 import { Search } from "lucide-react";
-
-import { Input } from "@/components/atoms/input";
-import { Button } from "@/components/atoms/button";
 import { useState } from "react";
+
+import { Button } from "@/components/atoms/button";
+import { Input } from "@/components/atoms/input";
 
 const SearchBar = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);

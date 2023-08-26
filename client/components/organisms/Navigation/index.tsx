@@ -1,11 +1,11 @@
 import { Github, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
-import { ActualToolTip as Tooltip } from "@/components/atoms/tooltip";
 import { Button } from "@/components/atoms/button";
-import ThemeDropDown from "@/components/molecules/Theme";
-import SearchBar from "@/components/molecules/SearchBar";
+import { ActualToolTip as Tooltip } from "@/components/atoms/tooltip";
 import MainLogo from "@/components/molecules/MainLogo";
+import SearchBar from "@/components/molecules/SearchBar";
+import ThemeDropDown from "@/components/molecules/Theme";
 
 const Navigation = () => {
   const categories = ["Men", "Women", "Kids", "Beauty", "More", "Items"];

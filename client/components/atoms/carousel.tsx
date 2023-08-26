@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const delay = 2500;
 

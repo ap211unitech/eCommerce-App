@@ -1,10 +1,10 @@
 "use client";
 
+import Head from "next/head";
 import { ReactNode, useEffect, useState } from "react";
 
-import { GOOGLE_CLIENT_ID } from "@/config/defaults";
 import { Button } from "@/components/atoms/button";
-import Head from "next/head";
+import { GOOGLE_CLIENT_ID } from "@/config/defaults";
 
 type Props = {
   children: ReactNode;
