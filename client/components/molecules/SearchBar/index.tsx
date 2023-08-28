@@ -6,8 +6,12 @@ import { useState } from "react";
 import { Button } from "@/components/atoms/button";
 import { Input } from "@/components/atoms/input";
 
-const SearchBar = () => {
-  const [isInputFocused, setIsInputFocused] = useState(false);
+type Props = {
+  isFocused?: boolean;
+};
+
+const SearchBar = ({ isFocused = false }: Props) => {
+  const [isInputFocused, setIsInputFocused] = useState(isFocused);
 
   return (
     <div
@@ -23,6 +27,7 @@ const SearchBar = () => {
       </Button>
       <Input
         type="text"
+        autoFocus={isInputFocused}
         placeholder="Search for products, brands and more..."
         autoComplete="off"
         className="border-l-0 rounded-l-none focus-visible:ring-0 px-0"

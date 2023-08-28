@@ -22,10 +22,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} relative min-h-screen`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <NavigationBar />
-          {children}
+          <section className="pb-20">{children}</section>
           <Footer />
         </ThemeProvider>
       </body>
