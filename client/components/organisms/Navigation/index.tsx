@@ -19,7 +19,7 @@ const Navigation = () => {
         <div className="flex flex-row justify-between items-center gap-6 px-2">
           {categories.map((c) => (
             <p
-              className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-700 cursor-pointer uppercase font-semibold text-sm"
+              className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer uppercase font-semibold text-sm"
               key={Math.random() * 100}
             >
               {c}

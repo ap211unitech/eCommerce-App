@@ -9,6 +9,7 @@ const LoginTemplate = dynamic(() => import("@/components/templates/Login"), {
     </p>
   ),
 });
+
 const LoginPage = () => {
   return (
     <>
