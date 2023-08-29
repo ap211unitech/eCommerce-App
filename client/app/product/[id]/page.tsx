@@ -9,7 +9,9 @@ type Props = {
 const ProductPage = async ({ params: { id: productId } }: Props) => {
   // Fetch product
   const res = await (
-    await fetch(`https://jsonplaceholder.typicode.com/todos/${productId}`)
+    await fetch(`https://jsonplaceholder.typicode.com/todos/${productId}`, {
+      cache: "no-cache",
+    })
   ).json();
 
   // Return not-found page if no such product exists
