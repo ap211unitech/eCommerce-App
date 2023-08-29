@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 
+import ProductTemplate from "@/components/templates/Product";
+
 type Props = {
   params: { id: string };
 };
@@ -13,7 +15,12 @@ const ProductPage = async ({ params: { id: productId } }: Props) => {
   // Return not-found page if no such product exists
   if (!res?.id) return notFound();
 
-  return <div>{res.title}</div>;
+  return (
+    <div>
+      {res.title}
+      <ProductTemplate />
+    </div>
+  );
 };
 
 export default ProductPage;
