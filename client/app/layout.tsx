@@ -7,7 +7,7 @@ import Footer from "@/components/organisms/Footer";
 import NavigationBar from "@/components/organisms/Navigation";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin-ext"] });
 
 export const metadata: Metadata = {
   title:

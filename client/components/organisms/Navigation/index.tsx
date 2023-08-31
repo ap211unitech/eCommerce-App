@@ -6,9 +6,28 @@ import { ActualToolTip as Tooltip } from "@/components/atoms/tooltip";
 import MainLogo from "@/components/molecules/MainLogo";
 import SearchBar from "@/components/molecules/SearchBar";
 import ThemeDropDown from "@/components/molecules/Theme";
+import * as query from "@/graphql/queries";
+import { getClient } from "@/lib/client";
+import { getErrorMessage } from "@/utils";
 
-const Navigation = () => {
-  const categories = ["Men", "Women", "Kids", "Beauty", "More", "Items"];
+const getCategories = async () => {
+  try {
+    const { data } = await getClient().query({
+      query: query.getCategory,
+      context: {
+        fetchOptions: {
+          next: { revalidate: 30 },
+        },
+      },
+    });
+    return JSON.parse(data.getCategory);
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
+  }
+};
+
+const Navigation = async () => {
+  const categories = await getCategories();
 
   return (
     <div className="flex flex-row justify-between items-center border-b-[3px] border-pink">
@@ -17,12 +36,12 @@ const Navigation = () => {
           <MainLogo />
         </Link>
         <div className="flex flex-row justify-between items-center gap-6 px-2">
-          {categories.map((c) => (
+          {categories.map((c: any) => (
             <p
               className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer uppercase font-semibold text-sm"
               key={Math.random() * 100}
             >
-              {c}
+              {c.name}
             </p>
           ))}
         </div>
