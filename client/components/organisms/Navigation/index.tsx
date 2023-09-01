@@ -1,4 +1,4 @@
-import { Github, ShoppingCartIcon } from "lucide-react";
+import { ChevronsRight, Github, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/atoms/button";
@@ -30,6 +30,17 @@ const getCategories = async () => {
   }
 };
 
+const printRecursive = (categories: CategoriesResponse[], i: number) => {
+  return categories.map((c) => {
+    return (
+      <div key={c.categoryId} style={{ paddingLeft: i * 20 }}>
+        {c.name}
+        {printRecursive(c.children, i + 1)}
+      </div>
+    );
+  });
+};
+
 const Navigation = async () => {
   const categories = await getCategories();
 
@@ -40,15 +51,25 @@ const Navigation = async () => {
           <MainLogo />
         </Link>
         <div className="flex flex-row justify-between items-center gap-6 px-2">
-          {categories.map((c) => (
+          {categories.slice(0, 4).map((c) => (
             <Link
               href={`/products?category=${c.categoryId}`}
-              className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer uppercase font-semibold text-sm"
-              key={Math.random() * 100}
+              className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm"
+              key={c.categoryId}
             >
               {c.name}
             </Link>
           ))}
+          <Link
+            href={`/categories/all`}
+            className="flex items-center justify-center dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm"
+            key={Math.random() * 100}
+          >
+            <span>Explore all</span>
+            <span>
+              <ChevronsRight />
+            </span>
+          </Link>
         </div>
       </div>
       <div className="flex flex-row justify-between items-center px-8 gap-4">
