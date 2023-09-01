@@ -62,12 +62,12 @@ const Navigation = async () => {
           ))}
           <Link
             href={`/categories/all`}
-            className="flex items-center justify-center dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm"
+            className="flex items-center justify-center gap-[1px] hover:gap-1 transition-all dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm"
             key={Math.random() * 100}
           >
             <span>Explore all</span>
             <span>
-              <ChevronsRight />
+              <ChevronsRight size={20} />
             </span>
           </Link>
         </div>
