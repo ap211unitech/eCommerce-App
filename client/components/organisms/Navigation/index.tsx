@@ -10,17 +10,21 @@ import * as query from "@/graphql/queries";
 import { getClient } from "@/lib/client";
 import { getErrorMessage } from "@/utils";
 
+import { CategoriesResponse } from "./types";
+
+// Fetch all categories
 const getCategories = async () => {
   try {
     const { data } = await getClient().query({
       query: query.getCategory,
       context: {
         fetchOptions: {
-          next: { revalidate: 30 },
+          next: { revalidate: 60 },
         },
       },
     });
-    return JSON.parse(data.getCategory);
+    const categories: CategoriesResponse[] = JSON.parse(data.getCategory);
+    return categories;
   } catch (error) {
     throw new Error(getErrorMessage(error));
   }
@@ -36,13 +40,14 @@ const Navigation = async () => {
           <MainLogo />
         </Link>
         <div className="flex flex-row justify-between items-center gap-6 px-2">
-          {categories.map((c: any) => (
-            <p
+          {categories.map((c) => (
+            <Link
+              href={`/products?category=${c.categoryId}`}
               className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer uppercase font-semibold text-sm"
               key={Math.random() * 100}
             >
               {c.name}
-            </p>
+            </Link>
           ))}
         </div>
       </div>
