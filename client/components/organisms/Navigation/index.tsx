@@ -45,24 +45,26 @@ const Navigation = async () => {
   const categories = await getCategories();
 
   return (
-    <div className="flex flex-row justify-between items-center border-b-[3px] border-pink">
+    <div className="flex flex-row justify-between items-center shadow-xl">
       <div className="flex flex-row justify-between items-center">
         <Link href={"/"}>
           <MainLogo />
         </Link>
         <div className="flex flex-row justify-between items-center gap-6 px-2">
           {categories.slice(0, 4).map((c) => (
-            <Link
-              href={`/products?category=${c.categoryId}`}
-              className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm"
-              key={c.categoryId}
-            >
-              {c.name}
-            </Link>
+            <div key={c.categoryId} className="pt-1">
+              <Link
+                href={`/products?category=${c.categoryId}`}
+                className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm hover:border-b-[3.5px] border-pink pb-[1.35rem] px-[0.4rem]"
+                key={c.categoryId}
+              >
+                {c.name}
+              </Link>
+            </div>
           ))}
           <Link
-            href={`/categories/all`}
-            className="flex items-center justify-center gap-[1px] hover:gap-1 transition-all dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm"
+            href={`/categories/explore`}
+            className="flex items-center justify-center gap-[1px] hover:gap-1 transition-all dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm pt-1"
             key={Math.random() * 100}
           >
             <span>Explore all</span>
