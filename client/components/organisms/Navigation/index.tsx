@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/atoms/button";
 import { ActualToolTip as Tooltip } from "@/components/atoms/tooltip";
+import { CategoryDropDown } from "@/components/molecules/CategoryDropDown";
 import MainLogo from "@/components/molecules/MainLogo";
 import SearchBar from "@/components/molecules/SearchBar";
 import ThemeDropDown from "@/components/molecules/Theme";
@@ -30,17 +31,6 @@ const getCategories = async () => {
   }
 };
 
-const printRecursive = (categories: CategoriesResponse[], i: number) => {
-  return categories.map((c) => {
-    return (
-      <div key={c.categoryId} style={{ paddingLeft: i * 20 }}>
-        {c.name}
-        {printRecursive(c.children, i + 1)}
-      </div>
-    );
-  });
-};
-
 const Navigation = async () => {
   const categories = await getCategories();
 
@@ -52,14 +42,16 @@ const Navigation = async () => {
         </Link>
         <div className="flex flex-row justify-between items-center gap-6 px-2">
           {categories.slice(0, 4).map((c) => (
-            <div key={c.categoryId} className="pt-1">
+            <div key={c.categoryId} className="pt-1 relative group">
               <Link
                 href={`/products?category=${c.categoryId}`}
-                className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm hover:border-b-[3.5px] border-pink pb-[1.35rem] px-[0.4rem]"
-                key={c.categoryId}
+                className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm group-hover:border-b-[3.5px] border-pink pb-[1.35rem] px-[0.4rem]"
               >
                 {c.name}
               </Link>
+              <div className="group-hover:absolute group-hover:block hidden">
+                <CategoryDropDown category={c} />
+              </div>
             </div>
           ))}
           <Link
