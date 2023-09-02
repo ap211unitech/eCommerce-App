@@ -14,7 +14,7 @@ export const CategoryDropDown = ({ category }: Props) => {
   if (category.children.length === 0) return <></>;
 
   return (
-    <div className="absolute top-[1.39rem] z-10 bg-white animate-fadeIn px-4 py-2">
+    <div className="absolute shadow-lg top-[1.39rem] z-10 bg-primary-foreground animate-fadeIn px-4 py-2">
       {printRecursive(category.children, 0)}
     </div>
   );
@@ -27,8 +27,8 @@ const printRecursive = (categories: CategoriesResponse[], i: number) => {
         <Link
           href={`/products?category=${c.categoryId}`}
           className={`${
-            i === 0 ? "text-pink font-semibold" : "text-gray-500"
-          } text-sm`}
+            i === 0 ? "text-pink" : "text-gray-500"
+          } text-sm font-semibold`}
         >
           {c.name}
         </Link>
