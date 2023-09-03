@@ -1,21 +1,8 @@
-const data = {
+const menData = {
   name: "Men",
   children: [
     {
       name: "Topwear",
-      filters: {
-        sizes: ["XS", "S", "M", "L", "XL"],
-        colors: [
-          "Light Blue",
-          "Navy Blue",
-          "Red",
-          "Green",
-          "Pink",
-          "Black",
-          "White",
-          "Gray",
-        ],
-      },
       children: [
         { name: "T-Shirts" },
         { name: "Casual Shirts" },
@@ -25,6 +12,86 @@ const data = {
         { name: "Jackets" },
         { name: "Blazer & Coats" },
         { name: "Suits" },
+      ],
+    },
+    {
+      name: "Bottomwear",
+      children: [
+        { name: "Jeans" },
+        { name: "Casual Trousers" },
+        { name: "Formal Trousers" },
+        { name: "Shorts" },
+        { name: "Track Pants & Joogers" },
+      ],
+    },
+    {
+      name: "Footwear",
+      children: [
+        { name: "Casual Shoes" },
+        { name: "Formal Shoes" },
+        { name: "Sport Shoes" },
+        { name: "Sneakers" },
+        { name: "Sandles & Floaters" },
+      ],
+    },
+    {
+      name: "Fashion Accessories",
+      children: [
+        { name: "Wallets" },
+        { name: "Belts" },
+        { name: "Trimmers" },
+        { name: "Perfumes & Body Mists" },
+        { name: "Caps & Hats" },
+        { name: "Rings & Wristwear" },
+      ],
+    },
+  ],
+};
+
+const womenData = {
+  name: "Women",
+  children: [
+    {
+      name: "Indian & Fusion Wear",
+      children: [
+        { name: "Kurtas & Suits" },
+        { name: "Sarees" },
+        { name: "Skirts & Palazzos" },
+        { name: "Lehnga Cholis" },
+        { name: "Duppatas & Shawls" },
+        { name: "Jackets" },
+      ],
+    },
+    {
+      name: "Western Wear",
+      children: [
+        { name: "Dresses" },
+        { name: "Tops" },
+        { name: "TShirts" },
+        { name: "Jeans" },
+        { name: "Trousers & Capris" },
+        { name: "Shorts & Skirts" },
+        { name: "Jumpsuits" },
+      ],
+    },
+    {
+      name: "Footwear",
+      children: [
+        { name: "Casual Shoes" },
+        { name: "Flats" },
+        { name: "Heels" },
+        { name: "Boots" },
+        { name: "Sport Shoes & Floaters" },
+      ],
+    },
+    {
+      name: "Beauty & Personal Care",
+      children: [
+        { name: "Makeup" },
+        { name: "Skincare" },
+        { name: "Premium Beauty" },
+        { name: "Lipsticks" },
+        { name: "Fragrances" },
       ],
     },
   ],
@@ -82,4 +149,4 @@ export const addCategory = async (catData: any, parentId: string) => {
   }
 };
 
-addCategory(data, "");
+addCategory(womenData, "");

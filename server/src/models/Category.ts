@@ -20,7 +20,6 @@ const categorySchema = new mongoose.Schema<ICategory>(
       type: String,
       required: true,
       trim: true,
-      unique: true,
     },
     parentId: {
       type: String,

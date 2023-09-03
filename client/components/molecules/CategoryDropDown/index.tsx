@@ -23,7 +23,9 @@ export const CategoryDropDown = ({ category }: Props) => {
           return (
             <div
               key={Math.random() * 1000}
-              className={`pl-8 pr-14 py-4 ${i % 2 ? "bg-gray-200" : ""}`}
+              className={`text-sm pl-8 pr-10 py-4 w-52 ${
+                i % 2 ? "bg-gray-100 dark:bg-slate-950" : ""
+              }`}
             >
               <PrintRecursive category={category.children[i]} />
             </div>
@@ -53,7 +55,7 @@ const PrintRecursive = ({ category }: RecursiveProps) => {
               ${
                 category.children.length > 0
                   ? "text-pink font-semibold"
-                  : "text-gray-500 hover:text-gray-800"
+                  : "text-gray-500 hover:text-gray-800 dark:hover:text-white hover:font-semibold leading-relaxed"
               } text-md whitespace-nowrap
                 `}
           >

@@ -64,9 +64,10 @@ export const createCategory = async (
   // Create Slug
   const slug = slugify([categoryName]);
 
-  // Check if category exists already
+  // Check if category exists already it it has no parent category
+  // It means parent catagory should always be unique
   const categoryExists = await Category.findOne({ slug });
-  if (categoryExists) {
+  if (categoryExists && !parentId) {
     return errorHandler({ ...CATEGORY_ALREADY_EXISTS, type: APOLLO_ERROR });
   }
 

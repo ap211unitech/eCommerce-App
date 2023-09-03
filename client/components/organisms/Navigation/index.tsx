@@ -35,7 +35,7 @@ const Navigation = async () => {
   const categories = await getCategories();
 
   return (
-    <div className="flex flex-row justify-between items-center shadow-xl">
+    <div className="flex flex-row justify-between items-center border-b-[3px] border-pink">
       <div className="flex flex-row justify-between items-center">
         <Link href={"/"}>
           <MainLogo />
@@ -45,18 +45,18 @@ const Navigation = async () => {
             <div key={c.categoryId} className="pt-1 relative group">
               <Link
                 href={`/products?category=${c.categoryId}`}
-                className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm group-hover:border-b-[3.5px] border-pink pb-[1.35rem] px-[0.4rem]"
+                className="uppercase dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm group-hover:border-b-[3.5px] border-pink pb-[1.35rem] pr-[0.4rem]"
               >
                 {c.name}
               </Link>
-              <div className="group-hover:absolute group-hover:flex flex-row hidden -left-[100%] top-[3.1rem] z-10 shadow-lg bg-primary-foreground animate-fadeIn">
+              <div className="group-hover:absolute group-hover:flex flex-row hidden -left-[100%] top-[3.2rem] z-10 bg-primary-foreground animate-fadeIn">
                 <CategoryDropDown category={c} />
               </div>
             </div>
           ))}
           <Link
             href={`/categories/explore`}
-            className="flex items-center justify-center gap-[1px] hover:gap-1 transition-all dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm pt-1"
+            className="uppercase flex items-center justify-center gap-[1px] hover:gap-1 transition-all dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm pt-1"
             key={Math.random() * 100}
           >
             <span>Explore</span>
