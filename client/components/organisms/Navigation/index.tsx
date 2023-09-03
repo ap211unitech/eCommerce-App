@@ -45,11 +45,11 @@ const Navigation = async () => {
             <div key={c.categoryId} className="pt-1 relative group">
               <Link
                 href={`/products?category=${c.categoryId}`}
-                className="uppercase dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm group-hover:border-b-[3.5px] border-pink pb-[1.35rem] px-[0.4rem]"
+                className="dark:text-gray-400 dark:hover:text-gray-300 text-gray-500 hover:text-gray-800 cursor-pointer font-semibold text-sm group-hover:border-b-[3.5px] border-pink pb-[1.35rem] px-[0.4rem]"
               >
                 {c.name}
               </Link>
-              <div className="group-hover:absolute group-hover:block hidden">
+              <div className="group-hover:absolute group-hover:flex flex-row hidden -left-[100%] top-[3.1rem] z-10 shadow-lg bg-primary-foreground animate-fadeIn">
                 <CategoryDropDown category={c} />
               </div>
             </div>

@@ -13,27 +13,59 @@ type Props = {
 export const CategoryDropDown = ({ category }: Props) => {
   if (category.children.length === 0) return <></>;
 
+  const length = category.children.length;
+
   return (
-    <div className="absolute shadow-lg top-[1.39rem] z-10 bg-primary-foreground animate-fadeIn px-4 py-2">
-      {printRecursive(category.children, 0)}
-    </div>
+    <>
+      {Array.from({ length })
+        .fill(length)
+        .map((_, i) => {
+          return (
+            <div
+              key={Math.random() * 1000}
+              className={`pl-8 pr-14 py-4 ${i % 2 ? "bg-gray-200" : ""}`}
+            >
+              <PrintRecursive category={category.children[i]} />
+            </div>
+          );
+        })}
+    </>
   );
 };
 
-const printRecursive = (categories: CategoriesResponse[], i: number) => {
-  return categories.map((c) => {
-    return (
-      <div key={c.categoryId} style={{ paddingLeft: i * 20 }}>
-        <Link
-          href={`/products?category=${c.categoryId}`}
-          className={`${
-            i === 0 ? "text-pink" : "text-gray-500"
-          } text-sm font-semibold`}
-        >
-          {c.name}
-        </Link>
-        {printRecursive(c.children, i + 1)}
+type RecursiveProps = {
+  category: CategoriesResponse;
+};
+
+const PrintRecursive = ({ category }: RecursiveProps) => {
+  return (
+    <>
+      <div
+        key={category.categoryId}
+        className={`${
+          category.children.length > 0 ? "gap-1" : ""
+        } flex flex-col`}
+      >
+        <div>
+          <Link
+            href={`/products?category=${category.categoryId}`}
+            className={`
+              ${
+                category.children.length > 0
+                  ? "text-pink font-semibold"
+                  : "text-gray-500 hover:text-gray-800"
+              } text-md whitespace-nowrap
+                `}
+          >
+            {category.name}
+          </Link>
+        </div>
+        <div>
+          {category.children.map((c) => (
+            <PrintRecursive category={c} key={c.categoryId} />
+          ))}
+        </div>
       </div>
-    );
-  });
+    </>
+  );
 };
