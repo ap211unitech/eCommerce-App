@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { signInFormData } from "@/actions/auth";
 import { Button } from "@/components/atoms/button";
 import {
   Form,
@@ -33,11 +34,10 @@ function LoginForm() {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const { isSubmitting } = form.formState;
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    signInFormData(values);
   }
 
   return (
@@ -69,9 +69,15 @@ function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="gap-2">
-          <Loader2 className="animate-spin mx-auto" size={20} />
-          Sign In
+        <Button type="submit" className="gap-2" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <Loader2 className="animate-spin mx-auto" size={20} />
+              Signing in...
+            </>
+          ) : (
+            <>Sign In</>
+          )}
         </Button>
       </form>
     </Form>

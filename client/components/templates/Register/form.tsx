@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { signUpFormData } from "@/actions/auth";
 import { Button } from "@/components/atoms/button";
 import {
   Form,
@@ -22,6 +23,11 @@ const formSchema = z
       message: "Name must be at least 2 characters.",
     }),
     email: z.string().trim().email(),
+    mobile: z
+      .string()
+      .trim()
+      .min(10, { message: "Phone must be exactly 10 digits long" })
+      .max(10, { message: "Phone must be exactly 10 digits long" }),
     password: z
       .string()
       .trim()
@@ -44,16 +50,16 @@ function RegisterForm() {
     defaultValues: {
       name: "",
       email: "",
+      mobile: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const { isSubmitting } = form.formState;
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await signUpFormData(values);
   }
 
   return (
@@ -87,12 +93,25 @@ function RegisterForm() {
         />
         <FormField
           control={form.control}
+          name="mobile"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mobile</FormLabel>
+              <FormControl>
+                <Input placeholder="0123456789" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="**********" {...field} />
+                <Input type="password" placeholder="**********" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -111,9 +130,15 @@ function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="gap-2">
-          <Loader2 className="animate-spin mx-auto" size={20} />
-          Create account
+        <Button type="submit" className="gap-2" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <Loader2 className="animate-spin mx-auto" size={20} />
+              Creating account...
+            </>
+          ) : (
+            <>Create account</>
+          )}
         </Button>
       </form>
     </Form>

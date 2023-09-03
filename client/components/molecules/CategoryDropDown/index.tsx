@@ -55,7 +55,7 @@ const PrintRecursive = ({ category }: RecursiveProps) => {
               ${
                 category.children.length > 0
                   ? "text-pink font-semibold"
-                  : "text-gray-500 hover:text-gray-800 dark:hover:text-white hover:font-semibold leading-relaxed"
+                  : "text-gray-500 hover:text-gray-800 dark:hover:text-white hover:font-semibold leading-[1.8]"
               } text-md whitespace-nowrap
                 `}
           >
