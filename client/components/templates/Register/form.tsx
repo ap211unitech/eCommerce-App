@@ -19,61 +19,21 @@ import {
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
 import { useToast } from "@/components/atoms/use-toast";
+import { AUTH_TOKEN_MAX_AGE } from "@/config/defaults";
 import { AUTH_TOKEN } from "@/config/storage";
 import * as queries from "@/graphql/queries";
 import { getErrorMessage } from "@/utils";
+import { signUpFormSchema } from "@/validations";
 
-type SignUpResponse = {
-  data?: {
-    signUp: {
-      _id: string;
-      name: string;
-      email: string;
-      mobile: string;
-      role: "user" | "admin" | "vendor";
-      token: string;
-      createdAt: string;
-      updatedAt: string;
-    };
-  };
-};
-
-const TOKEN_MAX_AGE = 24 * 60 * 60;
-
-const formSchema = z
-  .object({
-    name: z.string().min(2, {
-      message: "Name must be at least 2 characters.",
-    }),
-    email: z.string().trim().email(),
-    mobile: z
-      .string()
-      .trim()
-      .min(10, { message: "Phone must be exactly 10 digits long" })
-      .max(10, { message: "Phone must be exactly 10 digits long" }),
-    password: z
-      .string()
-      .trim()
-      .min(6, { message: "Password must be at least 6 charcters long" }),
-    confirmPassword: z.string(),
-  })
-  .refine(
-    (data) => {
-      return data.password === data.confirmPassword;
-    },
-    {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
-    }
-  );
+import { SignUpResponse } from "./types";
 
 function RegisterForm() {
   const { toast } = useToast();
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpFormSchema>>({
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -86,14 +46,17 @@ function RegisterForm() {
   const { isSubmitting } = form.formState;
   const [signUpMutation, { loading }] = useMutation(queries.signUp);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     try {
       const { data }: SignUpResponse = await signUpMutation({
         variables: values,
       });
-      data?.signUp.token &&
-        setCookie(AUTH_TOKEN, data?.signUp.token, { maxAge: TOKEN_MAX_AGE });
-      router.push("/");
+      if (data?.signUp.token) {
+        setCookie(AUTH_TOKEN, data?.signUp.token, {
+          maxAge: AUTH_TOKEN_MAX_AGE,
+        });
+        router.push("/");
+      }
     } catch (error) {
       toast({
         title: "Uh oh! Something went wrong.",
