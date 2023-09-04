@@ -2,7 +2,9 @@
 
 import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { setCookie } from "cookies-next";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -17,8 +19,26 @@ import {
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
 import { useToast } from "@/components/atoms/use-toast";
+import { AUTH_TOKEN } from "@/config/storage";
 import * as queries from "@/graphql/queries";
 import { getErrorMessage } from "@/utils";
+
+type SignUpResponse = {
+  data?: {
+    signUp: {
+      _id: string;
+      name: string;
+      email: string;
+      mobile: string;
+      role: "user" | "admin" | "vendor";
+      token: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+  };
+};
+
+const TOKEN_MAX_AGE = 24 * 60 * 60;
 
 const formSchema = z
   .object({
@@ -50,6 +70,8 @@ const formSchema = z
 function RegisterForm() {
   const { toast } = useToast();
 
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,8 +88,12 @@ function RegisterForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const { data } = await signUpMutation({ variables: values });
-      console.log(data);
+      const { data }: SignUpResponse = await signUpMutation({
+        variables: values,
+      });
+      data?.signUp.token &&
+        setCookie(AUTH_TOKEN, data?.signUp.token, { maxAge: TOKEN_MAX_AGE });
+      router.push("/");
     } catch (error) {
       toast({
         title: "Uh oh! Something went wrong.",
