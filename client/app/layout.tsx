@@ -3,8 +3,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import { Toaster } from "@/components/atoms/toaster";
 import Footer from "@/components/organisms/Footer";
 import NavigationBar from "@/components/organisms/Navigation";
+import { ApolloWrapper } from "@/lib/apollo-client";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin-ext"] });
@@ -24,9 +26,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} relative min-h-screen`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <NavigationBar />
-          <section className="pb-20">{children}</section>
-          <Footer />
+          <ApolloWrapper>
+            <NavigationBar />
+            <section className="pb-20">{children}</section>
+            <Footer />
+            <Toaster />
+          </ApolloWrapper>
         </ThemeProvider>
       </body>
     </html>

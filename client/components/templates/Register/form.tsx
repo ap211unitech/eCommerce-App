@@ -1,11 +1,11 @@
 "use client";
 
+import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { signUpFormData } from "@/actions/auth";
 import { Button } from "@/components/atoms/button";
 import {
   Form,
@@ -16,6 +16,9 @@ import {
   FormMessage,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
+import { useToast } from "@/components/atoms/use-toast";
+import * as queries from "@/graphql/queries";
+import { getErrorMessage } from "@/utils";
 
 const formSchema = z
   .object({
@@ -45,6 +48,8 @@ const formSchema = z
   );
 
 function RegisterForm() {
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,9 +62,19 @@ function RegisterForm() {
   });
 
   const { isSubmitting } = form.formState;
+  const [signUpMutation, { loading }] = useMutation(queries.signUp);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await signUpFormData(values);
+    try {
+      const { data } = await signUpMutation({ variables: values });
+      console.log(data);
+    } catch (error) {
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: getErrorMessage(error),
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -130,8 +145,12 @@ function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="gap-2" disabled={isSubmitting}>
-          {isSubmitting ? (
+        <Button
+          type="submit"
+          className="gap-2"
+          disabled={isSubmitting || loading}
+        >
+          {isSubmitting || loading ? (
             <>
               <Loader2 className="animate-spin mx-auto" size={20} />
               Creating account...

@@ -12,8 +12,13 @@ export const getCategory = gql`
 /** ********** Auth Queries ************/
 
 // Register user with formData (Public)
-export const signUp = `
-  mutation SignUp($name: String!, $password: String!, $email: String!, $mobile:String!) {
+export const signUp = gql`
+  mutation signUp(
+    $name: String!
+    $password: String!
+    $email: String!
+    $mobile: String!
+  ) {
     signUp(name: $name, email: $email, password: $password, mobile: $mobile) {
       _id
       name
