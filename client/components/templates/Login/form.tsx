@@ -5,7 +5,6 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { signInFormData } from "@/actions/auth";
 import { Button } from "@/components/atoms/button";
 import {
   Form,
@@ -37,7 +36,7 @@ function LoginForm() {
   const { isSubmitting } = form.formState;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    signInFormData(values);
+    console.log(values);
   }
 
   return (
