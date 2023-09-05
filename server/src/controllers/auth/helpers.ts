@@ -26,9 +26,14 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "jwtsecret";
 
 /********************************** Helper Functions **********************************/
 
+type UserRoles = "user" | "admin" | "vendor";
+
 // Generate Token
-export const generateToken = (id: mongoose.Schema.Types.ObjectId) => {
-  const payload = { id };
+export const generateToken = (
+  id: mongoose.Schema.Types.ObjectId,
+  role: UserRoles
+) => {
+  const payload = { id, role };
   return jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "1d" });
 };
 

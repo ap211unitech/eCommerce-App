@@ -50,7 +50,7 @@ export const signUp = async (payload: SignUpPayload) => {
   await newUser.save();
 
   // Generate token
-  const token = generateToken(newUser._id);
+  const token = generateToken(newUser._id, newUser.role);
 
   return {
     _id: newUser._id,
@@ -86,7 +86,7 @@ export const signIn = async (payload: SignInPayload) => {
   }
 
   // Generate token
-  const token = generateToken(user._id);
+  const token = generateToken(user._id, user.role);
 
   return {
     _id: user._id,

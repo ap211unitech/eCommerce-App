@@ -59,8 +59,7 @@ function RegisterForm() {
       }
     } catch (error) {
       toast({
-        title: "Uh oh! Something went wrong.",
-        description: getErrorMessage(error),
+        description: `Uh oh! ${getErrorMessage(error)}`,
         variant: "destructive",
       });
     }
