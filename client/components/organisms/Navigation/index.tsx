@@ -39,7 +39,8 @@ import SearchBar from "@/components/molecules/SearchBar";
 import ThemeDropDown from "@/components/molecules/Theme";
 import * as queries from "@/graphql/queries";
 import { getClient } from "@/lib/client";
-import { getErrorMessage, getHeaders } from "@/utils";
+import { getErrorMessage } from "@/utils";
+import { getHeaders } from "@/utils/getHeaders";
 
 import { CategoriesResponse, UserDetailResponse } from "./types";
 
