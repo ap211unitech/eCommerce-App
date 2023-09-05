@@ -31,3 +31,18 @@ export const signUp = gql`
     }
   }
 `;
+
+/** ********** Profile Queries ************/
+export const getUserDetail = gql`
+  query GetUserDetail {
+    getUserDetail {
+      _id
+      name
+      email
+      mobile
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`;

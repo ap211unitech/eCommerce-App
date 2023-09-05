@@ -7,17 +7,17 @@ import { CategoryDropDown } from "@/components/molecules/CategoryDropDown";
 import MainLogo from "@/components/molecules/MainLogo";
 import SearchBar from "@/components/molecules/SearchBar";
 import ThemeDropDown from "@/components/molecules/Theme";
-import * as query from "@/graphql/queries";
+import * as queries from "@/graphql/queries";
 import { getClient } from "@/lib/client";
 import { getErrorMessage } from "@/utils";
 
-import { CategoriesResponse } from "./types";
+import { CategoriesResponse, UserDetailResponse } from "./types";
 
 // Fetch all categories
 const getCategories = async () => {
   try {
     const { data } = await getClient().query({
-      query: query.getCategory,
+      query: queries.getCategory,
       context: {
         fetchOptions: {
           next: { revalidate: 60 },
@@ -28,6 +28,25 @@ const getCategories = async () => {
     return categories;
   } catch (error) {
     throw new Error(getErrorMessage(error));
+  }
+};
+
+// Get user data (if exists)
+const getUserDetail = async () => {
+  try {
+    const { data } = await getClient().query({
+      query: queries.getUserDetail,
+      context: {
+        fetchOptions: {
+          cache: "no-store",
+        },
+      },
+    });
+    const user: UserDetailResponse = data.getUserDetail;
+    return { user };
+  } catch (error) {
+    console.log(error);
+    return { user: null };
   }
 };
 
@@ -68,12 +87,7 @@ const Navigation = async () => {
       </div>
       <div className="flex flex-row justify-between items-center px-8 gap-4">
         <SearchBar />
-        <Link href={"/login"}>
-          <Button variant={"outline"}>Login</Button>
-        </Link>
-        <Link href={"/register"}>
-          <Button variant={"secondary"}>Register</Button>
-        </Link>
+        <UserActions />
         <Button className="flex items-center gap-1 relative">
           <ShoppingCartIcon />
           <p className="absolute right-[-7px] top-[-7px] text-white bg-pink rounded-full w-4 h-4 flex justify-center items-center p-3">
@@ -94,6 +108,27 @@ const Navigation = async () => {
         </Tooltip>
       </div>
     </div>
+  );
+};
+
+const UserActions = async () => {
+  const { user } = await getUserDetail();
+
+  return (
+    <>
+      {user ? (
+        <p>You are logged in...</p>
+      ) : (
+        <>
+          <Link href={"/login"}>
+            <Button variant={"outline"}>Login</Button>
+          </Link>
+          <Link href={"/register"}>
+            <Button variant={"secondary"}>Register</Button>
+          </Link>
+        </>
+      )}
+    </>
   );
 };
 
