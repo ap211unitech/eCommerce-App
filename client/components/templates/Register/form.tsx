@@ -21,7 +21,7 @@ import { Input } from "@/components/atoms/input";
 import { useToast } from "@/components/atoms/use-toast";
 import { AUTH_TOKEN_MAX_AGE } from "@/config/defaults";
 import { AUTH_TOKEN } from "@/config/storage";
-import * as queries from "@/graphql/queries";
+import * as mutations from "@/graphql/mutations";
 import { getErrorMessage } from "@/utils";
 import { signUpFormSchema } from "@/validations";
 
@@ -44,7 +44,7 @@ function RegisterForm() {
   });
 
   const { isSubmitting } = form.formState;
-  const [signUpMutation, { loading }] = useMutation(queries.signUp);
+  const [signUpMutation, { loading }] = useMutation(mutations.signUp);
 
   async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     try {
