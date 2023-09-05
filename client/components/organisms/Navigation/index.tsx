@@ -39,7 +39,7 @@ import SearchBar from "@/components/molecules/SearchBar";
 import ThemeDropDown from "@/components/molecules/Theme";
 import * as queries from "@/graphql/queries";
 import { getClient } from "@/lib/client";
-import { getErrorMessage } from "@/utils";
+import { getErrorMessage, getHeaders } from "@/utils";
 
 import { CategoriesResponse, UserDetailResponse } from "./types";
 
@@ -70,6 +70,7 @@ const getUserDetail = async () => {
         fetchOptions: {
           next: { revalidate: 60 },
         },
+        headers: getHeaders(),
       },
     });
     const user: UserDetailResponse = data.getUserDetail;
@@ -117,6 +118,7 @@ const Navigation = async () => {
       </div>
       <div className="flex flex-row justify-between items-center px-8 gap-4">
         <SearchBar />
+        <UserActions />
         <Button className="flex items-center gap-1 relative">
           <ShoppingCartIcon />
           <p className="absolute right-[-7px] top-[-7px] text-white bg-pink rounded-full w-4 h-4 flex justify-center items-center p-3">
@@ -124,7 +126,6 @@ const Navigation = async () => {
           </p>
           Cart
         </Button>
-        <UserActions />
         <ThemeDropDown />
       </div>
     </div>
