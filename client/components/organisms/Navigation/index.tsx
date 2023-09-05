@@ -38,7 +38,7 @@ const getUserDetail = async () => {
       query: queries.getUserDetail,
       context: {
         fetchOptions: {
-          cache: "no-store",
+          next: { revalidate: 60 },
         },
       },
     });

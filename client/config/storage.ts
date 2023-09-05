@@ -1,1 +1,1 @@
-export const AUTH_TOKEN = "_AUTH_TOKEN_QUICKMART";
+export const AUTH_TOKEN = "AUTH_TOKEN_QUICKMART";
