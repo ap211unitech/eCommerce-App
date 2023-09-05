@@ -1,8 +1,38 @@
-import { ChevronsRight, Github, ShoppingCartIcon } from "lucide-react";
+import {
+  ChevronsRight,
+  Cloud,
+  CreditCard,
+  Github,
+  Keyboard,
+  LifeBuoy,
+  LogOut,
+  Mail,
+  MessageSquare,
+  Plus,
+  PlusCircle,
+  Settings,
+  ShoppingCartIcon,
+  User,
+  UserPlus,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/atoms/button";
-import { ActualToolTip as Tooltip } from "@/components/atoms/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/atoms/dropdown-menu";
 import { CategoryDropDown } from "@/components/molecules/CategoryDropDown";
 import MainLogo from "@/components/molecules/MainLogo";
 import SearchBar from "@/components/molecules/SearchBar";
@@ -87,7 +117,6 @@ const Navigation = async () => {
       </div>
       <div className="flex flex-row justify-between items-center px-8 gap-4">
         <SearchBar />
-        <UserActions />
         <Button className="flex items-center gap-1 relative">
           <ShoppingCartIcon />
           <p className="absolute right-[-7px] top-[-7px] text-white bg-pink rounded-full w-4 h-4 flex justify-center items-center p-3">
@@ -95,17 +124,8 @@ const Navigation = async () => {
           </p>
           Cart
         </Button>
+        <UserActions />
         <ThemeDropDown />
-        <Tooltip content="Github repository">
-          <Link
-            href={"https://github.com/ap211unitech/eCommerce-App"}
-            target="_blank"
-          >
-            <Button className="px-3">
-              <Github />
-            </Button>
-          </Link>
-        </Tooltip>
       </div>
     </div>
   );
@@ -117,7 +137,100 @@ const UserActions = async () => {
   return (
     <>
       {user ? (
-        <p>You are logged in...</p>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <User />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                  <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  <span>Billing</span>
+                  <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                  <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Keyboard className="mr-2 h-4 w-4" />
+                  <span>Keyboard shortcuts</span>
+                  <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <Users className="mr-2 h-4 w-4" />
+                  <span>Team</span>
+                </DropdownMenuItem>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    <span>Invite users</span>
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem>
+                        <Mail className="mr-2 h-4 w-4" />
+                        <span>Email</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <MessageSquare className="mr-2 h-4 w-4" />
+                        <span>Message</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        <span>More...</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
+                <DropdownMenuItem>
+                  <Plus className="mr-2 h-4 w-4" />
+                  <span>New Team</span>
+                  <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link
+                  href={"https://github.com/ap211unitech/eCommerce-App"}
+                  target="_blank"
+                  className="flex items-center justify-center"
+                >
+                  <Github className="mr-2 h-4 w-4" />
+                  <span>GitHub Repo</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <LifeBuoy className="mr-2 h-4 w-4" />
+                <span>Support</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                <Cloud className="mr-2 h-4 w-4" />
+                <span>API</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
       ) : (
         <>
           <Link href={"/login"}>
