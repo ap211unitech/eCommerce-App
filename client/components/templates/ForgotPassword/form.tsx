@@ -38,8 +38,8 @@ function ForgotPasswordForm() {
     },
   });
 
-  const { isSubmitting } = form.formState;
-  const [forgotPasswordMutation, { loading }] = useMutation(
+  const { isSubmitting, isSubmitSuccessful } = form.formState;
+  const [forgotPasswordMutation, { loading, error }] = useMutation(
     mutations.forgotPassword
   );
 
@@ -66,37 +66,44 @@ function ForgotPasswordForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
-        <FormField
-          control={form.control}
-          name="identity"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="johndoe@gmail.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          type="submit"
-          className="gap-2"
-          disabled={isSubmitting || loading}
-        >
-          {isSubmitting || loading ? (
-            <>
-              <Loader2 className="animate-spin mx-auto" size={20} />
-              Sending OTP...
-            </>
-          ) : (
-            <>Get OTP</>
-          )}
-        </Button>
-      </form>
-    </Form>
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+          <FormField
+            control={form.control}
+            name="identity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="johndoe@gmail.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="gap-2"
+            disabled={isSubmitting || loading}
+          >
+            {isSubmitting || loading ? (
+              <>
+                <Loader2 className="animate-spin mx-auto" size={20} />
+                Sending OTP...
+              </>
+            ) : (
+              <>Send OTP</>
+            )}
+          </Button>
+        </form>
+      </Form>
+      {isSubmitSuccessful && !error && !loading && (
+        <p className="pt-4 text-pink">
+          Redirecting you to reset password page in 5 seconds....
+        </p>
+      )}
+    </>
   );
 }
 
