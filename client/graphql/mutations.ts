@@ -22,3 +22,19 @@ export const signUp = gql`
     }
   }
 `;
+
+// Login user with formData (Public)
+export const signIn = gql`
+  mutation signIn($identity: String!, $password: String!) {
+    signIn(identity: $identity, password: $password) {
+      _id
+      name
+      email
+      mobile
+      role
+      token
+      createdAt
+      updatedAt
+    }
+  }
+`;

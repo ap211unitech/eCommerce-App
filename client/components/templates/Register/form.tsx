@@ -55,8 +55,12 @@ function RegisterForm() {
         setCookie(AUTH_TOKEN, data?.signUp.token, {
           maxAge: AUTH_TOKEN_MAX_AGE,
         });
-        router.refresh();
         router.push("/");
+        router.refresh();
+        toast({
+          description: `Account created successfully !!`,
+          variant: "success",
+        });
       }
     } catch (error) {
       toast({
