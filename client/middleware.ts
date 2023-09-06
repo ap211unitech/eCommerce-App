@@ -15,7 +15,12 @@ export default function middleware(req: NextRequest, res: NextResponse) {
 
   const url = req.nextUrl.pathname;
 
-  const authRoutes = ["/login", "/register", "/forgotPassword"];
+  const authRoutes = [
+    "/login",
+    "/register",
+    "/forgotPassword",
+    "resetPassword",
+  ];
 
   const isAdminRoute = url.startsWith("/admin");
   const isVendorRoute = url.startsWith("/vendor");
