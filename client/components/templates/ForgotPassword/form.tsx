@@ -2,7 +2,6 @@
 
 import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { setCookie } from "cookies-next";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -19,25 +18,16 @@ import {
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
 import { useToast } from "@/components/atoms/use-toast";
-import { AUTH_TOKEN_MAX_AGE } from "@/config/defaults";
-import { AUTH_TOKEN } from "@/config/storage";
 import * as mutations from "@/graphql/mutations";
 import { getErrorMessage } from "@/utils";
 
-import { SignInResponse } from "./types";
+import { ForgotPasswordResponse } from "./types";
 
 const formSchema = z.object({
-  identity: z
-    .string()
-    .trim()
-    .nonempty({ message: "Please enter a valid email or mobile" }),
-  password: z
-    .string()
-    .trim()
-    .min(6, { message: "Password must be at least 6 charcters long" }),
+  identity: z.string().email(),
 });
 
-function LoginForm() {
+function ForgotPasswordForm() {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -45,28 +35,27 @@ function LoginForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       identity: "",
-      password: "",
     },
   });
 
   const { isSubmitting } = form.formState;
-  const [signInMutation, { loading }] = useMutation(mutations.signIn);
+  const [forgotPasswordMutation, { loading }] = useMutation(
+    mutations.forgotPassword
+  );
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const { data }: SignInResponse = await signInMutation({
+      const { data }: ForgotPasswordResponse = await forgotPasswordMutation({
         variables: values,
       });
-      if (data?.signIn.token) {
-        setCookie(AUTH_TOKEN, data?.signIn.token, {
-          maxAge: AUTH_TOKEN_MAX_AGE,
-        });
-        router.push("/");
-        router.refresh();
+      if (data?.forgotPassword.message) {
         toast({
-          description: `Successfully signed in !!`,
+          description: data?.forgotPassword.message,
           variant: "success",
         });
+        setTimeout(() => {
+          router.push("/resetPassword");
+        }, 5000);
       }
     } catch (error) {
       toast({
@@ -84,25 +73,9 @@ function LoginForm() {
           name="identity"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email or Mobile</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="johndoe@gmail.com / 0123456789"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input placeholder="**********" {...field} />
+                <Input placeholder="johndoe@gmail.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -116,10 +89,10 @@ function LoginForm() {
           {isSubmitting || loading ? (
             <>
               <Loader2 className="animate-spin mx-auto" size={20} />
-              Signing in...
+              Sending OTP...
             </>
           ) : (
-            <>Sign In</>
+            <>Get OTP</>
           )}
         </Button>
       </form>
@@ -127,4 +100,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default ForgotPasswordForm;

@@ -38,3 +38,12 @@ export const signIn = gql`
     }
   }
 `;
+
+// Send OTP email to given identity (Public)
+export const forgotPassword = gql`
+  mutation ForgotPassword($identity: String!) {
+    forgotPassword(identity: $identity) {
+      message
+    }
+  }
+`;

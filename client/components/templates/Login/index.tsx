@@ -22,14 +22,24 @@ const Login = () => {
       {/* Form */}
       <div className="w-[90%] md:w-[50%] xl:w-[40%]">
         <LoginForm />
-        <div className="mt-4">
-          Don&apos;t have an account ?{" "}
-          <Link
-            className="text-pink hover:underline underline-offset-2"
-            href={"/register"}
-          >
-            Sign Up
-          </Link>
+        <div className="mt-4 flex items-center justify-between">
+          <div>
+            Don&apos;t have an account ?{" "}
+            <Link
+              className="text-pink hover:underline underline-offset-2"
+              href={"/register"}
+            >
+              Sign Up
+            </Link>
+          </div>
+          <div>
+            <Link
+              className="text-pink hover:underline underline-offset-2"
+              href={"/forgotPassword"}
+            >
+              Forgot Password ?
+            </Link>
+          </div>
         </div>
         {/* Seprator */}
         <Separator>or continue with</Separator>
