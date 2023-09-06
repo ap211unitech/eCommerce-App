@@ -39,7 +39,7 @@ const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const newUser = new User_1.default(Object.assign(Object.assign({}, payload), { password: hashedPassword }));
     yield newUser.save();
     // Generate token
-    const token = (0, helpers_1.generateToken)(newUser._id);
+    const token = (0, helpers_1.generateToken)(newUser._id, newUser.role);
     return {
         _id: newUser._id,
         name: newUser.name,
@@ -71,7 +71,7 @@ const signIn = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         return (0, errorHandler_1.errorHandler)(Object.assign(Object.assign({}, error_1.INVALID_CREDENTIALS), { type: errorTypes_1.APOLLO_ERROR }));
     }
     // Generate token
-    const token = (0, helpers_1.generateToken)(user._id);
+    const token = (0, helpers_1.generateToken)(user._id, user.role);
     return {
         _id: user._id,
         name: user.name,

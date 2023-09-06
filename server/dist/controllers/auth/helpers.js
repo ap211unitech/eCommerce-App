@@ -26,10 +26,9 @@ const Otp_1 = __importDefault(require("../../models/Otp"));
 const mail_1 = require("../../utils/mail");
 dotenv_1.default.config({ path: __dirname + "/../../.env" });
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "jwtsecret";
-/********************************** Helper Functions **********************************/
 // Generate Token
-const generateToken = (id) => {
-    const payload = { id };
+const generateToken = (id, role) => {
+    const payload = { id, role };
     return jsonwebtoken_1.default.sign(payload, JWT_SECRET_KEY, { expiresIn: "1d" });
 };
 exports.generateToken = generateToken;

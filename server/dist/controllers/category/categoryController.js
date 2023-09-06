@@ -53,9 +53,10 @@ const createCategory = (payload) => __awaiter(void 0, void 0, void 0, function* 
     }
     // Create Slug
     const slug = (0, slugify_1.slugify)([categoryName]);
-    // Check if category exists already
+    // Check if category exists already it it has no parent category
+    // It means parent catagory should always be unique
     const categoryExists = yield Category_1.default.findOne({ slug });
-    if (categoryExists) {
+    if (categoryExists && !parentId) {
         return (0, errorHandler_1.errorHandler)(Object.assign(Object.assign({}, error_1.CATEGORY_ALREADY_EXISTS), { type: errorTypes_1.APOLLO_ERROR }));
     }
     // Check if Valid ParentId is given
