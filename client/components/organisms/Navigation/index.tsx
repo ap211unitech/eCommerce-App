@@ -77,7 +77,6 @@ const getUserDetail = async () => {
     const user: UserDetailResponse = data.getUserDetail;
     return { user };
   } catch (error) {
-    console.log(error);
     return { user: null };
   }
 };

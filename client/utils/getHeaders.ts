@@ -2,10 +2,16 @@ import { cookies, headers } from "next/headers";
 
 import { AUTH_TOKEN } from "@/config/storage";
 
+export const dynamic = "force-dynamic";
+
 export const getHeaders = () => {
-  const token = cookies().get(AUTH_TOKEN)?.value;
-  return {
-    ...headers,
-    authorization: token ? `Bearer ${token}` : "",
-  };
+  try {
+    const token = cookies().get(AUTH_TOKEN)?.value;
+    return {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    };
+  } catch (error) {
+    return {};
+  }
 };
