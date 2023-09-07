@@ -40,6 +40,8 @@ exports.userTypes = (0, apollo_server_express_1.gql) `
 
     signIn(identity: String!, password: String!): User!
 
+    signInWithGoogle(token: String!): User!
+
     forgotPassword(identity: String!): ForgotPassword!
 
     resetPassword(

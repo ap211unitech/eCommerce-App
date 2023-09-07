@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.INVALID_FILTERS = exports.NO_SUCH_CATEGORY_EXISTS = exports.INVALID_PARENT_CATEGORY = exports.CATEGORY_ALREADY_EXISTS = exports.UNAUTHORIZED_REQUEST = exports.NO_SUCH_ADDRESS_EXISTS = exports.INCORRECT_OTP = exports.OTP_EXPIRED = exports.NO_OTP_FOUND = exports.NO_SUCH_USER_EXISTS = exports.INVALID_CREDENTIALS = exports.USER_ALREADY_EXISTS = void 0;
+exports.INVALID_FILTERS = exports.NO_SUCH_CATEGORY_EXISTS = exports.INVALID_PARENT_CATEGORY = exports.CATEGORY_ALREADY_EXISTS = exports.UNAUTHORIZED_REQUEST = exports.NO_SUCH_ADDRESS_EXISTS = exports.INCORRECT_OTP = exports.OTP_EXPIRED = exports.NO_OTP_FOUND = exports.NO_SUCH_USER_EXISTS = exports.INVALID_GOOGLE_TOKEN = exports.INVALID_CREDENTIALS = exports.USER_ALREADY_EXISTS = void 0;
 exports.USER_ALREADY_EXISTS = {
     message: "User already exists",
     code: "USER_ALREADY_EXISTS",
@@ -8,6 +8,10 @@ exports.USER_ALREADY_EXISTS = {
 exports.INVALID_CREDENTIALS = {
     message: "Invalid Credentials",
     code: "INVALID_CREDENTIALS",
+};
+exports.INVALID_GOOGLE_TOKEN = {
+    message: "Invalid Google token found. Please retry.",
+    code: "INVALID_GOOGLE_TOKEN",
 };
 exports.NO_SUCH_USER_EXISTS = {
     message: "No such user exists",

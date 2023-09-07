@@ -26,6 +26,9 @@ exports.userResolvers = {
         signIn: (_, payload) => __awaiter(void 0, void 0, void 0, function* () {
             return yield (0, authController_1.signIn)(payload);
         }),
+        signInWithGoogle: (_, payload) => __awaiter(void 0, void 0, void 0, function* () {
+            return yield (0, authController_1.signInWithGoogle)(payload);
+        }),
         forgotPassword: (_, payload) => __awaiter(void 0, void 0, void 0, function* () {
             return yield (0, authController_1.forgotPassword)(payload);
         }),

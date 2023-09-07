@@ -12,8 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.convertToVendor = exports.getUserDetail = exports.resetPassword = exports.forgotPassword = exports.signIn = exports.signUp = void 0;
+exports.convertToVendor = exports.getUserDetail = exports.resetPassword = exports.forgotPassword = exports.signInWithGoogle = exports.signIn = exports.signUp = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const google_auth_library_1 = require("google-auth-library");
+const uuid_1 = require("uuid");
 const index_1 = require("../../validators/index");
 const error_1 = require("../../constants/error");
 const errorTypes_1 = require("../../constants/errorTypes");
@@ -21,6 +23,7 @@ const errorHandler_1 = require("../../utils/errorHandler");
 const helpers_1 = require("./helpers");
 const User_1 = __importDefault(require("../../models/User"));
 const mail_1 = require("../../utils/mail");
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 // @Desc    Register New user through form data
 // @Access  Public
 const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -86,6 +89,69 @@ const signIn = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     };
 });
 exports.signIn = signIn;
+// @Desc    Create User/Login User through google token
+// @Access  Public
+const signInWithGoogle = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const googleClient = new google_auth_library_1.OAuth2Client(GOOGLE_CLIENT_ID);
+    // Google Token
+    const { token: idToken } = payload;
+    const response = yield googleClient.verifyIdToken({
+        idToken,
+        audience: GOOGLE_CLIENT_ID,
+    });
+    const googlePayload = response.getPayload();
+    if (!googlePayload) {
+        return (0, errorHandler_1.errorHandler)(Object.assign(Object.assign({}, error_1.INVALID_GOOGLE_TOKEN), { type: errorTypes_1.APOLLO_ERROR }));
+    }
+    const { name, email } = googlePayload;
+    // Check if user exists
+    const user = yield User_1.default.findOne({ email });
+    if (user) {
+        // Generate token
+        const token = (0, helpers_1.generateToken)(user._id, user.role);
+        return {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            mobile: user.mobile,
+            role: user.role,
+            // @ts-ignore
+            createdAt: user.createdAt,
+            // @ts-ignore
+            updatedAt: user.updatedAt,
+            token,
+        };
+    }
+    else {
+        // Generate random password
+        const password = (0, uuid_1.v4)();
+        // Hash Password
+        const hashedPassword = yield (0, helpers_1.hashData)(password);
+        const userData = {
+            name,
+            email,
+            password: hashedPassword,
+            mobile: "0000000000",
+        };
+        const newUser = new User_1.default(Object.assign({}, userData));
+        yield newUser.save();
+        // Generate token
+        const token = (0, helpers_1.generateToken)(newUser._id, newUser.role);
+        return {
+            _id: newUser._id,
+            name: newUser.name,
+            email: newUser.email,
+            mobile: newUser.mobile,
+            role: newUser.role,
+            // @ts-ignore
+            createdAt: newUser.createdAt,
+            // @ts-ignore
+            updatedAt: newUser.updatedAt,
+            token,
+        };
+    }
+});
+exports.signInWithGoogle = signInWithGoogle;
 // @Desc    Forgot Password (Sending OTP to email/mobile)
 // @Access  Public
 const forgotPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
