@@ -39,6 +39,22 @@ export const signIn = gql`
   }
 `;
 
+// Login/Create user with Google (Public)
+export const signInWithGoogle = gql`
+  mutation SignInWithGoogle($token: String!) {
+    signInWithGoogle(token: $token) {
+      _id
+      name
+      email
+      mobile
+      role
+      token
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
 // Send OTP email to given identity (Public)
 export const forgotPassword = gql`
   mutation ForgotPassword($identity: String!) {

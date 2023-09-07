@@ -1,5 +1,4 @@
 import { LogIn } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import GoogleAuthentication from "@/components/atoms/googleAuth";
@@ -43,15 +42,7 @@ const Login = () => {
         </div>
         {/* Seprator */}
         <Separator>or continue with</Separator>
-        <GoogleAuthentication>
-          <Image
-            src="https://img.freepik.com/free-icon/search_318-265146.jpg?q=10&h=200"
-            alt="Google icon"
-            width="20"
-            height="20"
-          />
-          <span className="ml-2">Sign In with Google</span>{" "}
-        </GoogleAuthentication>
+        <GoogleAuthentication type="signIn" />
       </div>
     </div>
   );
