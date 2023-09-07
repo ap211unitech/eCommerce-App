@@ -22,31 +22,9 @@ import { useToast } from "@/components/atoms/use-toast";
 import { FORGOT_PASSWORD_EMAIL } from "@/config/storage";
 import * as mutations from "@/graphql/mutations";
 import { getErrorMessage } from "@/utils";
+import { resetPasswordFormSchema } from "@/validations";
 
 import { ResetPasswordResponse } from "./types";
-
-const formSchema = z
-  .object({
-    identity: z.string().email(),
-    otp: z
-      .string()
-      .min(4, { message: "Password must be 4 digits long" })
-      .max(4, { message: "Password must be 4 digits long" }),
-    password: z
-      .string()
-      .trim()
-      .min(6, { message: "Password must be at least 6 charcters long" }),
-    confirmPassword: z.string(),
-  })
-  .refine(
-    (data) => {
-      return data.password === data.confirmPassword;
-    },
-    {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
-    }
-  );
 
 function ForgotPasswordForm() {
   const { toast } = useToast();
@@ -54,8 +32,8 @@ function ForgotPasswordForm() {
 
   const identity = getCookie(FORGOT_PASSWORD_EMAIL);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof resetPasswordFormSchema>>({
+    resolver: zodResolver(resetPasswordFormSchema),
     defaultValues: {
       identity,
       otp: "",
@@ -69,7 +47,7 @@ function ForgotPasswordForm() {
     mutations.resetPassword
   );
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof resetPasswordFormSchema>) {
     try {
       const { data }: ResetPasswordResponse = await resetPasswordMutation({
         variables: { ...values, newPassword: values.password },

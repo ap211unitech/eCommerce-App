@@ -23,19 +23,16 @@ import { FORGOT_PASSWORD_EMAIL_MAX_AGE } from "@/config/defaults";
 import { FORGOT_PASSWORD_EMAIL } from "@/config/storage";
 import * as mutations from "@/graphql/mutations";
 import { getErrorMessage } from "@/utils";
+import { forgotPasswordFormSchema } from "@/validations";
 
 import { ForgotPasswordResponse } from "./types";
-
-const formSchema = z.object({
-  identity: z.string().email(),
-});
 
 function ForgotPasswordForm() {
   const { toast } = useToast();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof forgotPasswordFormSchema>>({
+    resolver: zodResolver(forgotPasswordFormSchema),
     defaultValues: {
       identity: "",
     },
@@ -46,7 +43,7 @@ function ForgotPasswordForm() {
     mutations.forgotPassword
   );
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof forgotPasswordFormSchema>) {
     try {
       const { data }: ForgotPasswordResponse = await forgotPasswordMutation({
         variables: values,

@@ -23,26 +23,16 @@ import { AUTH_TOKEN_MAX_AGE } from "@/config/defaults";
 import { AUTH_TOKEN } from "@/config/storage";
 import * as mutations from "@/graphql/mutations";
 import { getErrorMessage } from "@/utils";
+import { signInFormSchema } from "@/validations";
 
 import { SignInResponse } from "./types";
-
-const formSchema = z.object({
-  identity: z
-    .string()
-    .trim()
-    .nonempty({ message: "Please enter a valid email or mobile" }),
-  password: z
-    .string()
-    .trim()
-    .min(6, { message: "Password must be at least 6 charcters long" }),
-});
 
 function LoginForm() {
   const { toast } = useToast();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signInFormSchema>>({
+    resolver: zodResolver(signInFormSchema),
     defaultValues: {
       identity: "",
       password: "",
@@ -52,7 +42,7 @@ function LoginForm() {
   const { isSubmitting } = form.formState;
   const [signInMutation, { loading }] = useMutation(mutations.signIn);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof signInFormSchema>) {
     try {
       const { data }: SignInResponse = await signInMutation({
         variables: values,
