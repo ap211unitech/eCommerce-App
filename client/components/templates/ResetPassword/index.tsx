@@ -1,5 +1,7 @@
 import { KeyRound } from "lucide-react";
 
+import ResetPasswordForm from "./form";
+
 const ResetPassword = () => {
   return (
     <div className="flex flex-col items-center justify-center m-4 pb-10 pt-2">
@@ -14,7 +16,7 @@ const ResetPassword = () => {
       </h3>
       {/* Form */}
       <div className="w-[90%] md:w-[50%] xl:w-[40%]">
-        {/* <ForgotPasswordForm /> */}
+        <ResetPasswordForm />
       </div>
     </div>
   );

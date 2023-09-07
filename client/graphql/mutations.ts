@@ -47,3 +47,16 @@ export const forgotPassword = gql`
     }
   }
 `;
+
+// Reset password for given identity and OTP (Public)
+export const resetPassword = gql`
+  mutation ResetPassword(
+    $identity: String!
+    $otp: String!
+    $newPassword: String!
+  ) {
+    resetPassword(identity: $identity, otp: $otp, newPassword: $newPassword) {
+      message
+    }
+  }
+`;

@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 import { NextRequest, NextResponse } from "next/server";
 
-import { AUTH_TOKEN } from "./config/storage";
+import { AUTH_TOKEN, FORGOT_PASSWORD_EMAIL } from "./config/storage";
 
 type DecodedResponse = {
   id: string;
@@ -19,7 +19,7 @@ export default function middleware(req: NextRequest, res: NextResponse) {
     "/login",
     "/register",
     "/forgotPassword",
-    "resetPassword",
+    "/resetPassword",
   ];
 
   const isAdminRoute = url.startsWith("/admin");
@@ -58,6 +58,12 @@ export default function middleware(req: NextRequest, res: NextResponse) {
     // Admin & Vendor (and some more protected routes like profile, orders etc.) routes not allowed if there is no token
     if (isAdminRoute || isVendorRoute) {
       return NextResponse.redirect(new URL("/login", req.url));
+    }
+
+    // Check if it's resetPassword route and there is no email
+    const forgotPasswordEmail = req.cookies.get(FORGOT_PASSWORD_EMAIL)?.value;
+    if (!forgotPasswordEmail && url === "/resetPassword") {
+      return NextResponse.redirect(new URL("/forgotPassword", req.url));
     }
   }
 }

@@ -2,6 +2,7 @@
 
 import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { setCookie } from "cookies-next";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -18,6 +19,8 @@ import {
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
 import { useToast } from "@/components/atoms/use-toast";
+import { FORGOT_PASSWORD_EMAIL_MAX_AGE } from "@/config/defaults";
+import { FORGOT_PASSWORD_EMAIL } from "@/config/storage";
 import * as mutations from "@/graphql/mutations";
 import { getErrorMessage } from "@/utils";
 
@@ -52,6 +55,9 @@ function ForgotPasswordForm() {
         toast({
           description: data?.forgotPassword.message,
           variant: "success",
+        });
+        setCookie(FORGOT_PASSWORD_EMAIL, values.identity, {
+          maxAge: FORGOT_PASSWORD_EMAIL_MAX_AGE,
         });
         setTimeout(() => {
           router.push("/resetPassword");
