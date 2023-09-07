@@ -1,4 +1,6 @@
 import bcryptjs from "bcryptjs";
+import { OAuth2Client } from "google-auth-library";
+import { v4 as uuidv4 } from "uuid";
 
 import {
   AuthID,
@@ -6,6 +8,7 @@ import {
   ForgotPasswordPayload,
   ResetPasswordPayload,
   SignInPayload,
+  SignInWithGooglePayload,
   SignUpPayload,
 } from "../../types/Auth";
 import {
@@ -15,6 +18,7 @@ import {
 } from "../../validators/index";
 import {
   INVALID_CREDENTIALS,
+  INVALID_GOOGLE_TOKEN,
   NO_SUCH_USER_EXISTS,
   USER_ALREADY_EXISTS,
 } from "../../constants/error";
@@ -25,6 +29,8 @@ import { generateToken, hashData, sendOTP, verifyOTP } from "./helpers";
 
 import User from "../../models/User";
 import { vendorRequestEmail } from "../../utils/mail";
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 // @Desc    Register New user through form data
 // @Access  Public
@@ -100,6 +106,81 @@ export const signIn = async (payload: SignInPayload) => {
     updatedAt: user.updatedAt,
     token,
   };
+};
+
+// @Desc    Create User/Login User through google token
+// @Access  Public
+export const signInWithGoogle = async (payload: SignInWithGooglePayload) => {
+  const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+  // Google Token
+  const { token: idToken } = payload;
+
+  const response = await googleClient.verifyIdToken({
+    idToken,
+    audience: GOOGLE_CLIENT_ID,
+  });
+
+  const googlePayload = response.getPayload();
+
+  if (!googlePayload) {
+    return errorHandler({ ...INVALID_GOOGLE_TOKEN, type: APOLLO_ERROR });
+  }
+
+  const { name, email } = googlePayload;
+
+  // Check if user exists
+  const user = await User.findOne({ email });
+
+  if (user) {
+    // Generate token
+    const token = generateToken(user._id, user.role);
+
+    return {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      mobile: user.mobile,
+      role: user.role,
+      // @ts-ignore
+      createdAt: user.createdAt,
+      // @ts-ignore
+      updatedAt: user.updatedAt,
+      token,
+    };
+  } else {
+    // Generate random password
+    const password = uuidv4();
+
+    // Hash Password
+    const hashedPassword = await hashData(password);
+
+    const userData = {
+      name,
+      email,
+      password: hashedPassword,
+      mobile: "0000000000",
+    };
+
+    const newUser = new User({ ...userData });
+    await newUser.save();
+
+    // Generate token
+    const token = generateToken(newUser._id, newUser.role);
+
+    return {
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      mobile: newUser.mobile,
+      role: newUser.role,
+      // @ts-ignore
+      createdAt: newUser.createdAt,
+      // @ts-ignore
+      updatedAt: newUser.updatedAt,
+      token,
+    };
+  }
 };
 
 // @Desc    Forgot Password (Sending OTP to email/mobile)

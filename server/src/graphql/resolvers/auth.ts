@@ -3,6 +3,7 @@ import {
   ForgotPasswordPayload,
   ResetPasswordPayload,
   SignInPayload,
+  SignInWithGooglePayload,
   SignUpPayload,
 } from "../../types/Auth";
 import {
@@ -12,6 +13,7 @@ import {
   resetPassword,
   getUserDetail,
   convertToVendor,
+  signInWithGoogle,
 } from "../../controllers/auth/authController";
 
 import { isAuthenticated } from "../../middlewares/authMiddleware";
@@ -29,6 +31,9 @@ export const userResolvers = {
     },
     signIn: async (_: any, payload: SignInPayload) => {
       return await signIn(payload);
+    },
+    signInWithGoogle: async (_: any, payload: SignInWithGooglePayload) => {
+      return await signInWithGoogle(payload);
     },
     forgotPassword: async (_: any, payload: ForgotPasswordPayload) => {
       return await forgotPassword(payload);

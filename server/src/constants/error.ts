@@ -8,6 +8,11 @@ export const INVALID_CREDENTIALS = {
   code: "INVALID_CREDENTIALS",
 };
 
+export const INVALID_GOOGLE_TOKEN = {
+  message: "Invalid Google token found. Please retry.",
+  code: "INVALID_GOOGLE_TOKEN",
+};
+
 export const NO_SUCH_USER_EXISTS = {
   message: "No such user exists",
   code: "NO_SUCH_USER_EXISTS",

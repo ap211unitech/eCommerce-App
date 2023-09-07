@@ -38,6 +38,8 @@ export const userTypes = gql`
 
     signIn(identity: String!, password: String!): User!
 
+    signInWithGoogle(token: String!): User!
+
     forgotPassword(identity: String!): ForgotPassword!
 
     resetPassword(

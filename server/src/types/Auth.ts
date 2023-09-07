@@ -10,6 +10,10 @@ export type SignInPayload = {
   identity: string;
 };
 
+export type SignInWithGooglePayload = {
+  token: string;
+};
+
 export type ForgotPasswordPayload = {
   identity: string;
 };
