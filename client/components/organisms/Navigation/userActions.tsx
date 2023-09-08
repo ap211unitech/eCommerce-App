@@ -51,7 +51,8 @@ export const UserActions = ({ user }: Props) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
-                <User />
+                <User strokeWidth={2.5} />
+                <span className="ml-1 lg:hidden">Account</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">

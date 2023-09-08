@@ -15,7 +15,7 @@ const Register = () => {
         Register
       </div>
       {/* Secondary header */}
-      <h3 className="mt-6 text-slate-400 font-semibold text-xl tracking-wide">
+      <h3 className="mt-6 text-slate-400 font-semibold text-xl tracking-wide text-center">
         Please create an account and get youself the best products from here
       </h3>
       {/* Form */}

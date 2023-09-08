@@ -90,9 +90,17 @@ const Navigation = async () => {
             </Link>
           </div>
         </div>
-        <div className="md:flex xl:flex-row xl:justify-between xl:items-center px-8 gap-4">
+        <div className="lg:flex xl:flex-row xl:justify-between xl:items-center px-8 gap-4 w-full lg:w-auto">
           <SearchBar />
-          <div className="flex gap-4 justify-center items-center mt-4 md:mt-0">
+          <div className="flex gap-4 justify-center items-center mt-4 lg:mt-0 flex-wrap-reverse">
+            <Link href={`/categories/explore`} className="xl:hidden">
+              <Button>
+                <span>Explore</span>
+                <span>
+                  <ChevronsRight size={20} />
+                </span>
+              </Button>
+            </Link>
             <UserActions user={user} />
             <Button className="flex items-center gap-1 relative">
               <ShoppingCartIcon />

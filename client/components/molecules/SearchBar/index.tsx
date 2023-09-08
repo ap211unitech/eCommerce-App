@@ -15,7 +15,7 @@ const SearchBar = ({ isFocused = false }: Props) => {
 
   return (
     <div
-      className={`flex items-center w-full md:w-[400px] rounded-md  ${
+      className={`flex items-center w-full lg:w-[400px] rounded-md  ${
         isInputFocused ? "ring-[1.3px] ring-pink" : ""
       }`}
     >
