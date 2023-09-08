@@ -13,11 +13,11 @@ const ProductNotFound = () => {
           No such product exists
         </div>
         {/* Secondary header */}
-        <h3 className="mt-6 text-slate-400 font-semibold text-xl tracking-wide">
+        <h3 className="mt-6 text-slate-400 font-semibold text-xl tracking-wide text-center">
           There is no such product. You need to explore products here
         </h3>
         {/* Search Bar */}
-        <div className="my-10">
+        <div className="my-10 w-full lg:w-auto">
           <SearchBar isFocused />
           {/* Buttons */}
           <div className="my-4 flex flex-1 gap-4">
