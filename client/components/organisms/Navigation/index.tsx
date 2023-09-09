@@ -92,7 +92,7 @@ const Navigation = async () => {
         </div>
         <div className="lg:flex xl:flex-row xl:justify-between xl:items-center px-8 gap-4 w-full lg:w-auto">
           <SearchBar />
-          <div className="flex gap-4 justify-center items-center mt-4 lg:mt-0 flex-wrap-reverse">
+          <div className="flex gap-4 justify-center items-center mt-4 lg:mt-0 flex-wrap-reverse md:flex-nowrap">
             <Link href={`/categories/explore`} className="xl:hidden">
               <Button>
                 <span>Explore</span>
