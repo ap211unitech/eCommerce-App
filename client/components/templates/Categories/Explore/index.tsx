@@ -44,7 +44,7 @@ const ExploreCategories = async () => {
         defaultValue={categories[0].categoryId}
         className="w-full flex gap-4 md:gap-10 flex-1"
       >
-        <TabsList className="flex-col h-full w-1/12">
+        <TabsList className="flex-col h-full w-1/4 md:w-1/5 lg:w-1/6 2xl:w-1/12">
           {categories.map((category) => {
             return (
               <TabsTrigger
@@ -62,7 +62,7 @@ const ExploreCategories = async () => {
             <TabsContent
               value={category.categoryId}
               key={category.categoryId}
-              className="w-11/12 pb-12 -my-6"
+              className="w-3/4 md:w-4/5 lg:w-5/6 2xl:w-11/12 pb-12 -my-6"
             >
               <SubCategories categories={category.children} />
             </TabsContent>
@@ -112,7 +112,7 @@ const SubCategories = ({
                 {category.name}
               </p>
             </Link>
-            <div className="flex gap-x-8 gap-y-4 items-center flex-wrap">
+            <div className="flex gap-x-2 md:gap-x-4 lg:gap-x-8 gap-y-4 items-center flex-wrap">
               <SubCategories categories={category.children} />
             </div>
           </>
