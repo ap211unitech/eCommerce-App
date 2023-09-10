@@ -100,19 +100,20 @@ const SubCategories = ({
                   alt={`${category.name} image`}
                   width={120}
                   height={260}
+                  className="w-[110px] sm:w-auto"
                 />
               )}
               <p
                 className={`${
                   category.children.length > 0
                     ? "font-semibold text-xl pt-6"
-                    : ""
+                    : "w-[110px] text-center"
                 }`}
               >
                 {category.name}
               </p>
             </Link>
-            <div className="flex gap-x-2 md:gap-x-4 lg:gap-x-8 gap-y-4 items-center flex-wrap">
+            <div className="flex gap-x-2 md:gap-x-4 lg:gap-x-8 gap-y-4 items-start flex-wrap">
               <SubCategories categories={category.children} />
             </div>
           </>
