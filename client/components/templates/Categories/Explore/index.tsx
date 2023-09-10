@@ -1,4 +1,6 @@
 import { LayoutGrid } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 import {
   Tabs,
@@ -40,7 +42,7 @@ const ExploreCategories = async () => {
       </div>
       <Tabs
         defaultValue={categories[0].categoryId}
-        className="w-full flex gap-4 flex-1"
+        className="w-full flex gap-4 md:gap-10 flex-1"
       >
         <TabsList className="flex-col h-full w-1/12">
           {categories.map((category) => {
@@ -60,46 +62,63 @@ const ExploreCategories = async () => {
             <TabsContent
               value={category.categoryId}
               key={category.categoryId}
-              className="w-11/12 my-0"
+              className="w-11/12 pb-12 -my-6"
             >
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
-              Explore categories {category.name}
+              <SubCategories categories={category.children} />
             </TabsContent>
           );
         })}
       </Tabs>
     </div>
+  );
+};
+
+const SubCategories = ({
+  categories,
+}: {
+  categories: CategoriesResponse[];
+}) => {
+  return (
+    <>
+      {categories.map((category) => {
+        return (
+          <>
+            <Link
+              href={`/products?category=${category.categoryId}`}
+              key={category.categoryId}
+              className={`${
+                category.children.length === 0
+                  ? "flex flex-col justify-center items-center gap-2 mt-4"
+                  : "inline-block"
+              } hover:opacity-70`}
+            >
+              {category.children.length === 0 && (
+                <Image
+                  src={
+                    "https://thumbs.dreamstime.com/b/blue-jeans-isolated-white-34440719.jpg"
+                  }
+                  alt={`${category.name} image`}
+                  width={120}
+                  height={260}
+                />
+              )}
+              <p
+                className={`${
+                  category.children.length > 0
+                    ? "font-semibold text-xl pt-6"
+                    : ""
+                }`}
+              >
+                {category.name}
+              </p>
+            </Link>
+            <div className="flex gap-x-8 gap-y-4 items-center flex-wrap">
+              <SubCategories categories={category.children} />
+            </div>
+          </>
+        );
+      })}
+    </>
   );
 };
 
