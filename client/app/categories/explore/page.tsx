@@ -1,5 +1,11 @@
+import ExploreCategoriesTemplate from "@/components/templates/Categories/Explore";
+
 const ExploreCategories = () => {
-  return <div>Explore categories...</div>;
+  return (
+    <>
+      <ExploreCategoriesTemplate />
+    </>
+  );
 };
 
 export default ExploreCategories;
