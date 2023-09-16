@@ -69,11 +69,26 @@ export const theme = {
         "0%": { opacity: 0, transform: "translateY(5%)" },
         "100%": { opacity: 1, transform: "translateY(0%)" },
       },
+      heartAnimationFill: {
+        "0%": {
+          scale: 0,
+          fill: "transparent",
+        },
+        "50%": {
+          scale: 0.5,
+          fill: "violet",
+        },
+        "100%": {
+          scale: 1,
+          fill: "red",
+        },
+      },
     },
     animation: {
       "accordion-down": "accordion-down 0.2s ease-out",
       "accordion-up": "accordion-up 0.2s ease-out",
       fadeIn: "fadeIn 0.2s ease-in",
+      heartAnimationFill: "heartAnimationFill 0.2s ease forwards",
     },
   },
 };
