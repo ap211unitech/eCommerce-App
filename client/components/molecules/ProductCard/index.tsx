@@ -11,7 +11,7 @@ const ProductCard = () => {
 
   const handleWishList = () => {
     if (heartRef.current) {
-      heartRef.current.classList.add("animate-heartAnimationFill");
+      heartRef.current.classList.toggle("animate-heartAnimationFill");
     }
   };
 
