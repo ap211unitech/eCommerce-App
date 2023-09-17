@@ -42,10 +42,16 @@ const productSchema = new mongoose.Schema<IProductSchema>(
       trim: true,
       required: [true, "Product description can not be empty"],
     },
+    gallery: {
+      type: [String],
+      required: true,
+    },
+    variations: {
+      type: [String],
+      required: true,
+    },
     specifications: {},
-    gallery: [{ type: String }],
     filters: {},
-    variations: [{ type: String }],
     price: {
       type: Number,
       required: [true, "Product Price can not be empty"],
