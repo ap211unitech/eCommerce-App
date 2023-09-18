@@ -59,7 +59,6 @@ const productSchema = new mongoose.Schema<IProductSchema>(
     avaliableQuantity: {
       type: Number,
       required: true,
-      default: 10,
     },
     discount: {
       type: Number,
