@@ -62,3 +62,28 @@ export const INVALID_FILTERS = {
   message: "Invalid filters",
   code: "INVALID_FILTERS",
 };
+
+export const PRODUCT_ALREADY_EXISTS = {
+  message: "Product already exists",
+  code: "PRODUCT_ALREADY_EXISTS",
+};
+
+export const PRODUCT_NAME_TOO_SHORT = {
+  message: "Product name is too short",
+  code: "PRODUCT_NAME_TOO_SHORT",
+};
+
+export const PRODUCT_DESCRIPTION_TOO_SHORT = {
+  message: "Product description is too short",
+  code: "PRODUCT_DESCRIPTION_TOO_SHORT",
+};
+
+export const INVALID_SPECIFICATIONS = {
+  message: "Invalid specifications",
+  code: "INVALID_SPECIFICATIONS",
+};
+
+export const PRODUCT_AVALIABLE_QUANTITY = {
+  message: "Available quantity must be greater than 1",
+  code: "PRODUCT_AVALIABLE_QUANTITY",
+};

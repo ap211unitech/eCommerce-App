@@ -44,7 +44,7 @@ const productSchema = new mongoose.Schema<IProductSchema>(
     },
     gallery: {
       type: [String],
-      required: true,
+      required: [true, "Product images(s) must be given"],
     },
     variations: {
       type: [String],
@@ -63,6 +63,7 @@ const productSchema = new mongoose.Schema<IProductSchema>(
     discount: {
       type: Number,
       default: 0,
+      required: true,
     },
     rating: {
       type: Number,
