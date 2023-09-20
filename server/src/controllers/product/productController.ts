@@ -18,7 +18,7 @@ import { errorHandler } from "../../utils/errorHandler";
 
 import Category from "../../models/Category";
 import Product from "../../models/Product";
-import { isValidJSON } from "./helpers";
+import { getResponse, isValidJSON } from "./helpers";
 
 // @Desc    Get all products
 // @Access  Public
@@ -26,34 +26,7 @@ export const getAllProducts = async () => {
   const products = await Product.find({}).populate(
     "categoryId createdBy updatedBy"
   );
-  return products.map((product) => ({
-    productId: product._id,
-    category: {
-      // @ts-ignore
-      categoryId: product.categoryId._id,
-      // @ts-ignore
-      ...product.categoryId._doc,
-    },
-    name: product.name,
-    slug: product.slug,
-    description: product.description,
-    gallery: product.gallery,
-    variations: product.variations,
-    specifications: product.specifications,
-    filters: product.filters,
-    price: product.price,
-    avaliableQuantity: product.avaliableQuantity,
-    discount: product.discount,
-    rating: product.rating,
-    isFeatured: product.isFeatured,
-    isArchived: product.isArchived,
-    createdBy: product.createdBy,
-    updatedBy: product.updatedBy,
-    // @ts-ignore
-    createdAt: product.createdAt,
-    // @ts-ignore
-    updatedAt: product.updatedAt,
-  }));
+  return products.map((product) => getResponse(product));
 };
 
 // @Desc    Add product through form data
@@ -152,32 +125,5 @@ export const createProduct = async (payload: CreateProductPayload & AuthID) => {
   // Save product
   await product.save();
 
-  return {
-    productId: product._id,
-    category: {
-      // @ts-ignore
-      categoryId: product.categoryId._id,
-      // @ts-ignore
-      ...product.categoryId._doc,
-    },
-    name: product.name,
-    slug: product.slug,
-    description: product.description,
-    gallery: product.gallery,
-    variations: product.variations,
-    specifications: product.specifications,
-    filters: product.filters,
-    price: product.price,
-    avaliableQuantity: product.avaliableQuantity,
-    discount: product.discount,
-    rating: product.rating,
-    isFeatured: product.isFeatured,
-    isArchived: product.isArchived,
-    createdBy: product.createdBy,
-    updatedBy: product.updatedBy,
-    // @ts-ignore
-    createdAt: product.createdAt,
-    // @ts-ignore
-    updatedAt: product.updatedAt,
-  };
+  return getResponse(product);
 };
