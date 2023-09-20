@@ -9,7 +9,7 @@ import NavigationBar from "@/components/organisms/Navigation";
 import { ApolloWrapper } from "@/lib/apollo-client";
 import { ThemeProvider } from "@/providers";
 
-const inter = Inter({ subsets: ["latin-ext"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title:
