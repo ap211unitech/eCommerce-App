@@ -10,3 +10,7 @@ export type CreateProductPayload = {
   avaliableQuantity: number;
   discount: number; // 0-100 % in number
 };
+
+export type DeleteProductPayload = {
+  productId: string;
+};

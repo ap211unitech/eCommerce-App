@@ -92,3 +92,8 @@ export const INVALID_PRODUCT_VARIATION = {
   message: "Invalid product variation",
   code: "INVALID_PRODUCT_VARIATION",
 };
+
+export const NO_SUCH_PRODUCT_EXISTS = {
+  message: "No such product exists",
+  code: "NO_SUCH_PRODUCT_EXISTS",
+};

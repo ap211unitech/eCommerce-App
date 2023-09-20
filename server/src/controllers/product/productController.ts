@@ -1,5 +1,8 @@
 import { AuthID } from "../../types/Auth";
-import { CreateProductPayload } from "../../types/Product";
+import {
+  CreateProductPayload,
+  DeleteProductPayload,
+} from "../../types/Product";
 
 import {
   NO_SUCH_CATEGORY_EXISTS,
@@ -10,6 +13,9 @@ import {
   INVALID_FILTERS,
   PRODUCT_AVALIABLE_QUANTITY,
   INVALID_PRODUCT_VARIATION,
+  NO_SUCH_PRODUCT_EXISTS,
+  UNAUTHORIZED_REQUEST,
+  NO_SUCH_USER_EXISTS,
 } from "../../constants/error";
 import { APOLLO_ERROR } from "../../constants/errorTypes";
 
@@ -18,6 +24,7 @@ import { errorHandler } from "../../utils/errorHandler";
 
 import Category from "../../models/Category";
 import Product from "../../models/Product";
+import User from "../../models/User";
 import { getResponse, isValidJSON } from "./helpers";
 
 // @Desc    Get all products
@@ -126,4 +133,32 @@ export const createProduct = async (payload: CreateProductPayload & AuthID) => {
   await product.save();
 
   return getResponse(product);
+};
+
+// @Desc    Delete product & it's review through given productId
+// @Access  Private (Admin can delete any product/Vendors can delete thier product only)
+export const deleteProduct = async (payload: DeleteProductPayload & AuthID) => {
+  const { productId, userId } = payload;
+  const user = await User.findById(userId);
+  const product = await Product.findById(productId);
+
+  if (!user) {
+    return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+  }
+
+  if (!product) {
+    return errorHandler({ ...NO_SUCH_PRODUCT_EXISTS, type: APOLLO_ERROR });
+  }
+
+  // If user is vendor, check if product created by that user
+  if (user.role === "vendor") {
+    if (product.createdBy.toString() !== user._id.toString()) {
+      return errorHandler({ ...UNAUTHORIZED_REQUEST, type: APOLLO_ERROR });
+    }
+  }
+
+  // TODO: Delete all it's reviews
+
+  await Product.findByIdAndDelete(productId);
+  return { message: "Product deleted successfully" };
 };

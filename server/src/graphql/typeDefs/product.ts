@@ -23,6 +23,10 @@ export const productTypes = gql`
     updatedAt: String!
   }
 
+  type DeleteProductType {
+    message: String!
+  }
+
   type Query {
     getAllProducts: [Product!]
   }
@@ -40,5 +44,7 @@ export const productTypes = gql`
       avaliableQuantity: Int!
       discount: Int
     ): Product!
+
+    deleteProduct(productId: String!): DeleteProductType!
   }
 `;
