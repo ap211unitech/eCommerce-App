@@ -52,11 +52,11 @@ export const createProduct = async (payload: CreateProductPayload & AuthID) => {
   }
 
   // Minimum 5 words in product name & description
-  if (name.trim().length <= 5) {
+  if (name.trim().split(" ").length <= 5) {
     return errorHandler({ ...PRODUCT_NAME_TOO_SHORT, type: APOLLO_ERROR });
   }
 
-  if (description.trim().length <= 5) {
+  if (description.trim().split(" ").length <= 5) {
     return errorHandler({
       ...PRODUCT_DESCRIPTION_TOO_SHORT,
       type: APOLLO_ERROR,
@@ -76,15 +76,13 @@ export const createProduct = async (payload: CreateProductPayload & AuthID) => {
     return errorHandler({ ...PRODUCT_AVALIABLE_QUANTITY, type: APOLLO_ERROR });
   }
 
-  // TODO: Make filters and specifications required in Product schema
-
   const product = new Product({
     categoryId,
     name,
     slug: productSlug,
     description,
     gallery,
-    variations,
+    variations: variations ?? [],
     specifications,
     filters,
     price,
@@ -93,6 +91,8 @@ export const createProduct = async (payload: CreateProductPayload & AuthID) => {
     createdBy: userId,
     updatedBy: userId,
   });
+
+  product["variations"].push(product._id);
 
   // Save product
   await product.save();

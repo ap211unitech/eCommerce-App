@@ -47,11 +47,23 @@ const productSchema = new mongoose.Schema<IProductSchema>(
       required: [true, "Product images(s) must be given"],
     },
     variations: {
-      type: [String],
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "product",
+          required: true,
+        },
+      ],
       required: true,
     },
-    specifications: {},
-    filters: {},
+    specifications: {
+      type: mongoose.Schema.Types.Mixed,
+      required: true,
+    },
+    filters: {
+      type: mongoose.Schema.Types.Mixed,
+      required: true,
+    },
     price: {
       type: Number,
       required: [true, "Product Price can not be empty"],

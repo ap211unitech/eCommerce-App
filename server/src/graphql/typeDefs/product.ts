@@ -8,7 +8,7 @@ export const productTypes = gql`
       description: String!
       specifications: String!
       gallery: [String!]!
-      filters: String
+      filters: String!
       variations: [String!]
       price: Int!
       avaliableQuantity: Int!
