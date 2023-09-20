@@ -9,6 +9,7 @@ import {
   INVALID_SPECIFICATIONS,
   INVALID_FILTERS,
   PRODUCT_AVALIABLE_QUANTITY,
+  INVALID_PRODUCT_VARIATION,
 } from "../../constants/error";
 import { APOLLO_ERROR } from "../../constants/errorTypes";
 
@@ -18,6 +19,42 @@ import { errorHandler } from "../../utils/errorHandler";
 import Category from "../../models/Category";
 import Product from "../../models/Product";
 import { isValidJSON } from "./helpers";
+
+// @Desc    Get all products
+// @Access  Public
+export const getAllProducts = async () => {
+  const products = await Product.find({}).populate(
+    "categoryId createdBy updatedBy"
+  );
+  return products.map((product) => ({
+    productId: product._id,
+    category: {
+      // @ts-ignore
+      categoryId: product.categoryId._id,
+      // @ts-ignore
+      ...product.categoryId._doc,
+    },
+    name: product.name,
+    slug: product.slug,
+    description: product.description,
+    gallery: product.gallery,
+    variations: product.variations,
+    specifications: product.specifications,
+    filters: product.filters,
+    price: product.price,
+    avaliableQuantity: product.avaliableQuantity,
+    discount: product.discount,
+    rating: product.rating,
+    isFeatured: product.isFeatured,
+    isArchived: product.isArchived,
+    createdBy: product.createdBy,
+    updatedBy: product.updatedBy,
+    // @ts-ignore
+    createdAt: product.createdAt,
+    // @ts-ignore
+    updatedAt: product.updatedAt,
+  }));
+};
 
 // @Desc    Add product through form data
 // @Access  Private (Only vendor/admin can create product)
@@ -76,7 +113,25 @@ export const createProduct = async (payload: CreateProductPayload & AuthID) => {
     return errorHandler({ ...PRODUCT_AVALIABLE_QUANTITY, type: APOLLO_ERROR });
   }
 
-  const product = new Product({
+  // Check if avaliable variations array has valid productId
+  let isProductVariationError = false;
+  for (let index = 0; index < variations.length; index++) {
+    const productId = variations[index];
+    const productVariationExists = await Product.findById(productId);
+    if (!productVariationExists) {
+      isProductVariationError = true;
+      break;
+    }
+  }
+
+  if (isProductVariationError) {
+    return errorHandler({
+      ...INVALID_PRODUCT_VARIATION,
+      type: APOLLO_ERROR,
+    });
+  }
+
+  const product = await new Product({
     categoryId,
     name,
     slug: productSlug,
@@ -90,14 +145,39 @@ export const createProduct = async (payload: CreateProductPayload & AuthID) => {
     discount,
     createdBy: userId,
     updatedBy: userId,
-  });
+  }).populate("categoryId createdBy updatedBy");
 
   product["variations"].push(product._id);
 
   // Save product
   await product.save();
 
-  // Update product and add current product id in varations array
-
-  return `create product controller`;
+  return {
+    productId: product._id,
+    category: {
+      // @ts-ignore
+      categoryId: product.categoryId._id,
+      // @ts-ignore
+      ...product.categoryId._doc,
+    },
+    name: product.name,
+    slug: product.slug,
+    description: product.description,
+    gallery: product.gallery,
+    variations: product.variations,
+    specifications: product.specifications,
+    filters: product.filters,
+    price: product.price,
+    avaliableQuantity: product.avaliableQuantity,
+    discount: product.discount,
+    rating: product.rating,
+    isFeatured: product.isFeatured,
+    isArchived: product.isArchived,
+    createdBy: product.createdBy,
+    updatedBy: product.updatedBy,
+    // @ts-ignore
+    createdAt: product.createdAt,
+    // @ts-ignore
+    updatedAt: product.updatedAt,
+  };
 };

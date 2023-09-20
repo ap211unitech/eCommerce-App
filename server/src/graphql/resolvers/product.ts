@@ -1,12 +1,19 @@
 import { CreateProductPayload } from "../../types/Product";
-import { createProduct } from "../../controllers/product/productController";
+import {
+  createProduct,
+  getAllProducts,
+} from "../../controllers/product/productController";
 
 import { checkIfAllowedRole } from "../../middlewares/customMiddleware";
 
 type UserRoles = "user" | "admin" | "vendor";
 
 export const productResolvers = {
-  Query: {},
+  Query: {
+    getAllProducts: () => {
+      return getAllProducts();
+    },
+  },
   Mutation: {
     createProduct: async (
       _: any,

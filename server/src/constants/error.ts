@@ -87,3 +87,8 @@ export const PRODUCT_AVALIABLE_QUANTITY = {
   message: "Available quantity must be greater than 1",
   code: "PRODUCT_AVALIABLE_QUANTITY",
 };
+
+export const INVALID_PRODUCT_VARIATION = {
+  message: "Invalid product variation",
+  code: "INVALID_PRODUCT_VARIATION",
+};
