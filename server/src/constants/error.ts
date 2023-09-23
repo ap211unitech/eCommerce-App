@@ -97,3 +97,13 @@ export const NO_SUCH_PRODUCT_EXISTS = {
   message: "No such product exists",
   code: "NO_SUCH_PRODUCT_EXISTS",
 };
+
+export const CAN_NOT_FEATURE_PRODUCT = {
+  message: "You can not feature a product. Only admins are allowed to do this.",
+  code: "CAN_NOT_FEATURE_PRODUCT",
+};
+
+export const CAN_NOT_EDIT_PRODUCT = {
+  message: "Couldn't edit product !! Something went wrong.",
+  code: "CAN_NOT_EDIT_PRODUCT",
+};

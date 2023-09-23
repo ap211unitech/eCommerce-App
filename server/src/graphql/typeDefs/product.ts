@@ -45,6 +45,22 @@ export const productTypes = gql`
       discount: Int
     ): Product!
 
+    editProduct(
+      productId: String!
+      categoryId: String!
+      name: String!
+      description: String!
+      specifications: String!
+      gallery: [String!]!
+      filters: String!
+      variations: [String!]
+      price: Int!
+      avaliableQuantity: Int!
+      discount: Int
+      isFeatured: Boolean!
+      isArchived: Boolean!
+    ): Product!
+
     deleteProduct(productId: String!): DeleteProductType!
   }
 `;

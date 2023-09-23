@@ -11,6 +11,12 @@ export type CreateProductPayload = {
   discount: number; // 0-100 % in number
 };
 
+export type EditProductPayload = CreateProductPayload & {
+  productId: string;
+  isFeatured: boolean;
+  isArchived: boolean;
+};
+
 export type DeleteProductPayload = {
   productId: string;
 };

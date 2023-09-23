@@ -12,7 +12,7 @@ export interface IProductSchema extends mongoose.Document {
   price: number;
   avaliableQuantity: number;
   discount: number; // 0-100 % in number
-  rating: number; // Will update in when review will add
+  rating: String; // Will update in when review will add
   isFeatured: boolean;
   isArchived: boolean;
   createdBy: mongoose.Schema.Types.ObjectId;
@@ -78,7 +78,7 @@ const productSchema = new mongoose.Schema<IProductSchema>(
       required: true,
     },
     rating: {
-      type: Number,
+      type: String,
       default: 0,
     },
     isFeatured: {
