@@ -16,7 +16,6 @@ import {
   UNAUTHORIZED_REQUEST,
   NO_SUCH_USER_EXISTS,
   CAN_NOT_FEATURE_PRODUCT,
-  CAN_NOT_EDIT_PRODUCT,
 } from "../constants/error";
 import { APOLLO_ERROR } from "../constants/errorTypes";
 
