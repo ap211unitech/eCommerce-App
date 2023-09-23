@@ -83,6 +83,16 @@ export const INVALID_SPECIFICATIONS = {
   code: "INVALID_SPECIFICATIONS",
 };
 
+export const INVALID_DISCOUNT = {
+  message: "Discount must be between 0 and 100",
+  code: "INVALID_DISCOUNT",
+};
+
+export const EMPTY_GALLERY = {
+  message: "No product image found",
+  code: "EMPTY_GALLERY",
+};
+
 export const PRODUCT_AVALIABLE_QUANTITY = {
   message: "Available quantity must be greater than 1",
   code: "PRODUCT_AVALIABLE_QUANTITY",

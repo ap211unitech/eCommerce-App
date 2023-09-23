@@ -25,6 +25,8 @@ import { APOLLO_ERROR } from "../../constants/errorTypes";
 import { slugify } from "../../utils/slugify";
 import { errorHandler } from "../../utils/errorHandler";
 
+import { createProductValidation } from "../../validators/product";
+
 import Category from "../../models/Category";
 import Product from "../../models/Product";
 import User from "../../models/User";
@@ -56,63 +58,11 @@ export const createProduct = async (payload: CreateProductPayload & AuthID) => {
     userId,
   } = payload;
 
+  // Validate Data
+  await createProductValidation(payload);
+
   // Create Slug
   const productSlug = slugify([name, description, specifications]);
-
-  //  Valid CategoryId
-  const categoryExists = await Category.findById(categoryId);
-  if (!categoryExists) {
-    return errorHandler({ ...NO_SUCH_CATEGORY_EXISTS, type: APOLLO_ERROR });
-  }
-
-  // Unique Slug
-  const productExists = await Product.findOne({ slug: productSlug });
-  if (productExists) {
-    return errorHandler({ ...PRODUCT_ALREADY_EXISTS, type: APOLLO_ERROR });
-  }
-
-  // Minimum 5 words in product name & description
-  if (name.trim().split(" ").length <= 5) {
-    return errorHandler({ ...PRODUCT_NAME_TOO_SHORT, type: APOLLO_ERROR });
-  }
-
-  if (description.trim().split(" ").length <= 5) {
-    return errorHandler({
-      ...PRODUCT_DESCRIPTION_TOO_SHORT,
-      type: APOLLO_ERROR,
-    });
-  }
-
-  // Valid JSON in specification & filters
-  if (!isValidJSON(filters)) {
-    return errorHandler({ ...INVALID_FILTERS, type: APOLLO_ERROR });
-  }
-  if (!isValidJSON(specifications)) {
-    return errorHandler({ ...INVALID_SPECIFICATIONS, type: APOLLO_ERROR });
-  }
-
-  // Avaliable quantity must be greater than 0
-  if (avaliableQuantity <= 0) {
-    return errorHandler({ ...PRODUCT_AVALIABLE_QUANTITY, type: APOLLO_ERROR });
-  }
-
-  // Check if avaliable variations array has valid productId
-  let isProductVariationError = false;
-  for (let index = 0; index < variations.length; index++) {
-    const productId = variations[index];
-    const productVariationExists = await Product.findById(productId);
-    if (!productVariationExists) {
-      isProductVariationError = true;
-      break;
-    }
-  }
-
-  if (isProductVariationError) {
-    return errorHandler({
-      ...INVALID_PRODUCT_VARIATION,
-      type: APOLLO_ERROR,
-    });
-  }
 
   const product = await new Product({
     categoryId,
@@ -130,7 +80,7 @@ export const createProduct = async (payload: CreateProductPayload & AuthID) => {
     updatedBy: userId,
   }).populate("categoryId createdBy updatedBy");
 
-  product["variations"].push(product._id);
+  product["variations"].unshift(product._id);
 
   // Save product
   await product.save();
