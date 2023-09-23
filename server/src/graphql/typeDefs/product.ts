@@ -14,7 +14,7 @@ export const productTypes = gql`
     price: Int!
     avaliableQuantity: Int!
     discount: Int!
-    rating: Int!
+    rating: String!
     isFeatured: Boolean!
     isArchived: Boolean!
     createdBy: User!

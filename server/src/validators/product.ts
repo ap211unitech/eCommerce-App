@@ -1,5 +1,5 @@
 import { AuthID } from "../types/Auth";
-import { CreateProductPayload } from "../types/Product";
+import { CreateProductPayload, EditProductPayload } from "../types/Product";
 
 import {
   NO_SUCH_CATEGORY_EXISTS,
@@ -27,8 +27,9 @@ import { isValidJSON } from "../controllers/product/helpers";
 
 import Category from "../models/Category";
 import Product from "../models/Product";
+import User from "../models/User";
 
-// validation for creating product
+// Validations for creating product
 export const createProductValidation = async (
   payload: CreateProductPayload & AuthID
 ) => {
@@ -111,4 +112,37 @@ export const createProductValidation = async (
       type: APOLLO_ERROR,
     });
   }
+};
+
+// Validations for editing product
+export const editProductValidation = async (
+  payload: EditProductPayload & AuthID
+) => {
+  const { productId, userId, isFeatured } = payload;
+
+  const productExists = await Product.findById(productId);
+  const user = await User.findById(userId);
+
+  // Check if product exists for given productId
+  if (!productExists) {
+    return errorHandler({ ...NO_SUCH_PRODUCT_EXISTS, type: APOLLO_ERROR });
+  }
+
+  if (!user) {
+    return errorHandler({ ...NO_SUCH_USER_EXISTS, type: APOLLO_ERROR });
+  }
+
+  //  Only admin can feature product
+  if (user.role !== "admin" && !productExists.isFeatured && isFeatured) {
+    return errorHandler({ ...CAN_NOT_FEATURE_PRODUCT, type: APOLLO_ERROR });
+  }
+
+  // Vendor can only edit thier product
+  if (user.role === "vendor") {
+    if (productExists.createdBy.toString() !== user._id.toString()) {
+      return errorHandler({ ...UNAUTHORIZED_REQUEST, type: APOLLO_ERROR });
+    }
+  }
+
+  await createProductValidation(payload);
 };
