@@ -7,7 +7,7 @@ import { Toaster } from "@/components/atoms/toaster";
 import Footer from "@/components/organisms/Footer";
 import NavigationBar from "@/components/organisms/Navigation";
 import { ApolloWrapper } from "@/lib/apollo-client";
-import { ThemeProvider } from "@/providers";
+import { AuthProvider, ThemeProvider } from "@/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,14 +25,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} relative min-h-screen`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <ApolloWrapper>
-            <NavigationBar />
-            <section className="pb-20">{children}</section>
-            <Footer />
-            <Toaster />
-          </ApolloWrapper>
-        </ThemeProvider>
+        <ApolloWrapper>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <AuthProvider>
+              <NavigationBar />
+              <section className="pb-20">{children}</section>
+              <Footer />
+              <Toaster />
+            </AuthProvider>
+          </ThemeProvider>
+        </ApolloWrapper>
       </body>
     </html>
   );

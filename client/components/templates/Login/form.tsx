@@ -1,10 +1,7 @@
 "use client";
 
-import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { setCookie } from "cookies-next";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -18,19 +15,10 @@ import {
   FormMessage,
 } from "@/components/atoms/form";
 import { Input } from "@/components/atoms/input";
-import { useToast } from "@/components/atoms/use-toast";
-import { AUTH_TOKEN_MAX_AGE } from "@/config/defaults";
-import { AUTH_TOKEN } from "@/config/storage";
-import * as mutations from "@/graphql/mutations";
-import { getErrorMessage } from "@/utils";
+import { useAuth } from "@/providers";
 import { signInFormSchema } from "@/validations";
 
-import { SignInResponse } from "./types";
-
 function LoginForm() {
-  const { toast } = useToast();
-  const router = useRouter();
-
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
@@ -40,29 +28,10 @@ function LoginForm() {
   });
 
   const { isSubmitting } = form.formState;
-  const [signInMutation, { loading }] = useMutation(mutations.signIn);
+  const { onSignIn, signInLoading: loading } = useAuth();
 
   async function onSubmit(values: z.infer<typeof signInFormSchema>) {
-    try {
-      const { data }: SignInResponse = await signInMutation({
-        variables: values,
-      });
-      if (data?.signIn.token) {
-        setCookie(AUTH_TOKEN, data?.signIn.token, {
-          maxAge: AUTH_TOKEN_MAX_AGE,
-        });
-        router.push("/");
-        toast({
-          description: `Successfully signed in !!`,
-          variant: "success",
-        });
-      }
-    } catch (error) {
-      toast({
-        description: `Uh oh! ${getErrorMessage(error)}`,
-        variant: "destructive",
-      });
-    }
+    onSignIn(values);
   }
 
   return (

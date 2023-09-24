@@ -1,6 +1,5 @@
 "use client";
 
-import { useQuery } from "@apollo/client";
 import {
   Cloud,
   CreditCard,
@@ -18,7 +17,6 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo } from "react";
 
 import { Button } from "@/components/atoms/button";
 import {
@@ -36,22 +34,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/atoms/dropdown-menu";
 import { Skeleton } from "@/components/atoms/skeleton";
-import * as queries from "@/graphql/queries";
 import { useLogout } from "@/hooks";
-
-import { UserDetailResponse } from "./types";
+import { useAuth } from "@/providers";
 
 export const UserActions = () => {
   const { handleLogout } = useLogout();
 
-  const { data, error, refetch, loading } = useQuery(queries.getUserDetail, {
-    ssr: true,
-  });
-
-  const user = useMemo<UserDetailResponse | null>(() => {
-    if (error) return null;
-    return data?.getUserDetail;
-  }, [data, error]);
+  const { user, userDetailsLoading: loading } = useAuth();
 
   if (loading) return <Skeleton className="w-[160px] h-[40px]" />;
 
@@ -151,10 +140,7 @@ export const UserActions = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => {
-                  handleLogout();
-                  refetch();
-                }}
+                onClick={handleLogout}
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
