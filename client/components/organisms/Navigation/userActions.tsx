@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
+import { useQuery } from "@apollo/client";
 import {
   Cloud,
   CreditCard,
@@ -18,10 +18,8 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useMemo } from "react";
 
-import { handleRevalidateTag } from "@/actions";
 import { Button } from "@/components/atoms/button";
 import {
   DropdownMenu,
@@ -37,8 +35,8 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/atoms/dropdown-menu";
+import { Skeleton } from "@/components/atoms/skeleton";
 import * as queries from "@/graphql/queries";
-import { QUERY_TAGS } from "@/graphql/tags";
 import { useLogout } from "@/hooks";
 
 import { UserDetailResponse } from "./types";
@@ -46,38 +44,24 @@ import { UserDetailResponse } from "./types";
 export const UserActions = () => {
   const { handleLogout } = useLogout();
 
-  const { data, error, refetch } = useQuery(queries.getUserDetail, {
-    context: {
-      fetchOptions: {
-        cache: "no-store",
-      },
-    },
+  const { data, error, refetch, loading } = useQuery(queries.getUserDetail, {
+    ssr: true,
   });
-  const pathname = usePathname();
 
-  useEffect(() => {
-    refetch();
-  }, [refetch, pathname]);
+  const user = useMemo<UserDetailResponse | null>(() => {
+    if (error) return null;
+    return data?.getUserDetail;
+  }, [data, error]);
 
-  let user: UserDetailResponse | null = null;
-
-  // if (loading) return <Skeleton className="w-[250px] h-[40px]" />;
-
-  if (error) {
-    console.log(error.message);
-    // deleteCookie(AUTH_TOKEN);
-  }
-
-  user = data?.getUserDetail;
+  if (loading) return <Skeleton className="w-[160px] h-[40px]" />;
 
   return (
     <>
-      <button onClick={() => handleRevalidateTag(QUERY_TAGS.categories())}>
+      {/* <button onClick={() => handleRevalidateTag(QUERY_TAGS.categories())}>
         Revalidate
-      </button>
+      </button> */}
       {user ? (
         <>
-          {user.name}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
