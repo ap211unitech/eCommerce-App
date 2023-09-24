@@ -35,6 +35,7 @@ import {
 } from "@/components/atoms/dropdown-menu";
 import { useLogout } from "@/hooks";
 
+import { handleClick } from "./actions";
 import { UserDetailResponse } from "./types";
 
 type Props = {
@@ -46,6 +47,7 @@ export const UserActions = ({ user }: Props) => {
 
   return (
     <>
+      <button onClick={() => handleClick()}>Revalidate</button>
       {user ? (
         <>
           <DropdownMenu>

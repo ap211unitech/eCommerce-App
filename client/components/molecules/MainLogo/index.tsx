@@ -1,7 +1,7 @@
 import { Cormorant_Garamond as CormorantGaramond } from "next/font/google";
 
 const CormorantFont = CormorantGaramond({
-  subsets: ["vietnamese"],
+  subsets: ["latin-ext"],
   weight: ["700"],
 });
 

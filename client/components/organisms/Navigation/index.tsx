@@ -21,7 +21,7 @@ const getCategories = async () => {
       query: queries.getCategory,
       context: {
         fetchOptions: {
-          next: { revalidate: 60 },
+          next: { tags: ["categories"] },
         },
       },
     });
