@@ -7,11 +7,11 @@ import MainLogo from "@/components/molecules/MainLogo";
 import SearchBar from "@/components/molecules/SearchBar";
 import ThemeDropDown from "@/components/molecules/Theme";
 import * as queries from "@/graphql/queries";
+import { QUERY_TAGS } from "@/graphql/tags";
 import { getClient } from "@/lib/client";
 import { getErrorMessage } from "@/utils";
-import { getHeaders } from "@/utils/getHeaders";
 
-import { CategoriesResponse, UserDetailResponse } from "./types";
+import { CategoriesResponse } from "./types";
 import { UserActions } from "./userActions";
 
 // Fetch all categories
@@ -21,7 +21,7 @@ const getCategories = async () => {
       query: queries.getCategory,
       context: {
         fetchOptions: {
-          next: { tags: ["categories"] },
+          next: { tags: QUERY_TAGS.categories() },
         },
       },
     });
@@ -32,30 +32,8 @@ const getCategories = async () => {
   }
 };
 
-// Get user data (if exists)
-const getUserDetail = async () => {
-  try {
-    const { data } = await getClient().query({
-      query: queries.getUserDetail,
-      context: {
-        fetchOptions: {
-          next: { revalidate: 60 },
-        },
-        headers: getHeaders(),
-      },
-    });
-    const user: UserDetailResponse = data.getUserDetail;
-    return { user };
-  } catch (error) {
-    return { user: null };
-  }
-};
-
 const Navigation = async () => {
-  const [categories, { user }] = await Promise.all([
-    getCategories(),
-    getUserDetail(),
-  ]);
+  const categories = await getCategories();
 
   return (
     <div className="border-b-[3px] border-pink pb-6 lg:pb-0 relative">
@@ -101,7 +79,7 @@ const Navigation = async () => {
                 </span>
               </Button>
             </Link>
-            <UserActions user={user} />
+            <UserActions />
             <Button className="flex items-center gap-1 relative">
               <ShoppingCartIcon />
               <p className="absolute right-[-7px] top-[-7px] text-white bg-pink rounded-full w-4 h-4 flex justify-center items-center p-3">

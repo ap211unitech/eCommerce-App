@@ -35,6 +35,7 @@ function makeClient() {
 
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
+    ssrMode: true,
     link:
       typeof window === "undefined"
         ? ApolloLink.from([

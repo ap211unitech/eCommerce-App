@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import {
   Cloud,
   CreditCard,
@@ -17,7 +18,10 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
+import { handleRevalidateTag } from "@/actions";
 import { Button } from "@/components/atoms/button";
 import {
   DropdownMenu,
@@ -33,23 +37,47 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/atoms/dropdown-menu";
+import * as queries from "@/graphql/queries";
+import { QUERY_TAGS } from "@/graphql/tags";
 import { useLogout } from "@/hooks";
 
-import { handleClick } from "./actions";
 import { UserDetailResponse } from "./types";
 
-type Props = {
-  user: UserDetailResponse | null;
-};
-
-export const UserActions = ({ user }: Props) => {
+export const UserActions = () => {
   const { handleLogout } = useLogout();
+
+  const { data, error, refetch } = useQuery(queries.getUserDetail, {
+    context: {
+      fetchOptions: {
+        cache: "no-store",
+      },
+    },
+  });
+  const pathname = usePathname();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch, pathname]);
+
+  let user: UserDetailResponse | null = null;
+
+  // if (loading) return <Skeleton className="w-[250px] h-[40px]" />;
+
+  if (error) {
+    console.log(error.message);
+    // deleteCookie(AUTH_TOKEN);
+  }
+
+  user = data?.getUserDetail;
 
   return (
     <>
-      <button onClick={() => handleClick()}>Revalidate</button>
+      <button onClick={() => handleRevalidateTag(QUERY_TAGS.categories())}>
+        Revalidate
+      </button>
       {user ? (
         <>
+          {user.name}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
@@ -139,7 +167,10 @@ export const UserActions = ({ user }: Props) => {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={handleLogout}
+                onClick={() => {
+                  handleLogout();
+                  refetch();
+                }}
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>

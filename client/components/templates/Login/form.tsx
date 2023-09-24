@@ -52,7 +52,6 @@ function LoginForm() {
           maxAge: AUTH_TOKEN_MAX_AGE,
         });
         router.push("/");
-        router.refresh();
         toast({
           description: `Successfully signed in !!`,
           variant: "success",

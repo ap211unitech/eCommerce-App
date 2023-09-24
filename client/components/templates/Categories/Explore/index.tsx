@@ -10,6 +10,7 @@ import {
 } from "@/components/atoms/tabs";
 import { CategoriesResponse } from "@/components/organisms/Navigation/types";
 import * as queries from "@/graphql/queries";
+import { QUERY_TAGS } from "@/graphql/tags";
 import { getClient } from "@/lib/client";
 import { getErrorMessage } from "@/utils";
 
@@ -20,7 +21,7 @@ const getCategories = async () => {
       query: queries.getCategory,
       context: {
         fetchOptions: {
-          next: { revalidate: 60 },
+          next: { tags: QUERY_TAGS.categories() },
         },
       },
     });
