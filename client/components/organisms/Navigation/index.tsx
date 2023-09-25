@@ -1,4 +1,5 @@
 import { ChevronsRight, ShoppingCartIcon } from "lucide-react";
+import { cookies } from "next/headers";
 import Link from "next/link";
 
 import { Button } from "@/components/atoms/button";
@@ -6,6 +7,7 @@ import { CategoryDropDown } from "@/components/molecules/CategoryDropDown";
 import MainLogo from "@/components/molecules/MainLogo";
 import SearchBar from "@/components/molecules/SearchBar";
 import ThemeDropDown from "@/components/molecules/Theme";
+import { AUTH_TOKEN } from "@/config/storage";
 import * as queries from "@/graphql/queries";
 import { QUERY_TAGS } from "@/graphql/tags";
 import { getClient } from "@/lib/client";
@@ -79,7 +81,7 @@ const Navigation = async () => {
                 </span>
               </Button>
             </Link>
-            <UserActions />
+            <UserActions token={cookies().get(AUTH_TOKEN)?.value} />
             <Button className="flex items-center gap-1 relative">
               <ShoppingCartIcon />
               <p className="absolute right-[-7px] top-[-7px] text-white bg-pink rounded-full w-4 h-4 flex justify-center items-center p-3">

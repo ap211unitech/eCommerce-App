@@ -2,7 +2,7 @@
 
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
-import { setCookie } from "cookies-next";
+import { deleteCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
@@ -28,6 +28,10 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
   } = useQuery(queries.getUserDetail, {
     ssr: true,
     refetchWritePolicy: "overwrite",
+    onError: () => {
+      deleteCookie(AUTH_TOKEN);
+      router.refresh();
+    },
   });
 
   console.log(userDetails, userError, userDetailsLoading);
