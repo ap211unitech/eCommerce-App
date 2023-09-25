@@ -68,7 +68,7 @@ export const UserActions = ({ token }: Props) => {
 const UserActionsDropdown = () => {
   const { handleLogout } = useLogout();
 
-  const { userDetailsLoading: loading } = useAuth();
+  const { user, userDetailsLoading: loading } = useAuth();
 
   return (
     <DropdownMenu>
@@ -87,6 +87,7 @@ const UserActionsDropdown = () => {
         )}
         {!loading && (
           <>
+            {user?.name}
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
