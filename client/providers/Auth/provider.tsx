@@ -4,7 +4,6 @@ import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { deleteCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
 
 import { useToast } from "@/components/atoms/use-toast";
 import { AUTH_TOKEN_MAX_AGE } from "@/config/defaults";
@@ -21,25 +20,22 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
   const router = useRouter();
 
   const {
+    client,
     data: userDetails,
     error: userError,
     refetch: refetchUserDetails,
     loading: userDetailsLoading,
   } = useQuery(queries.getUserDetail, {
     ssr: true,
+    fetchPolicy: "network-only",
     refetchWritePolicy: "overwrite",
-    onError: () => {
+    onError: async () => {
       deleteCookie(AUTH_TOKEN);
-      router.refresh();
     },
   });
 
-  console.log(userDetails, userError, userDetailsLoading);
-
-  const user = useMemo<T.UserDetailResponse | null>(() => {
-    if (userError) return null;
-    return userDetails?.getUserDetail;
-  }, [userDetails, userError]);
+  const user: T.UserDetailResponse | null =
+    !userDetailsLoading && !userError ? userDetails?.getUserDetail : null;
 
   const [signInMutation, { loading: signInLoading }] = useMutation(
     mutations.signIn
@@ -54,8 +50,9 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
         setCookie(AUTH_TOKEN, data?.signIn.token, {
           maxAge: AUTH_TOKEN_MAX_AGE,
         });
-        await refetchUserDetails();
+        client.resetStore();
         router.push("/");
+        router.refresh();
         toast({
           description: `Successfully signed in !!`,
           variant: "success",
@@ -69,6 +66,19 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
     }
   };
 
+  const onLogout = () => {
+    try {
+      deleteCookie(AUTH_TOKEN);
+      refetchUserDetails();
+      router.refresh();
+      toast({
+        title: "Good bye !! 👋👋",
+        description: "Logged out successfully",
+        variant: "success",
+      });
+    } catch (error) {}
+  };
+
   return (
     <Provider
       value={{
@@ -77,6 +87,7 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
         userDetailsLoading,
         userError,
         onSignIn,
+        onLogout,
         refetchUserDetails,
       }}
     >

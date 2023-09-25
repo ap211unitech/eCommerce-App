@@ -34,7 +34,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/atoms/dropdown-menu";
 import { Skeleton } from "@/components/atoms/skeleton";
-import { useLogout } from "@/hooks";
 import { useAuth } from "@/providers";
 
 type Props = {
@@ -66,9 +65,7 @@ export const UserActions = ({ token }: Props) => {
 };
 
 const UserActionsDropdown = () => {
-  const { handleLogout } = useLogout();
-
-  const { user, userDetailsLoading: loading } = useAuth();
+  const { user, userDetailsLoading: loading, onLogout } = useAuth();
 
   return (
     <DropdownMenu>
@@ -167,7 +164,7 @@ const UserActionsDropdown = () => {
               <span>API</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+            <DropdownMenuItem className="cursor-pointer" onClick={onLogout}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

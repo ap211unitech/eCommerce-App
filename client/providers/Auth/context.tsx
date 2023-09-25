@@ -14,6 +14,7 @@ const initialState: AuthState = {
 export const Context = createContext<AuthContextProps>({
   ...initialState,
   onSignIn: () => {},
+  onLogout: () => {},
   refetchUserDetails: () => {},
 });
 

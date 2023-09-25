@@ -46,6 +46,7 @@ export type SignInResponse = {
 
 export type AuthContextProps = AuthState & {
   onSignIn: (value: SignInMutationProps) => void;
+  onLogout: () => void;
   refetchUserDetails: () => void;
 };
 
