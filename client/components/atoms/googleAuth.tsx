@@ -1,21 +1,13 @@
 "use client";
 
-import { useMutation } from "@apollo/client";
-import { setCookie } from "cookies-next";
 import { Loader2 } from "lucide-react";
 import Head from "next/head";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/atoms/button";
-import { AUTH_TOKEN_MAX_AGE, GOOGLE_CLIENT_ID } from "@/config/defaults";
-import { AUTH_TOKEN } from "@/config/storage";
-import * as mutations from "@/graphql/mutations";
-import { getErrorMessage } from "@/utils";
-
-import { SignInWithGoogleResponse } from "./types";
-import { useToast } from "./use-toast";
+import { GOOGLE_CLIENT_ID } from "@/config/defaults";
+import { useAuth } from "@/providers";
 
 type Props = {
   type: "signIn" | "signUp";
@@ -25,12 +17,7 @@ const GoogleAuthentication = ({ type }: Props) => {
   const [gapi, setGapi] = useState<any>(null);
   const [isLoadingGapi, setIsLoadingGapi] = useState(false);
 
-  const { toast } = useToast();
-  const router = useRouter();
-
-  const [signInWithGoogleMutation, { loading }] = useMutation(
-    mutations.signInWithGoogle
-  );
+  const { authWithGoogleLoading: loading, onAuthWithGoogle } = useAuth();
 
   useEffect(() => {
     const onLoad = async () => {
@@ -60,29 +47,7 @@ const GoogleAuthentication = ({ type }: Props) => {
   }, [gapi]);
 
   const onSubmitToken = async (token: string) => {
-    try {
-      const { data }: SignInWithGoogleResponse = await signInWithGoogleMutation(
-        {
-          variables: { token },
-        }
-      );
-      if (data?.signInWithGoogle.token) {
-        setCookie(AUTH_TOKEN, data?.signInWithGoogle.token, {
-          maxAge: AUTH_TOKEN_MAX_AGE,
-        });
-        router.push("/");
-        router.refresh();
-        toast({
-          description: `Successfully signed in !! 😉`,
-          variant: "success",
-        });
-      }
-    } catch (error) {
-      toast({
-        description: `Uh oh! ${getErrorMessage(error)}`,
-        variant: "destructive",
-      });
-    }
+    onAuthWithGoogle(token);
   };
 
   const handleSignIn = () => {

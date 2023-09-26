@@ -21,6 +21,7 @@ export type AuthState = {
   user: UserDetailResponse | null;
   userError: ApolloError | undefined;
   userDetailsLoading: boolean;
+  authWithGoogleLoading: boolean;
 };
 
 export type AuthProviderProps = PropsWithChildren<{
@@ -36,7 +37,22 @@ export type SignInResponse = {
       name: string;
       email: string;
       mobile: string;
-      role: "user" | "admin" | "vendor";
+      role: UserRoles;
+      token: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+  };
+};
+
+export type SignInWithGoogleResponse = {
+  data?: {
+    signInWithGoogle: {
+      _id: string;
+      name: string;
+      email: string;
+      mobile: string;
+      role: UserRoles;
       token: string;
       createdAt: string;
       updatedAt: string;
@@ -46,6 +62,7 @@ export type SignInResponse = {
 
 export type AuthContextProps = AuthState & {
   onSignIn: (value: SignInMutationProps) => void;
+  onAuthWithGoogle: (value: string) => void;
   onLogout: () => void;
   refetchUserDetails: () => void;
 };

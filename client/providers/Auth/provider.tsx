@@ -20,7 +20,6 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
   const router = useRouter();
 
   const {
-    client,
     data: userDetails,
     error: userError,
     refetch: refetchUserDetails,
@@ -34,12 +33,15 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
     },
   });
 
-  const user: T.UserDetailResponse | null =
-    !userDetailsLoading && !userError ? userDetails?.getUserDetail : null;
-
   const [signInMutation, { loading: signInLoading }] = useMutation(
     mutations.signIn
   );
+
+  const [signInWithGoogleMutation, { loading: authWithGoogleLoading }] =
+    useMutation(mutations.signInWithGoogle);
+
+  const user: T.UserDetailResponse | null =
+    !userDetailsLoading && !userError ? userDetails?.getUserDetail : null;
 
   const onSignIn = async (values: T.SignInMutationProps) => {
     try {
@@ -50,11 +52,37 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
         setCookie(AUTH_TOKEN, data?.signIn.token, {
           maxAge: AUTH_TOKEN_MAX_AGE,
         });
-        client.resetStore();
+        refetchUserDetails();
         router.push("/");
         router.refresh();
         toast({
           description: `Successfully signed in !!`,
+          variant: "success",
+        });
+      }
+    } catch (error) {
+      toast({
+        description: `Uh oh! ${getErrorMessage(error)}`,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const onAuthWithGoogle = async (token: string) => {
+    try {
+      const { data }: T.SignInWithGoogleResponse =
+        await signInWithGoogleMutation({
+          variables: { token },
+        });
+      if (data?.signInWithGoogle.token) {
+        setCookie(AUTH_TOKEN, data?.signInWithGoogle.token, {
+          maxAge: AUTH_TOKEN_MAX_AGE,
+        });
+        refetchUserDetails();
+        router.push("/");
+        router.refresh();
+        toast({
+          description: `Successfully signed in !! 😉`,
           variant: "success",
         });
       }
@@ -86,7 +114,9 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
         user,
         userDetailsLoading,
         userError,
+        authWithGoogleLoading,
         onSignIn,
+        onAuthWithGoogle,
         onLogout,
         refetchUserDetails,
       }}
