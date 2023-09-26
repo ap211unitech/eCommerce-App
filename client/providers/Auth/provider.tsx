@@ -37,6 +37,10 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
     mutations.signIn
   );
 
+  const [signUpMutation, { loading: signUpLoading }] = useMutation(
+    mutations.signUp
+  );
+
   const [signInWithGoogleMutation, { loading: authWithGoogleLoading }] =
     useMutation(mutations.signInWithGoogle);
 
@@ -57,6 +61,31 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
         router.refresh();
         toast({
           description: `Successfully signed in !!`,
+          variant: "success",
+        });
+      }
+    } catch (error) {
+      toast({
+        description: `Uh oh! ${getErrorMessage(error)}`,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const onSignUp = async (values: T.SignUpMutationProps) => {
+    try {
+      const { data }: T.SignUpResponse = await signUpMutation({
+        variables: values,
+      });
+      if (data?.signUp.token) {
+        setCookie(AUTH_TOKEN, data?.signUp.token, {
+          maxAge: AUTH_TOKEN_MAX_AGE,
+        });
+        refetchUserDetails();
+        router.push("/");
+        router.refresh();
+        toast({
+          description: `Account created successfully !!`,
           variant: "success",
         });
       }
@@ -115,7 +144,9 @@ export const AuthProvider: T.AuthComponent = ({ children }) => {
         userDetailsLoading,
         userError,
         authWithGoogleLoading,
+        signUpLoading,
         onSignIn,
+        onSignUp,
         onAuthWithGoogle,
         onLogout,
         refetchUserDetails,

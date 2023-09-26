@@ -10,11 +10,13 @@ const initialState: AuthState = {
   userDetailsLoading: false,
   userError: undefined,
   authWithGoogleLoading: false,
+  signUpLoading: false,
 };
 
 export const Context = createContext<AuthContextProps>({
   ...initialState,
   onSignIn: () => {},
+  onSignUp: () => {},
   onAuthWithGoogle: () => {},
   onLogout: () => {},
   refetchUserDetails: () => {},
