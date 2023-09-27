@@ -36,7 +36,7 @@ const getCategories = async () => {
 
 const Navigation = async () => {
   const categories = await getCategories();
-  const token = cookies().get(AUTH_TOKEN)?.value;
+  const token = cookies().has(AUTH_TOKEN);
 
   return (
     <div className="border-b-[3px] border-pink pb-6 lg:pb-0 relative">

@@ -37,7 +37,7 @@ import { Skeleton } from "@/components/atoms/skeleton";
 import { useAuth } from "@/providers";
 
 type Props = {
-  token: string | undefined;
+  token: boolean;
 };
 
 export const UserActions = ({ token }: Props) => {
