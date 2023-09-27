@@ -36,6 +36,7 @@ const getCategories = async () => {
 
 const Navigation = async () => {
   const categories = await getCategories();
+  const token = cookies().get(AUTH_TOKEN)?.value;
 
   return (
     <div className="border-b-[3px] border-pink pb-6 lg:pb-0 relative">
@@ -81,7 +82,7 @@ const Navigation = async () => {
                 </span>
               </Button>
             </Link>
-            <UserActions token={cookies().get(AUTH_TOKEN)?.value} />
+            <UserActions token={token} />
             <Button className="flex items-center gap-1 relative">
               <ShoppingCartIcon />
               <p className="absolute right-[-7px] top-[-7px] text-white bg-pink rounded-full w-4 h-4 flex justify-center items-center p-3">
