@@ -34,16 +34,9 @@ const getCategories = async () => {
   }
 };
 
-// Get Auth token value
-const getAuthToken = () => {
-  return cookies().get(AUTH_TOKEN)?.value;
-};
-
 const Navigation = async () => {
-  const [categories, token] = await Promise.all([
-    getCategories(),
-    getAuthToken(),
-  ]);
+  const categories = await getCategories();
+  const token = cookies().get(AUTH_TOKEN)?.value;
 
   return (
     <div className="border-b-[3px] border-pink pb-6 lg:pb-0 relative">
