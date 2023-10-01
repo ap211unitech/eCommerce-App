@@ -24,7 +24,9 @@ const CategoryCard = ({ category }: Props) => {
       </div>
       <div className="bg-black/[0.5] rounded absolute bottom-2 left-2 right-2 text-center p-2 text-white">
         {category.name}
-        <p className="underline underline-offset-2 text-pink">Shop Now</p>
+        <p className="underline underline-offset-2 text-pink hover:opacity-90">
+          Shop Now
+        </p>
       </div>
     </Link>
   );
