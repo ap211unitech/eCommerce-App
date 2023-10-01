@@ -1,4 +1,4 @@
-import { MoveLeft } from "lucide-react";
+import { ArrowBigLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,8 +16,8 @@ const NotFound = () => {
       </div>
       <p className="text-xl mb-5">This page could not be found</p>
       <Button className="mb-12 xl:mb-0 hover:bg-pink dark:hover:text-white transition-all duration-500">
-        <Link href={"/"} className="gap-2 flex">
-          <MoveLeft />
+        <Link href={"/"} className="gap-2 flex items-center">
+          <ArrowBigLeft />
           Back to home
         </Link>
       </Button>

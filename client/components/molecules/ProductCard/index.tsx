@@ -6,7 +6,7 @@ import { AddToWishList } from "./addToWishList";
 
 const ProductCard = () => {
   return (
-    <div className="rounded overflow-hidden shadow-lg w-full dark:bg-[#232222]">
+    <div className="border rounded overflow-hidden shadow-lg w-full bg-card">
       <div className="w-full h-[310px] relative">
         <Image
           src="https://fastly.picsum.photos/id/30/1280/901.jpg?hmac=A_hpFyEavMBB7Dsmmp53kPXKmatwM05MUDatlWSgATE"
