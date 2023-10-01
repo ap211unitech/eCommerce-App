@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { CategoriesResponse } from "@/components/organisms/Navigation/types";
+import { CategoriesResponse } from "./types";
 
 type Props = {
   category: CategoriesResponse;
@@ -22,11 +22,9 @@ const CategoryCard = ({ category }: Props) => {
           priority
         />
       </div>
-      <div className="bg-black/[0.5] rounded absolute bottom-2 left-2 right-2 text-center p-4 text-white">
+      <div className="bg-black/[0.5] rounded absolute bottom-2 left-2 right-2 text-center p-2 text-white">
         {category.name}
-        <p className="underline underline-offset-4 text-lg text-pink">
-          Shop Now
-        </p>
+        <p className="underline underline-offset-2 text-pink">Shop Now</p>
       </div>
     </Link>
   );
