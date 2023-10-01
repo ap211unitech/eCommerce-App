@@ -17,3 +17,11 @@
   scale: 1.3;
   margin-inline: 0.5rem !important;
 }
+
+@media screen and (max-width: 640px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    font-weight: 500;
+    padding-inline: 0rem;
+  }
+}

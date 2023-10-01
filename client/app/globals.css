@@ -77,12 +77,12 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    overflow-x: hidden;
   }
 }
 
 html {
   box-sizing: border-box;
+  overflow-x: hidden !important;
 }
 
 ::-webkit-scrollbar {

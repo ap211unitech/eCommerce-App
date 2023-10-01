@@ -40,7 +40,7 @@ const FeaturedProductCarousel = () => {
       }}
       rewind
       modules={[Navigation, Pagination, Autoplay]}
-      className="h-[32rem] w-full"
+      className="h-[20rem] md:h-[26rem] lg:h-[32rem] w-full"
     >
       {slides.map((slide, index) => (
         <SwiperSlide key={index}>
