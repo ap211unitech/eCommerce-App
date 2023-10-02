@@ -1,6 +1,7 @@
 import { ArrowBigLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import NotFoundImage from "public/notFound.png";
 
 import { Button } from "@/components/atoms/button";
 
@@ -9,8 +10,9 @@ const NotFound = () => {
     <div className="m-auto text-center overflow-x-hidden">
       <div className="mx-auto relative w-[300px] h-[300px] sm:w-[350px] md:w-[400px] sm:h-[350px]">
         <Image
-          src="https://i.imgur.com/qIufhof.png"
+          src={NotFoundImage}
           alt="Not found image"
+          placeholder="blur"
           fill
         />
       </div>
