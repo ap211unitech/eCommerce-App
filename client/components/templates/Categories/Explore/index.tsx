@@ -1,5 +1,4 @@
 import { LayoutGrid } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import {
@@ -89,32 +88,21 @@ const SubCategories = ({
               key={category.categoryId}
               className={`${
                 category.children.length === 0
-                  ? "flex flex-col justify-center items-center gap-2 mt-4"
+                  ? "flex flex-col justify-center items-center gap-2 mt-4 rounded-[50%] bg-muted text-background w-28 h-28 lg:w-32 lg:h-32 border-2"
                   : "inline-block"
-              } hover:opacity-70`}
+              } hover:bg-background transition-all duration-500`}
             >
-              {category.children.length === 0 && (
-                <Image
-                  src={
-                    "https://thumbs.dreamstime.com/b/blue-jeans-isolated-white-34440719.jpg"
-                  }
-                  alt={`${category.name} image`}
-                  width={120}
-                  height={260}
-                  className="w-[110px] sm:w-auto"
-                />
-              )}
               <p
                 className={`${
                   category.children.length > 0
                     ? "font-semibold text-xl pt-6"
-                    : "w-[110px] text-center"
+                    : "text-center px-3 text-foreground"
                 }`}
               >
                 {category.name}
               </p>
             </Link>
-            <div className="flex gap-x-2 md:gap-x-4 lg:gap-x-8 gap-y-4 items-start flex-wrap">
+            <div className="flex gap-x-2 md:gap-x-4 gap-y-4 items-start flex-wrap">
               <SubCategories categories={category.children} />
             </div>
           </>
